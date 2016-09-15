@@ -4,9 +4,9 @@
 require_once __DIR__ . '/../src/classes.php';
 
 
-echo "<pre>";
-print_r($search);
-echo "</pre>";
+// echo "<pre>";
+// print_r($search);
+// echo "</pre>";
 
 // message to json to bot
 $message;
@@ -47,7 +47,7 @@ $message;
 		} else {
 			$search["destination"] = $airportDataDestination["cityIATA"];
 		}
-		die();
+		
 		//Validate date query (if exist) 
 
 		$DepartureDate = $helper->DateExtract($search["departure_date"]);
