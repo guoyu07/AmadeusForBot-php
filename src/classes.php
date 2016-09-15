@@ -252,7 +252,7 @@ class ValidationHelper {
 class ChatfuelMessage {
 
     private $ChatfuelTextMessage = array();  
-    private $ChatfuelTextCardMessage = array(); 
+    private $ChatfuelTextCardMessage =  array(); 
 
     public function TextMessage($message)
     {
@@ -272,14 +272,14 @@ class ChatfuelMessage {
             "payload" => array(
                 "template_type" => "button",
                 "text"=> "Hello!",
-                "buttons" => array(
+                "buttons" =>  (object) array(
                     "type"=>"web_url",
                     "url" => "http://www.google.com",
                     "title" => "Book Now!"
-                    ),
+                 ),
                 ),
             ); 
-        return $this->ChatfuelTextCardMessage;
+        return  (object) $this->ChatfuelTextCardMessage;
         } else {
           return $message = "empty message";
         }
