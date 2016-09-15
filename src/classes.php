@@ -239,5 +239,33 @@ class ValidationHelper {
     }
 }
 
+/**
+*  Chatfuel Message Class
+*  Use: UniRest
+*  https://montanaflynn-timekeeper---format-dates-and-times.p.mashape.com/format/date
+*  Methods: 
+*   -TextMessage : Parse a text message with an error showing the user input.
+*   -GalleryMessage : Parse Multiple Text Cards.
+*   -TextCardMessage : Parse a text card with an image and two buttons(optional).
+*/
+
+class ChatfuelMessage {
+
+    private $ChatfuelTextMessage = array();  
+
+    public function TextMessage($message)
+    {
+        $this->ChatfuelTextMessage['text'] = $message; 
+        return $this->ChatfuelTextMessage;
+    }
+    public function TextCardMessage($message,$buttons,$image)
+    {
+        # code...
+    }
+    public function GalleryMessage($cards)
+    {
+        # code...
+    }
+}
 
 
