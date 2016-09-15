@@ -252,15 +252,38 @@ class ValidationHelper {
 class ChatfuelMessage {
 
     private $ChatfuelTextMessage = array();  
+    private $ChatfuelTextCardMessage = array(); 
 
     public function TextMessage($message)
     {
+       if ($message) {
         $this->ChatfuelTextMessage['text'] = $message; 
         return $this->ChatfuelTextMessage;
+       } else {
+        return $message = "empty parameter";
+       }
+
     }
-    public function TextCardMessage($message,$buttons,$image)
+    public function TextCardMessage($message_array)
     {
-        # code...
+        if ($message_array){
+            $this->ChatfuelTextCardMessage["attachment"] = array(
+            'type' => "template", 
+            "payload" => array(
+                "template_type" => "button",
+                "text"=> "Hello!",
+                "buttons" => array(
+                    "type"=>"web_url",
+                    "url" => "http://www.google.com",
+                    "title" => "Book Now!"
+                    ),
+                ),
+            ); 
+        return $this->ChatfuelTextCardMessage;
+        } else {
+          return $message = "empty message";
+        }
+
     }
     public function GalleryMessage($cards)
     {
