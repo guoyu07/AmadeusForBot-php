@@ -251,15 +251,19 @@ class ValidationHelper {
 
 class ChatfuelMessage {
 
-    private $ChatfuelTextMessage = array();  
-    private $ChatfuelTextCardMessage; 
-    private $ChatfuelPayloadArray;
-    private $ChatfuelButtonsArray;
+    private $TextMessage = array();  
+    private $Message;
+    private $attachment; 
+    private $PayloadArray;
+    private $ButtonsArray;
+    private $CardArray;
+    private $Card;
+    private $ButtonElement; 
 
     public function TextMessage($message)
     {
        if ($message) {
-        $this->ChatfuelTextMessage['text'] = $message; 
+        $this->TextMessage['text'] = $message; 
         return $this->ChatfuelTextMessage;
        } else {
         return $message = "empty parameter";
@@ -268,9 +272,9 @@ class ChatfuelMessage {
     }
     public function TextCardMessage($text,$buttons)
     {
-        $this->ChatfuelButtonsArray = $buttons;
+        $this->ButtonsArray = $buttons;
 
-        $this->ChatfuelPayloadArray = array(
+        $this->PayloadArray = array(
                "template_type" => "button",
                 "text"=> $text,
                 "buttons" => $this->ChatfuelButtonsArray
@@ -278,19 +282,67 @@ class ChatfuelMessage {
 
 
         if ($text){
-            $this->ChatfuelTextCardMessage["attachment"] = array(
+            $this->TextCardMessage["attachment"] = array(
             'type' => "template", 
-            "payload" => $this->ChatfuelPayloadArray
+            "payload" => $this->PayloadArray
             ); 
-        return  $this->ChatfuelTextCardMessage;
+        return  $this->TextCardMessage;
         } else {
           return $message = "empty message";
         }
 
     }
-    public function GalleryMessage($cards)
+    public function GalleryMessage($cards_array)
     {
-        # code...
+        /* The Gallery follows this structre
+        *    Attachment
+        *    ->Payload
+        *      ->Elements 
+        */
+
+        $this->PayloadArray = array(
+        "template_type" => "generic",
+        "elements"=> $cards_array,
+        );
+
+        $this->attachment = array(
+            "type" => "template" , 
+            "payload" => $this->PayloadArray
+        );
+
+        return $this->Message = array('attachment' => $this->attachment);
+    }
+
+   
+    // Return an array of a Card element
+    public function CardElement($title,$imageUrl,$subtititle,$buttons) {
+        $this->Card = array (
+        "title" => $title,
+        "image_url" => $imageUrl, 
+        "subtitle" => $subtititle, 
+        "buttons" => $buttons
+        );
+        return $this->Card;
+    }
+    
+    public function ButtonElement($type, $url, $title)
+    {
+        $this->ButtonElement = array(
+            "type" => $type,
+            "url" => $url,
+            "title" => $title
+        );   
+        return $this->ButtonElement;
+    }
+
+
+    public function AssambleElements($cards)
+    {
+        $this->CardArray = array(); 
+        foreach ($cards as $card) {
+           array_push($this->CardArray,$card); 
+        }
+        return $this->CardArray;
     }
 }
 
