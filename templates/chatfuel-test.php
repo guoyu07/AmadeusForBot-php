@@ -15,8 +15,8 @@ $buttons = array ($button1,$button2);
 
 //create cards
 
-$card1 = $chatfuel->CardElement("This is a Test","https://petersapparel.parseapp.com/view_item?item_id=100","Subtitle Text",$buttons); 
-$card2 = $chatfuel->CardElement("This is a Test 2","https://petersapparel.parseapp.com/view_item?item_id=100","Subtitle Text 2",$buttons); 
+$card1 = $chatfuel->CardElement("This is a Test","https://hd.unsplash.com/photo-1470897655254-05feb2d2ab97","Subtitle Text",$buttons); 
+$card2 = $chatfuel->CardElement("This is a Test 2","https://hd.unsplash.com/photo-1470897655254-05feb2d2ab97","Subtitle Text 2",$buttons); 
 $elements = array($card1,$card2);
 
 // assemble message
