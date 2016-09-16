@@ -129,7 +129,9 @@ class FlightSearch {
             $results = Unirest\Request::get("https://api.sandbox.amadeus.com/v1.2/flights/low-fare-search",$headers, $uri);
             if ($results->code == 200) {
                 //return Object
+                
                 return $this->FlightSearchResult = $results->body;
+                
             }
              else{
                  

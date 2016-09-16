@@ -98,31 +98,23 @@ $message;
 				 	// Return Results
 				 	$flightSearch = new FlightSearch; 
 					$response = $flightSearch->BestMatch($search);
+
 					//Send Message
 					$chatfuel = new ChatfuelMessage;
-				   	$cardsArray = array();
 				   	
+				   	$index = 0;
 				   	foreach ($response->results as $key => $value) {
-					   	 $flightData = $flightSearch->ExtractOutboundData ($value);
-					   	 
-					   	 $card = $chatfuel->FlightDetailsMessage($flightData);
-					   	 
-					   	 if (empty($cardsArray)){
-					   	 	$cardsArray = $card;
-					   	 } else {
-					   	 	$cardsArray = array_merge($cardsArray, $card);
-					   	 }
+					   	 $flightData = $flightSearch->ExtractOutboundData($value);
+					   	 $card[$index] = $chatfuel->FlightDetailsMessage($flightData);	
+					   	 $index++;
 				   	}
-
+					$cardsArray = array_merge_recursive($card);			   	
 				   	$message = $chatfuel->GalleryMessage($cardsArray);
 
-				   	
-
 				   	//send Message
+				   	
 					header("Content-Type: application/json");
 				   	echo json_encode($message,JSON_UNESCAPED_UNICODE);
-				
-					
 
 				 }
 			} 	
@@ -131,13 +123,34 @@ $message;
 			
 			$search['departure_date'] = $DepartureDate["date"];
 			// Return Results
-		 	$flightSearch = new FlightSearch; 
-			$message = $flightSearch->BestMatch($search);
-			//Send Message
-			$chatfuel = new ChatfuelMessage;
-			$message = array($chatfuel->FlightDetailsMessage($flightData));
-			header("Content-Type: application/json");
-			echo json_encode($message,JSON_UNESCAPED_UNICODE);
+		 	// Return Results
+				 	$flightSearch = new FlightSearch; 
+					$response = $flightSearch->BestMatch($search);
+
+					//Send Message
+					$chatfuel = new ChatfuelMessage;
+				   	
+				   	
+				   	foreach ($response->results as $key => $value) {
+					   	 $flightData = $flightSearch->ExtractOutboundData ($value);
+					   	
+					   	 $card = $chatfuel->FlightDetailsMessage($flightData);
+
+					   	 if (empty($cardsArray)){
+					   	 	
+					   	 	$cardsArray = $card;
+					   	 } else {
+					   	 	$cardsArray = $cardsArray + $card;
+
+					   	 }  	 
+				   	}
+				   	
+				   	$message = $chatfuel->GalleryMessage($cardsArray);
+
+				 //   	//send Message
+					header("Content-Type: application/json");
+				   	echo json_encode($message,JSON_UNESCAPED_UNICODE);
+
 		}
 		}
 	}
