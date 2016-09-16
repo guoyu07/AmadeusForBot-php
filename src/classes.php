@@ -182,8 +182,18 @@ class FlightSearch {
            //get flight number of first flight
             $flightNumber = $result["itineraries"][0]->outbound->flights[0]->operating_airline." ".$result["itineraries"][0]->outbound->flights[0]->flight_number;
 
+           //Get origin Airport 
+           $OriginAirport = $result["itineraries"][0]->outbound->flights[0]->origin->airport;
+
+           // Get Destination Airport
+           $DestinationAirport =  $result["itineraries"][0]->outbound->flights[$stops-1]->destination->airport;
            //get fare 
             $fare = $result["fare"]->total_price;
+
+           // Get Class 
+            $TravelClass = $result["itineraries"][0]->outbound->flights[0]->booking_info->travel_class;
+
+
          
             $this->FlightData = array(
             'DepartureDate' => $DepartureDate, 
@@ -191,6 +201,9 @@ class FlightSearch {
             'ArrivalDate'  => $ArrivalDate,
             'ArrivalTime' => $ArrivalTime,
             'flightNumber' => $flightNumber,
+            'DestinationAirport' =>  $DestinationAirport,
+            'OriginAirport' => $OriginAirport,
+            'TravelClass' => $TravelClass,
             'fare' => $fare,
             'stops' => $stops
             );
@@ -298,14 +311,16 @@ class ValidationHelper {
 
 class ChatfuelMessage {
 
-    private $TextMessage = array();  
+    private $TextMessage = array();
+    private $CardMessage;
     private $Message;
     private $attachment; 
     private $PayloadArray;
     private $ButtonsArray;
     private $CardArray;
     private $Card;
-    private $ButtonElement; 
+    private $ButtonElement;
+    private $SubtitleMessage; 
 
     public function TextMessage($message)
     {
@@ -360,18 +375,17 @@ class ChatfuelMessage {
         return $this->Message = array('attachment' => $this->attachment);
     }
     public function FlightDetailsMessage ($flightDetails) {
+        
         //create buttons
         $button = $this->ButtonElement("web_url", "http://www.avianca.com", "Select");
         $buttons = array ($button);
 
         //create cards
+        $this->SubtitleMessage = $flightDetails['fare']." --".$flightDetails['flightNumber']." Depart Time: ".$flightDetails['DepartureTime']." Arrival Time: ".$flightDetails['ArrivalTime']." ".$flightDetails['TravelClass'];
 
-        $card = $this->CardElement("Best Match","https://hd.unsplash.com/photo-1470897655254-05feb2d2ab97",$flightDetails["fare"],$buttons); 
-        $elements = array($card);
-
-        // assemble message
-        $message = $this->GalleryMessage($elements);
-        return $message;
+        $this->Card = $this->CardElement("Option 1: Best Match","https://hd.unsplash.com/photo-1470897655254-05feb2d2ab97",$this->SubtitleMessage,$buttons); 
+        
+        return $this->Card;
     }
    
     // Return an array of a Card element
@@ -382,7 +396,7 @@ class ChatfuelMessage {
         "subtitle" => $subtititle, 
         "buttons" => $buttons
         );
-        return $this->Card;
+        return array($this->Card);
     }
     
     public function ButtonElement($type, $url, $title)

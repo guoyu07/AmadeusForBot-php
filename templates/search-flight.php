@@ -95,16 +95,35 @@ $message;
 				 	//All Ok, Do search in Amadeus
 				 	$search['departure_date'] = $DepartureDate["date"];
 				 	$search['return_date'] = $ReturnDate["date"];
+				 	// Return Results
 				 	$flightSearch = new FlightSearch; 
 					$response = $flightSearch->BestMatch($search);
-					$message = json_encode($response,JSON_UNESCAPED_UNICODE);
-					// Return Results
-					header("Content-Type: application/json");
-					$flightData = $flightSearch->ExtractOutboundData($response->results[0]);
+					//Send Message
 					$chatfuel = new ChatfuelMessage;
-					$message = $chatfuel->FlightDetailsMessage($flightData);
+				   	$cardsArray = array();
+				   	
+				   	foreach ($response->results as $key => $value) {
+					   	 $flightData = $flightSearch->ExtractOutboundData ($value);
+					   	 
+					   	 $card = $chatfuel->FlightDetailsMessage($flightData);
+					   	 
+					   	 if (empty($cardsArray)){
+					   	 	$cardsArray = $card;
+					   	 } else {
+					   	 	$cardsArray = array_merge($cardsArray, $card);
+					   	 }
+				   	}
+
+				   	$message = $chatfuel->GalleryMessage($cardsArray);
+
+				   	
+
+				   	//send Message
 					header("Content-Type: application/json");
-					echo json_encode($message,JSON_UNESCAPED_UNICODE);
+					echo "<pre>";
+				   	echo json_encode($message,JSON_UNESCAPED_UNICODE);
+				   	echo "</pre>";
+					
 
 				 }
 			} 	
@@ -112,9 +131,12 @@ $message;
 			//All Ok, Do search in Amadeus
 			
 			$search['departure_date'] = $DepartureDate["date"];
+			// Return Results
 		 	$flightSearch = new FlightSearch; 
 			$message = $flightSearch->BestMatch($search);
-			// Return Results
+			//Send Message
+			$chatfuel = new ChatfuelMessage;
+			$message = $chatfuel->FlightDetailsMessage($flightData);
 			header("Content-Type: application/json");
 			echo json_encode($message,JSON_UNESCAPED_UNICODE);
 		}
