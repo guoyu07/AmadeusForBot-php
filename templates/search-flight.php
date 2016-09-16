@@ -120,9 +120,8 @@ $message;
 
 				   	//send Message
 					header("Content-Type: application/json");
-					echo "<pre>";
 				   	echo json_encode($message,JSON_UNESCAPED_UNICODE);
-				   	echo "</pre>";
+				
 					
 
 				 }
@@ -136,7 +135,7 @@ $message;
 			$message = $flightSearch->BestMatch($search);
 			//Send Message
 			$chatfuel = new ChatfuelMessage;
-			$message = $chatfuel->FlightDetailsMessage($flightData);
+			$message = array($chatfuel->FlightDetailsMessage($flightData));
 			header("Content-Type: application/json");
 			echo json_encode($message,JSON_UNESCAPED_UNICODE);
 		}
