@@ -88,13 +88,11 @@ $message;
 				$DateIsCorrect = $helper->ValidateReturnDate($DepartureDate["date"],$ReturnDate["date"]);
 				 if (!$DateIsCorrect){
 				 	// Next: Send Message there was an error
-				 	echo "entra-por-aqui";
 				 	$message ['error'] = "Departure date must be later than actual date";
 					header("Content-Type: application/json");
 					echo json_encode($message,JSON_UNESCAPED_UNICODE);
 				 } else {
 				 	//All Ok, Do search in Amadeus
-				 	
 				 	$search['departure_date'] = $DepartureDate["date"];
 				 	$search['return_date'] = $ReturnDate["date"];
 				 	$flightSearch = new FlightSearch; 
@@ -102,7 +100,11 @@ $message;
 					$message = json_encode($response,JSON_UNESCAPED_UNICODE);
 					// Return Results
 					header("Content-Type: application/json");
-					echo $message;
+					$flightData = $flightSearch->ExtractOutboundData($response->results[0]);
+					$chatfuel = new ChatfuelMessage;
+					$message = $chatfuel->FlightDetailsMessage($flightData);
+					header("Content-Type: application/json");
+					echo json_encode($message,JSON_UNESCAPED_UNICODE);
 
 				 }
 			} 	
@@ -115,29 +117,6 @@ $message;
 			// Return Results
 			header("Content-Type: application/json");
 			echo json_encode($message,JSON_UNESCAPED_UNICODE);
-		 }
-		  	
-		
+		}
 		}
 	}
-
-
-	$SearchParams = array(
-        'origin' => 'BOG',
-        'destination' => 'LON',
-        'departure_date' => '2016-11-25',
-        'return_date' => '2016-12-25', 
-        'adults' => '1',
-        'children' => '1',
-        'infants' => '1',
-        'include_airlines' => 'AV',
-        'currency' => 'COP',
-        'number_of_results' => '3'
-    );
-
-
-
-	// header("Content-Type: application/json");
-	// echo "<pre>";
-	// print_r($response);
-	// echo "</pre>";

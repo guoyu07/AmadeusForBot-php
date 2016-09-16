@@ -107,15 +107,15 @@ class Airport{
 *  https://sandbox.amadeus.com/travel-innovation-sandbox/apis/get/flights/affiliate-search
 *  Methods: 
 *   -BestMatch : Returns (array) of the lowest fare.
-*   -AllFlightMatches  : Returns (array) all of the results of the query. 
 *   -AffiliateSearchBestMatch : Returns (array) the best match of the search.
-*   -AllAffilliateSearch: Returns (array) all of the results of the affiliate flight search.
+*   -ExtractOutboundData : Returns (array) of the texts required for the card.
 */
 
 class FlightSearch {
     // Variables 
     private $AmadeusApiKey = "EpDbA3yQmsIAKcF5wA5F9DiIOGoExqhc";
     private $FlightSearchResult;
+    private $FlightData; 
 
     // Low fare best match 
     public function BestMatch ($query) {
@@ -129,7 +129,6 @@ class FlightSearch {
             $results = Unirest\Request::get("https://api.sandbox.amadeus.com/v1.2/flights/low-fare-search",$headers, $uri);
             if ($results->code == 200) {
                 //return Object
-                
                 return $this->FlightSearchResult = $results->body;
             }
              else{
@@ -141,21 +140,69 @@ class FlightSearch {
            return $this->FlightSearchResult = array("error"=> "empty query");
         }   
     }
-    // Low fare all results
-    public function AllFlightMatches ($query) {
-         //Future Dev
-    }
+
     // Affilate Search Best Match
     public function AffiliateSearchBestMatch ($query) {
         //Future Dev
     }
 
-    //Affilliate search all results
-    public function AllAffilliateSearch ($query) {
-             //Future Dev
-        }
+    
+    // Note: optimize class create a helpers for flight number , date and time.
+    public function ExtractOutboundData ($result) {
 
-}
+        $this->FlightData = array(); 
+        $result= (array)$result;
+        if ($result) {
+           //count number of stops 
+            // echo "<pre>";
+            // print_r($result);
+            // echo "</pre>";
+            $stops = sizeof($result["itineraries"][0]->outbound->flights);
+            
+            
+            // Get data from first item
+            // Get Departure Date and Time
+            $DepartureDate = $result["itineraries"][0]->outbound->flights[0]->departs_at; 
+            //format time 
+            $date = new DateTime($DepartureDate);
+            $DepartureDate = $date->format('M d, Y');
+            $DepartureTime = $date->format('g:i a');
+            
+            // Get Arrival Date and time 
+            // get last item
+            
+            $ArrivalDate = $result["itineraries"][0]->outbound->flights[$stops-1]->arrives_at; 
+            
+            //format time 
+            $date = new DateTime($ArrivalDate);
+            $ArrivalDate = $date->format('M d, Y');
+            $ArrivalTime = $date->format('g:i a');
+           
+
+           //get flight number of first flight
+            $flightNumber = $result["itineraries"][0]->outbound->flights[0]->operating_airline." ".$result["itineraries"][0]->outbound->flights[0]->flight_number;
+
+           //get fare 
+            $fare = $result["fare"]->total_price;
+         
+            $this->FlightData = array(
+            'DepartureDate' => $DepartureDate, 
+            'DepartureTime' => $DepartureTime,
+            'ArrivalDate'  => $ArrivalDate,
+            'ArrivalTime' => $ArrivalTime,
+            'flightNumber' => $flightNumber,
+            'fare' => $fare,
+            'stops' => $stops
+            );
+         
+         return $this->FlightData;
+
+        } else {
+           return $this->FlightData['error'] = 'Results Empty';
+        }
+    }
+
+} 
 
 /**
 *  Validation Helper / Processing
@@ -312,7 +359,20 @@ class ChatfuelMessage {
 
         return $this->Message = array('attachment' => $this->attachment);
     }
+    public function FlightDetailsMessage ($flightDetails) {
+        //create buttons
+        $button = $this->ButtonElement("web_url", "http://www.avianca.com", "Select");
+        $buttons = array ($button);
 
+        //create cards
+
+        $card = $this->CardElement("Best Match","https://hd.unsplash.com/photo-1470897655254-05feb2d2ab97",$flightDetails["fare"],$buttons); 
+        $elements = array($card);
+
+        // assemble message
+        $message = $this->GalleryMessage($elements);
+        return $message;
+    }
    
     // Return an array of a Card element
     public function CardElement($title,$imageUrl,$subtititle,$buttons) {
