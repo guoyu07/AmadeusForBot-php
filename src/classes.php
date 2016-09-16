@@ -381,9 +381,9 @@ class ChatfuelMessage {
         $buttons = array ($button);
 
         //create cards
-        $this->SubtitleMessage = $flightDetails['fare']." --".$flightDetails['flightNumber']." Depart Time: ".$flightDetails['DepartureTime']." Arrival Time: ".$flightDetails['ArrivalTime']." ".$flightDetails['TravelClass'];
+        $this->SubtitleMessage = $flightDetails['flightNumber']." Depart Time: ".$flightDetails['DepartureTime']." Arrival Time: ".$flightDetails['ArrivalTime']." ".$flightDetails['TravelClass'];
 
-        $this->Card = $this->CardElement("Option 1: Best Match","https://hd.unsplash.com/photo-1470897655254-05feb2d2ab97",$this->SubtitleMessage,$buttons); 
+        $this->Card = $this->CardElement($flightDetails['fare']." USD","https://hd.unsplash.com/photo-1470897655254-05feb2d2ab97",$this->SubtitleMessage,$buttons); 
         
         return $this->Card;
     }
@@ -396,7 +396,7 @@ class ChatfuelMessage {
         "subtitle" => $subtititle, 
         "buttons" => $buttons
         );
-        return array($this->Card);
+        return $this->Card;
     }
     
     public function ButtonElement($type, $url, $title)
