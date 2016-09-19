@@ -1,4 +1,11 @@
 <?php
+
+require __DIR__ . '/../src/SimpleImage.php';
+
+
+
+
+
 /**
 *  Amadeus Airport Autocomplete API integration,
 *  Use: Amadeus API ,  UniRest
@@ -385,7 +392,7 @@ class ChatfuelMessage {
         //create cards
         $this->SubtitleMessage = $flightDetails['flightNumber']." Depart Time: ".$flightDetails['DepartureTime']." Arrival Time: ".$flightDetails['ArrivalTime']." ".$flightDetails['TravelClass'];
 
-        $this->Card = $this->CardElement($flightDetails['fare']." USD","https://hd.unsplash.com/photo-1470897655254-05feb2d2ab97",$this->SubtitleMessage,$buttons); 
+        $this->Card = $this->CardElement($flightDetails['fare']." USD",$flightDetails['image_url'],$this->SubtitleMessage,$buttons); 
         
         return $this->Card;
     }
@@ -422,4 +429,61 @@ class ChatfuelMessage {
     }
 }
 
+/**
+*  Flight Image
+*  Use: Simple Image
+*  
+*   -GenerateImage : Create the Flight Itinerary Image and return the url.
+*/
+class FlightImage {
+
+
+// $FontPathRegular =  __DIR__ . '/../template/fonts/Lato-Regular.ttf';
+// $FontPathBold = __DIR__ . '/../template/fonts/Lato-Bold.ttf';
+
+
+
+ public function GenerateImage($FlightData,$Option) {
+
+$ImagePath = './../src/flight-itinerary-template.png';
+$FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
+$FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
+
+
+    try {
+        
+        // Flip the image and output it directly to the browser
+        $img = new SimpleImage($ImagePath);
+        //STOPS 
+        if ($FlightData["stops"] > 1) {
+        $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);
+        }else{
+         $img->text($FlightData["stops"]." stop", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);   
+        }
+        
+        // DEPARTURE TIME
+        $img->text($FlightData["DepartureTime"], $FontPathBold, 40, '#000000', 'left', 38, 10);
+        // ARRIVAL TIME
+        $img->text($FlightData["ArrivalTime"], $FontPathBold, 40, '#000000', 'right', -40, 10);
+        // DEPART CITY
+        $img->text($FlightData["OriginAirport"], $FontPathRegular, 31, '#B7B7B7', 'top', -274, 263);
+        //ARRIVAL CITY
+        $img->text($FlightData["DestinationAirport"], $FontPathRegular, 31, '#B7B7B7', 'top', 278, 263);
+        //DEPARTURE DATE
+        $img->text($FlightData["DepartureDate"], $FontPathRegular, 23.5, '#7a7a7a', 'left', 45, 134);
+        //ARRIVAL DATE
+        $img->text($FlightData["ArrivalDate"], $FontPathRegular, 23.5, '#7a7a7a', 'right', -45, 136);
+        // OPTION
+        $img->text($Option+1, $FontPathRegular, 24, '#FFFFFF', 'top', 310, 65);
+
+        $img->save("./images/result-image-".$Option.".png");
+        $result["url"] = $_SERVER['SERVER_NAME']."/AirlineBotService/public/images/result-image-".$Option.".png";
+        return  $result;
+
+    } catch(Exception $e) {
+        return $result["error"] = $e->getMessage() ;
+    }
+
+}
+}
 

@@ -101,10 +101,15 @@ $message;
 
 					//Send Message
 					$chatfuel = new ChatfuelMessage;
-				   	
+					$Cardimage = new FlightImage;
+
 				   	$index = 0;
 				   	foreach ($response->results as $key => $value) {
+
 					   	 $flightData = $flightSearch->ExtractOutboundData($value);
+					   	 $FlightImage = $Cardimage->GenerateImage($flightData,$index);
+					   	 echo $FlightImage["url"];
+					   	 die();
 					   	 $card[$index] = $chatfuel->FlightDetailsMessage($flightData);	
 					   	 $index++;
 				   	}
