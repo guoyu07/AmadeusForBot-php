@@ -480,9 +480,7 @@ $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
 
         $ImageResultPath = "./images/result-image-".$Option."-".time().".png" ;
         
-        echo "</pre>";
-        print_r($FlightData);
-        echo "<pre>";
+
         $img->save($ImageResultPath);
 
         $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/".$ImageResultPath;   
