@@ -452,7 +452,7 @@ $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
 
     try {
         
-        // Flip the image and output it directly to the browser
+        //Create image
         $img = new SimpleImage($ImagePath);
         //STOPS 
         if ($FlightData["stops"] > 1) {
@@ -475,9 +475,18 @@ $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
         $img->text($FlightData["ArrivalDate"], $FontPathRegular, 23.5, '#7a7a7a', 'right', -45, 136);
         // OPTION
         $img->text($Option+1, $FontPathRegular, 24, '#FFFFFF', 'top', 310, 65);
+        
+        //Once Created set path to be saved 
 
-        $img->save("./images/result-image-".$Option."-".$FlightData['DestinationAirport'].".png");
-        $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/images/result-image-".$Option."-".$FlightData["DestinationAirport"].".png";
+        $ImageResultPath = "./images/result-image-".$Option."-".time().".png" ;
+        
+        echo "</pre>";
+        print_r($FlightData);
+        echo "<pre>";
+        $img->save($ImageResultPath);
+
+        $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/".$ImageResultPath;   
+
         return  $result;
 
     } catch(Exception $e) {
