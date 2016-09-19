@@ -166,7 +166,8 @@ class FlightSearch {
             // echo "<pre>";
             // print_r($result);
             // echo "</pre>";
-            $stops = sizeof($result["itineraries"][0]->outbound->flights);
+            $stops = sizeof($result["itineraries"][0]->outbound->flights) -1;
+
             
             
             // Get data from first item
@@ -180,7 +181,7 @@ class FlightSearch {
             // Get Arrival Date and time 
             // get last item
             
-            $ArrivalDate = $result["itineraries"][0]->outbound->flights[$stops-1]->arrives_at; 
+            $ArrivalDate = $result["itineraries"][0]->outbound->flights[$stops]->arrives_at; 
             
             //format time 
             $date = new DateTime($ArrivalDate);
@@ -195,7 +196,7 @@ class FlightSearch {
            $OriginAirport = $result["itineraries"][0]->outbound->flights[0]->origin->airport;
 
            // Get Destination Airport
-           $DestinationAirport =  $result["itineraries"][0]->outbound->flights[$stops-1]->destination->airport;
+           $DestinationAirport =  $result["itineraries"][0]->outbound->flights[$stops]->destination->airport;
            //get fare 
             $fare = $result["fare"]->total_price;
 
@@ -390,9 +391,9 @@ class ChatfuelMessage {
         $buttons = array ($button);
 
         //create cards
-        $this->SubtitleMessage = "\u2708".$flightDetails['flightNumber']." -- Depart Time: ".$flightDetails['DepartureTime']." | Arrival Time: ".$flightDetails['ArrivalTime']." --".$flightDetails['TravelClass'];
+        $this->SubtitleMessage = "Flight: ".$flightDetails['flightNumber']." -- ".$flightDetails['TravelClass'];
         // Add Fare to the title 
-        $Cardtitle = $Cardtitle." ( $".round($flightDetails['fare']).")";
+        $Cardtitle = $Cardtitle." (USD $".round($flightDetails['fare']).")";
         $this->Card = $this->CardElement($Cardtitle,$flightDetails['ImageUrl'],$this->SubtitleMessage,$buttons); 
         
         return $this->Card;
@@ -459,7 +460,7 @@ class FlightImage {
         if ($FlightData["stops"] > 1) {
         $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);
         }else{
-         $img->text($FlightData["stops"]." stop", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);   
+         $img->text("Direct", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);   
         }
         
         // DEPARTURE TIME
