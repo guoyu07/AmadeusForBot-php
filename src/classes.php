@@ -398,7 +398,7 @@ class ChatfuelMessage {
     }
    
     // Return an array of a Card element
-    public function CardElement($title,$imageUrl,$subtititle,$buttons) {
+    public function CardElement($title,$imageUrl,$subtitle,$buttons) {
         $this->Card = array (
         "title" => $title,
         "image_url" => $imageUrl, 
