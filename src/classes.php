@@ -390,9 +390,9 @@ class ChatfuelMessage {
         $buttons = array ($button);
 
         //create cards
-        $this->SubtitleMessage = $flightDetails['flightNumber']." Depart Time: ".$flightDetails['DepartureTime']." Arrival Time: ".$flightDetails['ArrivalTime']." ".$flightDetails['TravelClass'];
+        $this->SubtitleMessage = $flightDetails['fare']." USD\n".$flightDetails['flightNumber']."\n Depart Time: ".$flightDetails['DepartureTime']."|| Arrival Time: ".$flightDetails['ArrivalTime']."\n".$flightDetails['TravelClass'];
 
-        $this->Card = $this->CardElement($flightDetails['fare']." USD",$flightDetails['ImageUrl'],$this->SubtitleMessage,$buttons); 
+        $this->Card = $this->CardElement("Option: Best Value",$flightDetails['ImageUrl'],$this->SubtitleMessage,$buttons); 
         
         return $this->Card;
     }
@@ -445,9 +445,9 @@ class FlightImage {
 
  public function GenerateImage($FlightData,$Option) {
 
-$ImagePath = './../src/flight-itinerary-template.png';
-$FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
-$FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
+    $ImagePath = './../src/flight-itinerary-template.png';
+    $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
+    $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
 
 
     try {
