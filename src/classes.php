@@ -390,7 +390,7 @@ class ChatfuelMessage {
         $buttons = array ($button);
 
         //create cards
-        $this->SubtitleMessage = $flightDetails['flightNumber']." -- Depart Time: ".$flightDetails['DepartureTime']." | Arrival Time: ".$flightDetails['ArrivalTime']." --".$flightDetails['TravelClass'];
+        $this->SubtitleMessage = "\u2708".$flightDetails['flightNumber']." -- Depart Time: ".$flightDetails['DepartureTime']." | Arrival Time: ".$flightDetails['ArrivalTime']." --".$flightDetails['TravelClass'];
         // Add Fare to the title 
         $Cardtitle = $Cardtitle." ( $".round($flightDetails['fare']).")";
         $this->Card = $this->CardElement($Cardtitle,$flightDetails['ImageUrl'],$this->SubtitleMessage,$buttons); 
