@@ -402,7 +402,6 @@ class ChatfuelMessage {
         $this->Card = array (
         "title" => $title,
         "image_url" => $imageUrl, 
-        "text" => 'hello',
         "subtitle" => $subtititle, 
         "buttons" => $buttons
         );
