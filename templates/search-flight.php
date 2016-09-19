@@ -108,8 +108,7 @@ $message;
 
 					   	 $flightData = $flightSearch->ExtractOutboundData($value);
 					   	 $FlightImage = $Cardimage->GenerateImage($flightData,$index);
-					   	 echo $FlightImage["url"];
-					   	 die();
+					   	 $flightData["ImageUrl"] = $FlightImage["url"];
 					   	 $card[$index] = $chatfuel->FlightDetailsMessage($flightData);	
 					   	 $index++;
 				   	}

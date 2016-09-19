@@ -1,10 +1,8 @@
 <?php
 
-namespace   Src;
-use         Exception;
 
 require_once __DIR__ . '/../src/SimpleImage.php';
-$ImagePath = __DIR__ .'/../src/image-test.png';
+$ImagePath = __DIR__ .'/../src/flight-itinerary.png';
 $FontPathRegular =  __DIR__ .'/fonts/Lato-Regular.ttf';
 $FontPathBold =  __DIR__ .'/fonts/Lato-Bold.ttf';
 
@@ -13,14 +11,14 @@ $FontPathBold =  __DIR__ .'/fonts/Lato-Bold.ttf';
 
 try {
 
-    // Flip the image and output it directly to the browser
+ 
     $img = new SimpleImage($ImagePath);
     //STOPS 
     $img->text('2 stop', $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);
     // DEPARTURE TIME
-    $img->text('2:40pm', $FontPathBold, 40, '#000000', 'left', 45, 10);
+    $img->text('2:40pm', $FontPathBold, 40, '#000000', 'left', 40, 10);
     // ARRIVAL TIME
-    $img->text('11:40pm', $FontPathBold, 40, '#000000', 'top', 202, 186);
+    $img->text('11:40pm', $FontPathBold, 40, '#000000', 'top', 200, 186);
     // DEPART CITY
     $img->text('DEN', $FontPathRegular, 31, '#B7B7B7', 'top', -268, 263);
     //ARRIVAL CITY
@@ -32,7 +30,9 @@ try {
     // OPTION
     $img->text('2', $FontPathRegular, 24, '#FFFFFF', 'top', 303, 63);
 
-    $img->save("./images/result-image.png");
+    return $response;
+
+ 
 } catch(Exception $e) {
     echo '<span style="color: red;">' . $e->getMessage() . '</span>';
 }

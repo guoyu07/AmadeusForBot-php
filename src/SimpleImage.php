@@ -674,7 +674,7 @@ class SimpleImage {
 
         // Output the image
         header('Content-Type: '.$mimetype);
-        echo $imagestring;
+        echo $imagestring  ; 
     }
 
     /**

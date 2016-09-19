@@ -392,7 +392,7 @@ class ChatfuelMessage {
         //create cards
         $this->SubtitleMessage = $flightDetails['flightNumber']." Depart Time: ".$flightDetails['DepartureTime']." Arrival Time: ".$flightDetails['ArrivalTime']." ".$flightDetails['TravelClass'];
 
-        $this->Card = $this->CardElement($flightDetails['fare']." USD",$flightDetails['image_url'],$this->SubtitleMessage,$buttons); 
+        $this->Card = $this->CardElement($flightDetails['fare']." USD",$flightDetails['ImageUrl'],$this->SubtitleMessage,$buttons); 
         
         return $this->Card;
     }
@@ -477,7 +477,7 @@ $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
         $img->text($Option+1, $FontPathRegular, 24, '#FFFFFF', 'top', 310, 65);
 
         $img->save("./images/result-image-".$Option.".png");
-        $result["url"] = $_SERVER['SERVER_NAME']."/AirlineBotService/public/images/result-image-".$Option.".png";
+        $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/images/result-image-".$Option.".png";
         return  $result;
 
     } catch(Exception $e) {
