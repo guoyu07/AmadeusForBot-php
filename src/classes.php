@@ -383,16 +383,17 @@ class ChatfuelMessage {
 
         return $this->Message = array('attachment' => $this->attachment);
     }
-    public function FlightDetailsMessage ($flightDetails) {
+    public function FlightDetailsMessage ($flightDetails, $Cardtitle) {
         
         //create buttons
         $button = $this->ButtonElement("web_url", "http://www.avianca.com", "Select");
         $buttons = array ($button);
 
         //create cards
-        $this->SubtitleMessage = "$".$flightDetails['fare']." USD -- ".$flightDetails['flightNumber']." -- Depart Time: ".$flightDetails['DepartureTime']."Arrival Time: ".$flightDetails['ArrivalTime']." --".$flightDetails['TravelClass'];
-
-        $this->Card = $this->CardElement("Option: Best Value",$flightDetails['ImageUrl'],$this->SubtitleMessage,$buttons); 
+        $this->SubtitleMessage = $flightDetails['flightNumber']." -- Depart Time: ".$flightDetails['DepartureTime']." | Arrival Time: ".$flightDetails['ArrivalTime']." --".$flightDetails['TravelClass'];
+        // Add Fare to the title 
+        $Cardtitle = $Cardtitle." ( $".round($flightDetails['fare']).")";
+        $this->Card = $this->CardElement($Cardtitle,$flightDetails['ImageUrl'],$this->SubtitleMessage,$buttons); 
         
         return $this->Card;
     }

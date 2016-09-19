@@ -17,6 +17,12 @@ $message;
             "1" => "destination",
             "2" => "departure_date"
  	); 
+ 	$CardTitleOptions = array(
+            "0" => "Option 1 : Best Value",
+            "1" => "Option 2 : Cheapest",
+            "2" => "Option 3 : Shortest"
+ 	); 
+
 	$helper = new ValidationHelper; 
 	$errors = $helper->ValidateArrayFields($FieldsToValidate, $search); 
 	if ($errors) {
@@ -109,7 +115,7 @@ $message;
 					   	 $flightData = $flightSearch->ExtractOutboundData($value);
 					   	 $FlightImage = $Cardimage->GenerateImage($flightData,$index);
 					   	 $flightData["ImageUrl"] = $FlightImage["url"];
-					   	 $card[$index] = $chatfuel->FlightDetailsMessage($flightData);	
+					   	 $card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
 					   	 $index++;
 				   	}
 					$cardsArray = array_merge_recursive($card);			   	
