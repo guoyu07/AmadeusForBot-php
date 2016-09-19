@@ -476,8 +476,8 @@ $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
         // OPTION
         $img->text($Option+1, $FontPathRegular, 24, '#FFFFFF', 'top', 310, 65);
 
-        $img->save("./images/result-image-".$Option.".png");
-        $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/images/result-image-".$Option.".png";
+        $img->save("./images/result-image-".$Option."-".$FlightData['DestinationAirport'].".png");
+        $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/images/result-image-".$Option."-".$FlightData["DestinationAirport"].".png";
         return  $result;
 
     } catch(Exception $e) {
