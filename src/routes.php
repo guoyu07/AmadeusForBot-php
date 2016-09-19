@@ -1,6 +1,6 @@
 <?php
 // Routes
-require_once __DIR__ . '/../src/SimpleImage.php';
+
 $app->get('/flight/{search}', function ($request, $response, $args) {
     // Log Query
     $args["search"] = $request->getQueryParams();
