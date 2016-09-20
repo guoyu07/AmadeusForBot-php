@@ -13,12 +13,12 @@ $app->get('/flight/{search}', function ($request, $response, $args) {
 });
 
 
-$app->get('/test/{text}', function ($request, $response, $args) {
+$app->get('/test/{text}/{city}/{date}/', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Slim-Skeleton '/' route");
-   phpinfo();
+   
    // Pass the query string to the "controler variable"
-   //return $this->renderer->render($response, 'chatfuel-test.php', $args);
+   return $this->renderer->render($response, 'test.php', $args);
 });
 
 // Flight status end point 
