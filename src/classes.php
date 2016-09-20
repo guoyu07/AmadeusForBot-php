@@ -379,6 +379,8 @@ class ChatfuelMessage {
     private $Card;
     private $ButtonElement;
     private $SubtitleMessage; 
+    private $imageAttachment;
+
 
     public function TextMessage($message)
     {
@@ -387,6 +389,20 @@ class ChatfuelMessage {
         return $this->TextMessage;
        } else {
         return $message = "empty parameter";
+       }
+
+    }
+
+    public function ImageAttachment($imageUrl)
+    {
+    
+       if ($imageUrl) {
+        $this->PayloadArray = array("url" => $imageUrl); 
+        $this->Attachment = array("type" => "image" , "payload" => $this->PayloadArray); 
+        $this->imageAttachment = array("attachment" => $this->Attachment);
+        return $this->imageAttachment;
+       } else {
+        return $message = array("error" => "empty image url parameter");
        }
 
     }
