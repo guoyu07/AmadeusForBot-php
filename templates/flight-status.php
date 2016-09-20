@@ -22,7 +22,7 @@ $flightData["ImageUrl"] = $FlightImage["url"];
 //prepare message
 
 $buttons = $chatfuel->ButtonElement("web_url", "http://eldorado2016.wpengine.com/en/about/maps/", "Go to Gate");
-$card = $chatfuel->CardElement("Departing in 20 minutes",$flightData["ImageUrl"],"",$buttons);
+$card = $chatfuel->CardElement("Departing in 20 minutes",$flightData["ImageUrl"],"hola",$buttons);
 $message = $chatfuel->GalleryMessage($card);
 // $message = $chatfuel->ImageAttachment($flightData["ImageUrl"]);
 
