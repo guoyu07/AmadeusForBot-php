@@ -384,7 +384,7 @@ class ChatfuelMessage {
     {
        if ($message) {
         $this->TextMessage['text'] = $message; 
-        return $this->ChatfuelTextMessage;
+        return $this->TextMessage;
        } else {
         return $message = "empty parameter";
        }
