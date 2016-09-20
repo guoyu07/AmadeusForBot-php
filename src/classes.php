@@ -581,6 +581,8 @@ class FlightImage {
         
         //Create image
         $img = new SimpleImage($ImagePath);
+
+        
         //STOPS 
         // if ($FlightData["stops"] > 1) {
         // $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);

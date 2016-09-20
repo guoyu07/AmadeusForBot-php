@@ -9,24 +9,21 @@ $helper = new ValidationHelper;
 $flightStatusImage = new FlightImage;
 
 
-//------
+
 $flightData = array();
-$FlightImage = $flightStatusImage->GenerateFlightStatusImage($flightData);
-$flightData["ImageUrl"] = $FlightImage["url"];
 
-
-
-
-
-
-
-//-------
-
-$message = $chatfuel->ImageAttachment($flightData["ImageUrl"]);
+// Get data
 
 $flight_number = $helper->ExtractNumbers($flight_number);
-
 $flight = $flight->SearchFlight($flight_number,$type);
+// create image
+$FlightImage = $flightStatusImage->GenerateFlightStatusImage($flight);
+$flightData["ImageUrl"] = $FlightImage["url"];
+//prepare message
+$card = $chatfuel->CardElement("Departing in 20 minutes",$flightData["ImageUrl"],"","");
+$message = $chatfuel->GalleryMessage($card);
+// $message = $chatfuel->ImageAttachment($flightData["ImageUrl"]);
+
 
 
 
