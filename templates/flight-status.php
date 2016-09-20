@@ -5,8 +5,26 @@ require_once __DIR__ . '/../src/classes.php';
 
 $flight = new FlightStatus; 
 $chatfuel = new ChatfuelMessage;
+$helper = new ValidationHelper;
+$flightStatusImage = new FlightImage;
 
-$message = $chatfuel->ImageAttachment("https://hd.unsplash.com/photo-1470229722913-7c0e2dbbafd3");
+
+//------
+$flightData = array();
+$FlightImage = $flightStatusImage->GenerateFlightStatusImage($flightData);
+$flightData["ImageUrl"] = $FlightImage["url"];
+
+
+
+
+
+
+
+//-------
+
+$message = $chatfuel->ImageAttachment($flightData["ImageUrl"]);
+
+$flight_number = $helper->ExtractNumbers($flight_number);
 
 $flight = $flight->SearchFlight($flight_number,$type);
 

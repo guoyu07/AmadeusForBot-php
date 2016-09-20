@@ -355,6 +355,16 @@ class ValidationHelper {
         }
         
     }
+
+    public function ExtractNumbers($string) {
+        if (isset($string)) {
+         $numbers = intval(preg_replace('/[^0-9]+/', '', $string), 10);
+         return $numbers;
+        } else {
+            return $error = array("error" => "String parameter not set to extract numbers");
+        }
+
+    }
 }
 
 /**
@@ -395,7 +405,7 @@ class ChatfuelMessage {
 
     public function ImageAttachment($imageUrl)
     {
-    
+
        if ($imageUrl) {
         $this->PayloadArray = array("url" => $imageUrl); 
         $this->Attachment = array("type" => "image" , "payload" => $this->PayloadArray); 
@@ -509,7 +519,8 @@ class FlightImage {
 
 
 
- public function GenerateImage($FlightData,$Option) {
+ public function GenerateImage($FlightData,$Option) 
+ {
 
     $ImagePath = './../src/flight-itinerary-template.png';
     $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
@@ -557,6 +568,57 @@ class FlightImage {
         return $result["error"] = $e->getMessage() ;
     }
 
-}
+ }
+  public function GenerateFlightStatusImage($FlightData) 
+ {
+
+    $ImagePath = './../src/flight-status-template.png';
+    $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
+    $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
+
+
+    try {
+        
+        //Create image
+        $img = new SimpleImage($ImagePath);
+        //STOPS 
+        // if ($FlightData["stops"] > 1) {
+        // $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);
+        // }else{
+        //  $img->text("Direct", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);   
+        // }
+        
+        // // DEPARTURE TIME
+        // $img->text($FlightData["DepartureTime"], $FontPathBold, 40, '#000000', 'left', 38, 10);
+        // // ARRIVAL TIME
+        // $img->text($FlightData["ArrivalTime"], $FontPathBold, 40, '#000000', 'right', -40, 10);
+        // // DEPART CITY
+        // $img->text($FlightData["OriginAirport"], $FontPathRegular, 31, '#B7B7B7', 'top', -274, 263);
+        // //ARRIVAL CITY
+        // $img->text($FlightData["DestinationAirport"], $FontPathRegular, 31, '#B7B7B7', 'top', 278, 263);
+        // //DEPARTURE DATE
+        // $img->text($FlightData["DepartureDate"], $FontPathRegular, 23.5, '#7a7a7a', 'left', 45, 134);
+        // //ARRIVAL DATE
+        // $img->text($FlightData["ArrivalDate"], $FontPathRegular, 23.5, '#7a7a7a', 'right', -45, 136);
+        // // OPTION
+        // $img->text($Option+1, $FontPathRegular, 24, '#FFFFFF', 'top', 310, 65);
+        
+        //Once Created set path to be saved 
+
+        $ImageResultPath = "./images/result-image-".time().".png" ;
+        
+
+        $img->save($ImageResultPath);
+
+        $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/".$ImageResultPath;   
+
+        return  $result;
+
+    } catch(Exception $e) {
+        return $result["error"] = $e->getMessage() ;
+    }
+
+ }
+
 }
 
