@@ -13,7 +13,7 @@ $flightStatusImage = new FlightImage;
 $flightData = array();
 
 // Get data
-
+$type = strtolower($type);
 $flight_number = $helper->ExtractNumbers($flight_number);
 $flight = $flight->SearchFlight($flight_number,$type);
 // create image

@@ -514,8 +514,6 @@ class ChatfuelMessage {
 class FlightImage {
 
 
-// $FontPathRegular =  __DIR__ . '/../template/fonts/Lato-Regular.ttf';
-// $FontPathBold = __DIR__ . '/../template/fonts/Lato-Bold.ttf';
 
 
 
@@ -575,6 +573,7 @@ class FlightImage {
     $ImagePath = './../src/flight-status-template.png';
     $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
     $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
+    $FontPathLight =  './../templates/fonts/Lato-Light.ttf';
 
 
     try {
@@ -582,32 +581,40 @@ class FlightImage {
         //Create image
         $img = new SimpleImage($ImagePath);
 
+
+
         
-        //STOPS 
-        // if ($FlightData["stops"] > 1) {
-        // $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);
-        // }else{
-        //  $img->text("Direct", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);   
-        // }
+       
         
-        // // DEPARTURE TIME
-        // $img->text($FlightData["DepartureTime"], $FontPathBold, 40, '#000000', 'left', 38, 10);
-        // // ARRIVAL TIME
-        // $img->text($FlightData["ArrivalTime"], $FontPathBold, 40, '#000000', 'right', -40, 10);
-        // // DEPART CITY
-        // $img->text($FlightData["OriginAirport"], $FontPathRegular, 31, '#B7B7B7', 'top', -274, 263);
-        // //ARRIVAL CITY
-        // $img->text($FlightData["DestinationAirport"], $FontPathRegular, 31, '#B7B7B7', 'top', 278, 263);
-        // //DEPARTURE DATE
-        // $img->text($FlightData["DepartureDate"], $FontPathRegular, 23.5, '#7a7a7a', 'left', 45, 134);
-        // //ARRIVAL DATE
-        // $img->text($FlightData["ArrivalDate"], $FontPathRegular, 23.5, '#7a7a7a', 'right', -45, 136);
-        // // OPTION
-        // $img->text($Option+1, $FontPathRegular, 24, '#FFFFFF', 'top', 310, 65);
+        //Status
+        $img->text(strtoupper($FlightData->{'status-en'}), $FontPathBold, 30, '#107715', 'top', 218, 85);
+        // Flight Departs Arrives
+        $img->text("Flight", $FontPathRegular, 20, '#a9a9a9', 'top', -293, 170);
+        $img->text("Departs", $FontPathRegular, 20, '#a9a9a9', 'top', -34, 170);
+        $img->text("Arrives", $FontPathRegular, 20, '#a9a9a9', 'top', 185, 175);
+        // Flight Number 
+        $img->text($FlightData->airline_code.$FlightData->flight_number, $FontPathRegular, 24, '#000000', 'top', -267, 212);
+        // Time 1
+        $FlightData->schedule_time = date('g:i a', strtotime($FlightData->schedule_time));   
+        $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'top', -25, 205);
+
+        //Time 2 
+        $FlightData->estimated_time = date('g:i a', strtotime($FlightData->estimated_time));   
+        $img->text($FlightData->estimated_time, $FontPathRegular, 24, '#000000', 'top', 198, 212);
+
+        //City 1 Bogota Upper
+        $img->text("Bogotá", $FontPathRegular, 22, '#a9a9a9', 'top', -282, 267);
+        // City 2  Upper
+        $img->text($FlightData->location, $FontPathRegular, 22, '#a9a9a9', 'top', 195, 269);
+
+        //City 1 Bogota Big
+        $img->text("BOG", $FontPathLight, 62, '#ec1f27', 'top', -249, 305);
+        // City 2  BIG
+        $img->text($FlightData->airport, $FontPathLight, 62, '#ec1f27', 'top', 200, 307);
         
         //Once Created set path to be saved 
 
-        $ImageResultPath = "./images/result-image-".time().".png" ;
+        $ImageResultPath = "./images/result-image-status".time().".png" ;
         
 
         $img->save($ImageResultPath);
