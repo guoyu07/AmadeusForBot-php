@@ -20,7 +20,9 @@ $flight = $flight->SearchFlight($flight_number,$type);
 $FlightImage = $flightStatusImage->GenerateFlightStatusImage($flight);
 $flightData["ImageUrl"] = $FlightImage["url"];
 //prepare message
-$card = $chatfuel->CardElement("Departing in 20 minutes",$flightData["ImageUrl"],"","");
+
+$buttons = $chatfuel->ButtonElement("web_url", "http://eldorado2016.wpengine.com/en/about/maps/", "Go to Gate");
+$card = $chatfuel->CardElement("Departing in 20 minutes",$flightData["ImageUrl"],"",$buttons);
 $message = $chatfuel->GalleryMessage($card);
 // $message = $chatfuel->ImageAttachment($flightData["ImageUrl"]);
 
