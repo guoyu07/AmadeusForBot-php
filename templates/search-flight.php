@@ -105,21 +105,58 @@ $message;
 				 	$flightSearch = new FlightSearch; 
 					$response = $flightSearch->BestMatch($search);
 
-					//Send Message
+					//
 					$chatfuel = new ChatfuelMessage;
 					$Cardimage = new FlightImage;
-
 				   	$index = 0;
-				   	foreach ($response->results as $key => $value) {
 
-					   	 $flightData = $flightSearch->ExtractOutboundData($value);
-					   	 $FlightImage = $Cardimage->GenerateImage($flightData,$index);
-					   	 $flightData["ImageUrl"] = $FlightImage["url"];
-					   	 $card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
-					   	 $index++;
+
+				   	// Prepare response for message 
+				   	// Some times a single fare can apply to 2 itineraries. like this:
+				   	// ||Results 
+				   	// 	->fare
+				   	//  	->option 1
+				   	//  	->option 2
+				   	//	->fare
+				   	//	  	->option 3
+				   	//
+				   	// message should contain the fare + the flight data.
+
+				   	foreach ($response->results as $key => $value) {
+		   		        
+				   		//get the fare 
+				   		$fare  = $value->fare->total_price;
+				   		
+				   		// extract the outbound data ocording to the case
+				   		// case single fare for multiple flights
+				   		if (sizeof($value->itineraries) > 1 ) {
+				   			foreach ($value->itineraries as $key => $value) {
+
+					   		    $flightData = $flightSearch->ExtractOutboundData($value->outbound, $fare);
+						   	    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
+						   	    $flightData["ImageUrl"] = $FlightImage["url"];
+						   	 	$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
+						   	 	$index++;
+				   			}
+				   		// case single fare single flight
+				   		}else {
+				   			//extract data
+	
+				   			$flightData = $flightSearch->ExtractOutboundData($value->itineraries[0]->outbound, $fare);
+					   	    // generate image
+					   	    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
+					   	    $flightData["ImageUrl"] = $FlightImage["url"];
+					   	 	// Create the message
+					   	 	$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
+					   	 	$index++;
+				   		}
+				   		
+				   		
 				   	}
+				    
+					//create gallery
 					$cardsArray = array_merge_recursive($card);			   	
-				   	$message = $chatfuel->GalleryMessage($cardsArray);
+				    $message = $chatfuel->GalleryMessage($cardsArray);
 
 				   	//send Message
 				   	
@@ -129,38 +166,81 @@ $message;
 				 }
 			} 	
 		} else {
-			//All Ok, Do search in Amadeus
+			$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate["date"]);
+				 if (!$DateIsCorrect){
+				 	// Next: Send Message there was an error
+				 	$message ['error'] = "Departure date must be later than actual date";
+					header("Content-Type: application/json");
+					echo json_encode($message,JSON_UNESCAPED_UNICODE);
+				 } else {
 			
-			$search['departure_date'] = $DepartureDate["date"];
-			// Return Results
-		 	// Return Results
-				 	$flightSearch = new FlightSearch; 
+					$search['departure_date'] = $DepartureDate["date"];
+			
+		 			//All Ok, Do search in Amadeus
+
+			 		// Return Results
+			 		$flightSearch = new FlightSearch; 
 					$response = $flightSearch->BestMatch($search);
+
 
 					//Send Message
 					$chatfuel = new ChatfuelMessage;
-				   	
-				   	
+					$Cardimage = new FlightImage;
+				   	$index = 0;
+				   		// Prepare response for message 
+				   	// Some times a single fare can apply to 2 itineraries. like this:
+				   	// ||Results 
+				   	// 	->fare
+				   	//  	->option 1
+				   	//  	->option 2
+				   	//	->fare
+				   	//	  	->option 3
+				   	//
+				   	// message should contain the fare + the flight data.
+
 				   	foreach ($response->results as $key => $value) {
-					   	 $flightData = $flightSearch->ExtractOutboundData ($value);
-					   	
-					   	 $card = $chatfuel->FlightDetailsMessage($flightData);
+		   		        
+				   		//get the fare 
+				   		$fare  = $value->fare->total_price;
+				   		
+				   		// extract the outbound data ocording to the case
+				   		// case single fare for multiple flights
+				   		if (sizeof($value->itineraries) > 1 ) {
+				   			foreach ($value->itineraries as $key => $value) {
 
-					   	 if (empty($cardsArray)){
-					   	 	
-					   	 	$cardsArray = $card;
-					   	 } else {
-					   	 	$cardsArray = $cardsArray + $card;
-
-					   	 }  	 
+					   		    $flightData = $flightSearch->ExtractOutboundData($value->outbound, $fare);
+						   	    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
+						   	    $flightData["ImageUrl"] = $FlightImage["url"];
+						   	 	$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
+						   	 	$index++;
+				   			}
+				   		// case single fare single flight
+				   		}else {
+				   			//extract data
+	
+				   			$flightData = $flightSearch->ExtractOutboundData($value->itineraries[0]->outbound, $fare);
+					   	    // generate image
+					   	    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
+					   	    $flightData["ImageUrl"] = $FlightImage["url"];
+					   	 	// Create the message
+					   	 	$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
+					   	 	$index++;
+				   		}
+				   		
+				   		
 				   	}
-				   	
-				   	$message = $chatfuel->GalleryMessage($cardsArray);
+				    
+					//create gallery
+					$cardsArray = array_merge_recursive($card);			   	
+				    $message = $chatfuel->GalleryMessage($cardsArray);
 
-				 //   	//send Message
+				   	//send Message
+				   	
 					header("Content-Type: application/json");
 				   	echo json_encode($message,JSON_UNESCAPED_UNICODE);
+				}
 
-		}
+
+			}
 		}
 	}

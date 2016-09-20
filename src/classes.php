@@ -157,22 +157,19 @@ class FlightSearch {
 
     
     // Note: optimize class create a helpers for flight number , date and time.
-    public function ExtractOutboundData ($result) {
+    public function ExtractOutboundData ($result, $fare) {
 
         $this->FlightData = array(); 
-        $result= (array)$result;
+        
         if ($result) {
-           //count number of stops 
-            // echo "<pre>";
-            // print_r($result);
-            // echo "</pre>";
-            $stops = sizeof($result["itineraries"][0]->outbound->flights) -1;
 
-            
-            
-            // Get data from first item
+
+           //count number of stops 
+            $stops = sizeof($result->flights) -1;
+
+           
             // Get Departure Date and Time
-            $DepartureDate = $result["itineraries"][0]->outbound->flights[0]->departs_at; 
+            $DepartureDate = $result->flights[0]->departs_at; 
             //format time 
             $date = new DateTime($DepartureDate);
             $DepartureDate = $date->format('M d, Y');
@@ -181,7 +178,7 @@ class FlightSearch {
             // Get Arrival Date and time 
             // get last item
             
-            $ArrivalDate = $result["itineraries"][0]->outbound->flights[$stops]->arrives_at; 
+            $ArrivalDate = $result->flights[$stops]->arrives_at; 
             
             //format time 
             $date = new DateTime($ArrivalDate);
@@ -190,18 +187,17 @@ class FlightSearch {
            
 
            //get flight number of first flight
-            $flightNumber = $result["itineraries"][0]->outbound->flights[0]->operating_airline." ".$result["itineraries"][0]->outbound->flights[0]->flight_number;
+            $flightNumber = $result->flights[0]->operating_airline." ".$result->flights[0]->flight_number;
 
            //Get origin Airport 
-           $OriginAirport = $result["itineraries"][0]->outbound->flights[0]->origin->airport;
+           $OriginAirport = $result->flights[0]->origin->airport;
 
            // Get Destination Airport
-           $DestinationAirport =  $result["itineraries"][0]->outbound->flights[$stops]->destination->airport;
-           //get fare 
-            $fare = $result["fare"]->total_price;
+           $DestinationAirport =  $result->flights[$stops]->destination->airport;
+           
 
            // Get Class 
-            $TravelClass = $result["itineraries"][0]->outbound->flights[0]->booking_info->travel_class;
+            $TravelClass = $result->flights[0]->booking_info->travel_class;
 
 
          
