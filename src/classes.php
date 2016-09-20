@@ -222,6 +222,57 @@ class FlightSearch {
     }
 
 } 
+/**
+*  El dorado  Flight Status.
+*  Use: El dorado json flight status,  UniRest
+*  http://eldorado.aero/wp-content/themes/hostmev2-child/js/flight_status.json
+*  
+*  Methods: 
+*   -GetFlightStatus : Returns (array) the data and status of a flight  .
+*   -SearchFlight : Search in the json array the flight data.
+*   -ExtractflightData: Returns (array) the data associated with the card.
+*/
+
+class FlightStatus {
+
+public function SearchFlight($FlightNumber, $flightType)
+{
+    $headers = array('Accept' => 'application/json');
+    // set up uri    
+    $results = Unirest\Request::get("http://eldorado.aero/wp-content/themes/hostmev2-child/js/flight_status.json",$headers);
+        if ($results->code == 200 && isset($flightType)) {
+            $flightsAvailable = $results->body;
+            echo "<pre>";
+            print_r($flightsAvailable);
+            echo "</pre>";
+            switch ($flightType) {
+                case 'departure':
+
+                    foreach ($flightsAvailable->departures as $key => $value) {
+                        if ($value->flight_number == $FlightNumber) {
+                            return $value;
+                        } else {
+                            return  $error = array("error"=>"Sorry, flight not found");
+                        }
+                    }
+                    break;
+                
+                case 'arrival':
+                    $flightsAvailable = $results->body;
+                    foreach ($flightsAvailable->arrivals as $key => $value) {
+                        if ($value->flight_number == $FlightNumber) {
+                            return $value;
+                        } else {
+                            return  $error = array("error"=>"Sorry, flight not found");
+                        }
+                    }
+                    break;
+            }
+        }
+}
+
+}
+
 
 /**
 *  Validation Helper / Processing
