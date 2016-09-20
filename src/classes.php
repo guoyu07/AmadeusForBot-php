@@ -245,25 +245,28 @@ public function SearchFlight($FlightNumber, $flightType)
             $flightsAvailable = $results->body;
             switch ($flightType) {
                 case 'departure':
-
                     foreach ($flightsAvailable->departures as $key => $value) {
                         if ($value->flight_number == $FlightNumber) {
                             return $value;
-                        } else {
-                            return  $error = array("error"=>"Sorry, flight not found");
-                        }
+                        } 
                     }
+                    //flight not found
+                    return  $error = array("error"=>"Sorry, flight not found");
                     break;
                 
                 case 'arrival':
                     $flightsAvailable = $results->body;
-                    foreach ($flightsAvailable->arrivals as $key => $value) {
-                        if ($value->flight_number == $FlightNumber) {
+                  
+                    $list = $flightsAvailable->arrivals;
+   
+                    foreach($list as $value) {
+                        
+                        if ($value->flight_number == $FlightNumber) { 
                             return $value;
-                        } else {
-                            return  $error = array("error"=>"Sorry, flight not found");
-                        }
+                        }   
                     }
+                    // Flight not found
+                    return  $error = array("error"=>"Sorry, flight not found");
                     break;
             }
         }
