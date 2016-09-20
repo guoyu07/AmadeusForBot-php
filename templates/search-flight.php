@@ -4,9 +4,6 @@
 require_once __DIR__ . '/../src/classes.php';
 
 
-// echo "<pre>";
-// print_r($search);
-// echo "</pre>";
 
 // message to json to bot
 $message;

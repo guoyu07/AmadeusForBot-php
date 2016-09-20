@@ -356,14 +356,51 @@ class ValidationHelper {
         
     }
 
-    public function ExtractNumbers($string) {
+    public function ExtractFlightNumbers($string) {
         if (isset($string)) {
-         $numbers = intval(preg_replace('/[^0-9]+/', '', $string), 10);
-         return $numbers;
+
+            if (strlen($string) > 5 ) {
+             $numbers = substr($string, 2);
+             
+             $re = "/[a-zA-Z]+/";
+             preg_match($re, $numbers, $matches);
+             if (!empty($matches)){
+                $error = array('error' => 'Incorrect flight Number' );
+                return $error; 
+             } else {
+                return $numbers;
+             }
+            } elseif (strlen($string) <= 5) {
+                // check if there is any string example case: AV 11
+                $re = "/[a-zA-Z]+/"; 
+
+                $var = preg_match($re, $string, $output_array,PREG_OFFSET_CAPTURE);
+           
+                 if (!empty($output_array)) {
+                 // get the last two character
+
+                    $numbers = substr($string, -2);
+
+                    preg_match($re, $numbers, $wrongNumber);
+                    //if there is some letters in the array 
+                    if (!empty($wrongNumber)) {
+                        $error = array('error' => 'Incorrect flight Number' );
+                        return $error; 
+                    } else {
+                        //return flight number 
+                        return $numbers;
+                    }
+                } else {
+                   //return flight number
+                   return $string;
+                } 
+            } else {
+                $error = array('error' => 'Incorrect flight Number' );
+                return $error; 
+            }
         } else {
             return $error = array("error" => "String parameter not set to extract numbers");
         }
-
     }
 }
 
@@ -581,11 +618,6 @@ class FlightImage {
         //Create image
         $img = new SimpleImage($ImagePath);
 
-
-
-        
-       
-        
         //Status
         $img->text(strtoupper($FlightData->{'status-en'}), $FontPathBold, 30, '#107715', 'top', 218, 85);
         // Flight Departs Arrives
@@ -593,14 +625,14 @@ class FlightImage {
         $img->text("Departs", $FontPathRegular, 20, '#a9a9a9', 'top', -34, 170);
         $img->text("Arrives", $FontPathRegular, 20, '#a9a9a9', 'top', 185, 175);
         // Flight Number 
-        $img->text($FlightData->airline_code.$FlightData->flight_number, $FontPathRegular, 24, '#000000', 'top', -267, 212);
+        $img->text($FlightData->airline_code.$FlightData->flight_number, $FontPathRegular, 24, '#000000', 'left', 30, 25);
         // Time 1
         $FlightData->schedule_time = date('g:i a', strtotime($FlightData->schedule_time));   
-        $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'top', -25, 205);
+        $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'center', -18, 22);
 
         //Time 2 
         $FlightData->estimated_time = date('g:i a', strtotime($FlightData->estimated_time));   
-        $img->text($FlightData->estimated_time, $FontPathRegular, 24, '#000000', 'top', 198, 212);
+        $img->text($FlightData->estimated_time, $FontPathRegular, 24, '#000000', 'right', -104, 20);
 
         //City 1 Bogota Upper
         $img->text("Bogotá", $FontPathRegular, 22, '#a9a9a9', 'top', -282, 267);
@@ -608,13 +640,15 @@ class FlightImage {
         $img->text($FlightData->location, $FontPathRegular, 22, '#a9a9a9', 'top', 195, 269);
 
         //City 1 Bogota Big
-        $img->text("BOG", $FontPathLight, 62, '#ec1f27', 'top', -249, 305);
+        $img->text("BOG", $FontPathLight, 62, '#ec1f27', 'left', 22, 140);
         // City 2  BIG
-        $img->text($FlightData->airport, $FontPathLight, 62, '#ec1f27', 'top', 200, 307);
+        $img->text($FlightData->airport, $FontPathLight, 62, '#ec1f27', 'right', -85, 140);
         
         //Once Created set path to be saved 
 
         $ImageResultPath = "./images/result-image-status".time().".png" ;
+        // test path.
+        //$ImageResultPath = "./images/result-image-status.png" ;
         
 
         $img->save($ImageResultPath);
