@@ -237,14 +237,12 @@ class FlightStatus {
 
 public function SearchFlight($FlightNumber, $flightType)
 {
+    
     $headers = array('Accept' => 'application/json');
     // set up uri    
     $results = Unirest\Request::get("http://eldorado.aero/wp-content/themes/hostmev2-child/js/flight_status.json",$headers);
         if ($results->code == 200 && isset($flightType)) {
             $flightsAvailable = $results->body;
-            echo "<pre>";
-            print_r($flightsAvailable);
-            echo "</pre>";
             switch ($flightType) {
                 case 'departure':
 
