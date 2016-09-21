@@ -2,7 +2,7 @@
 $CssPath = 'http://107.20.75.175/AirlineBotService/public/css/';
 $imagesPath = 'http://107.20.75.175/AirlineBotService/public/check-out-images/';
 $localHost = 'http://localhost/bot/public/';
-$AwsHost = 'http://107.20.75.175/AirlineBotService/public/';
+$AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
 ?>
 
 <!DOCTYPE html>
@@ -119,7 +119,7 @@ $AwsHost = 'http://107.20.75.175/AirlineBotService/public/';
             </div>
             </p>
             <p class="small-text">Protect your travel investment with valuable Allianz Travel Insurance. Trip protection includes coverage if you cancel or interrupt your trip for reasons like covered illness, injury, layoff, and more.</p><br>
-            <a type="button" class="btn btn-default bt-lg" href="<?php echo $localHost ?>confirmation">Enter Payment Info</a>
+            <a type="button" class="btn btn-default bt-lg" href="<?php echo $AwsHost ?>confirmation">Enter Payment Info</a>
       </div>
 
       <footer>

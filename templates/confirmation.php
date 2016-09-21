@@ -2,7 +2,7 @@
 $CssPath = 'http://107.20.75.175/AirlineBotService/public/css/';
 $imagesPath = 'http://107.20.75.175/AirlineBotService/public/check-out-images/';
 $localHost = 'http://localhost/bot/public/';
-$AwsHost = 'http://107.20.75.175/AirlineBotService/public/';
+$AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
 
 ?>
 
