@@ -19,6 +19,19 @@ $message;
             "1" => "Option 2 : Cheapest",
             "2" => "Option 3 : Shortest"
  	); 
+ 	//parse query 
+ 	$search = array(
+ 		'origin' => $origin,
+ 		'destination' => $destination,
+ 		'departure_date' => $departure_date,
+ 		'return_date' => $return_date,
+ 		'adults' => $adults, 
+ 		'currency' => $currency,
+ 		'include_airlines' => $airline,
+ 		'number_of_results' => $limit,
+ 		'name' => $name,
+ 		'last_name' => $last_name
+ 		);
 
 	$helper = new ValidationHelper; 
 	$errors = $helper->ValidateArrayFields($FieldsToValidate, $search); 

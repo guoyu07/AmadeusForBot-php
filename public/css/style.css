@@ -1,0 +1,226 @@
+/*!
+ * Start Bootstrap - 1 Col Portfolio (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+body {
+    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+	background-color: #efefef;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+}
+.navbar-inverse {
+    background-color: #db0809;
+    border-color: #db0809;
+}
+.navbar-brand {
+    padding: 7px 0px 5px;
+}
+.navbar-inverse .navbar-toggle, .navbar-inverse .navbar-toggle {
+    border: 0px;
+}
+.navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover {
+    background-color: #c51118;
+}
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    border-color: #c51118;
+}
+/*Header*/
+.page-header {
+    padding-bottom: 0px;
+    margin: 40px 0 0px;
+    border-bottom: 0px solid #eee;
+}
+/*Content*/
+h1, h2{
+	font-size: 30px;
+}
+h3 {
+    font-size: 18px;
+    margin: 0px -20px;
+    border-bottom: 1px solid #e1e1e1;
+    padding: 0px 20px 15px;
+    font-weight: bold;
+}
+.total{
+    margin: 5px -20px;
+    padding: 10px 5px
+}
+.divider {
+    border-bottom: 1px solid #e1e1e1;
+    margin: 5px -20px;
+    padding: 10px 5px;
+}
+.marginnormal{
+	margin: 0px -20px;
+}
+.boxed {
+    border-bottom: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+    padding: 10px;
+}
+.borderless{
+	border-right: 0px;
+}
+.border-updown{
+	border-bottom: 1px solid #e1e1e1;
+	border-top: 1px solid #e1e1e1;
+	padding: 15px 0px;
+}
+.radio-text {
+    position: relative;
+    padding-left: 25px;
+    display: block;
+}
+.radio-text input[type="radio"] {
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    top: -3px;
+    left: 0px;
+}
+.btn img {
+    width: 25px;
+    margin-right: 5px;
+}
+.inner-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
+    margin: 10px auto;
+}
+.red{
+	color: #db0809;
+}
+a.red, a.red:active{
+	color: #db0809;
+}
+a.red:hover{
+	color: #99040a;
+}
+.bold{
+	font-weight: bold;
+}
+.stops, .stops:hover, .stops:active {
+    color: gray!important;
+}
+.small-text{
+ font-size: 14px;
+}
+.btn.btn-default.bt-lg {
+    background: #333;
+    color: #fff;
+    padding: 15px 25px;
+    float: right;
+    font-size: 16px;
+    margin: 0px 0px 10px 10px;
+}
+.well {
+    border: 0px;
+    box-shadow: 0px 0px 0px 0px;
+    background: transparent;
+}
+.padding40{
+	padding: 40px;
+}
+.traveller{
+	padding: 0px 20px;
+}
+/*Sidebar*/
+
+.sidebar {
+  width: 30%;
+  margin-left: 3.3333%;
+}
+.passport {
+    float: right;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: -36px;
+}
+.passport img {
+    width: 40px;
+    margin-top: -5px;
+}
+/*Footer*/
+footer {
+    margin: 10px 0;
+    font-size: 12px;
+}
+.spacer10{
+	margin-top: 10px;
+}
+.pets {
+    	border-bottom: 0px;
+	}
+@media (min-width: 992px) {
+	.gender{
+		border-bottom: 0px;
+	}
+}
+@media (max-width: 991px) {
+	h1, h2{
+		font-size: 30px;
+	}
+	.sidebar, .inner-content, .row {
+	    width: inherit;
+	    margin-bottom: 20px;
+	}
+	.btn.btn-default.bt-lg {
+		width: 100%;
+	}
+	.navbar-brand {
+    	margin-left: 5px!important;
+	}
+	.header{
+		margin-bottom: 0px;
+	}
+	.borderless-resp{
+		border-right: 0px;
+	}
+	.divider, .total {
+    	margin: 5px -20px!important;
+	}
+}
+@media (max-width: 769px) {
+	.row {
+	    margin: 10px;
+	}
+	.marginnormal{
+		margin: 0px -20px;
+	}
+	.spacer10{
+		margin-top: 0px;
+	}
+	h1, h2{
+		font-size: 25px;
+	}
+	.navbar-brand {
+    	margin-left: 20px!important;
+	}
+	.passport {
+    	font-size: 16px;
+	}
+	.passport img {
+	    width: 30px;
+	}
+}
+@media (max-width: 480px) {
+	.passport {
+		font-size: 14px;
+		margin-top: -30px;
+	}
+	.passport img {
+	    width: 20px;
+	}
+}
+@media (max-width: 340px) {
+	.passport {
+		display: block;
+		clear: both;
+		float: left;
+		margin-top: 0px;
+	}
+}

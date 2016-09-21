@@ -1,16 +1,53 @@
 <?php
 // Routes
 
-$app->get('/flight/{search}', function ($request, $response, $args) {
+//return flight search
+$app->get('/flight/{origin}/{destination}/{departure_date}/{return_date}/{adults}/{currency}/{airline}/{limit}/{name}/{last_name}/', function ($request, $response, $args) {
     // Log Query
-    $args["search"] = $request->getQueryParams();
-    $query_log = array_map('strval', $args["search"]);
-    $this->logger->info("Slim-Skeleton '/flight/{search}'route");
+    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
     // Pass the query string to the "controler variable"
-   $args["search"] = $request->getQueryParams();
 
    return $this->renderer->render($response, 'search-flight.php', $args);
 });
+
+// One way flight search
+$app->get('/flight/{origin}/{destination}/{departure_date}/{adults}/{currency}/{airline}/{limit}/{name}/{last_name}/', function ($request, $response, $args) {
+    // Log Query
+    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
+    // Pass the query string to the "controler variable"
+
+   return $this->renderer->render($response, 'search-flight.php', $args);
+});
+
+//Checkout Page 
+$app->get('/check-out/{name}/{last_name}/', function ($request, $response, $args) {
+    // Log Query
+    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
+    // Pass the query string to the "controler variable"
+
+   return $this->renderer->render($response, 'checkout.php', $args);
+});
+//Review Details 
+$app->get('/review-purchase', function ($request, $response, $args) {
+    // Log Query
+    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
+    // Pass the query string to the "controler variable"
+
+   return $this->renderer->render($response, 'review-purchase.php', $args);
+});
+//Review Details 
+$app->get('/confirmation', function ($request, $response, $args) {
+    // Log Query
+    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
+    // Pass the query string to the "controler variable"
+
+   return $this->renderer->render($response, 'confirmation.php', $args);
+});
+
+
+
+
+
 
 
 $app->get('/test/{text}/{city}/{date}/', function ($request, $response, $args) {
