@@ -66,7 +66,7 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
 
     <script>
     function goBack() {
-    window.history.go(-2);
+    window.history.go(-4);
     }
     </script>
 
