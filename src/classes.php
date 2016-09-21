@@ -498,7 +498,7 @@ class ChatfuelMessage {
     public function FlightDetailsMessage ($flightDetails, $Cardtitle) {
         
         //create buttons
-        $button = $this->ButtonElement("web_url", "www.airportdigital.com", "Select");
+        $button = $this->ButtonElement("web_url", "bot.airportdigital.com/AirlineBotService/public/check-out/Manuel/Gutierrez/", "Select");
         $buttons = array ($button);
 
         //create cards
