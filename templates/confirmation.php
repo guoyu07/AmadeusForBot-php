@@ -55,7 +55,7 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
        </div>
       </div>
       <div class="row">
-            <a type="button" class="btn btn-default bt-lg btn-blue" onclick="goBack()"><img src="<?php echo $imagesPath ?>messenger.png">Back to Messenger</a>
+            <a type="button" class="btn btn-default bt-lg btn-blue" href="https://www.messenger.com/t/280583632340336"><img src="<?php echo $imagesPath ?>messenger.png">Back to Messenger</a>
       </div>
 
 
