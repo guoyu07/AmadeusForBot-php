@@ -2,6 +2,9 @@
 
 require __DIR__ . '/../src/SimpleImage.php';
 
+
+
+
 // test
 
 
@@ -20,17 +23,20 @@ class Airport{
     
     private $FirstAirportResult;
     private $AllAirportsResult;
-    private $AmadeusApiKey = 'EpDbA3yQmsIAKcF5wA5F9DiIOGoExqhc';
+    private $AmadeusApiKey;
     private $CityIATACode; 
 
 
 
     public function FirstAirport($query) {
+
+        $configs = include('config.php');
+        
         // check parameter
         if (!empty($query)) {
             $headers = array('Accept' => 'application/json');
             // set up uri
-            $uri = array('apikey' => 'EpDbA3yQmsIAKcF5wA5F9DiIOGoExqhc', 'term' => $query);
+            $uri = array('apikey' => $configs['amadeus'], 'term' => $query);
             // Do get request
             $response = Unirest\Request::get("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete",$headers, $uri);
             // check  and parse response
@@ -52,12 +58,15 @@ class Airport{
     }
 
     public function AllAirports($query) {
+        
+        $configs = include('config.php');
+
         // check parameter
         if (!empty($query)) {
             $headers = array('Accept' => 'application/json');
             // set up uri
 
-            $uri = array('apikey' => 'EpDbA3yQmsIAKcF5wA5F9DiIOGoExqhc', 'term' => $query);
+            $uri = array('apikey' => $configs['amadeus'], 'term' => $query);
             // Do get request
             $response = Unirest\Request::get("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete",$headers, $uri);
             // check  and parse response
@@ -82,11 +91,13 @@ class Airport{
     }
     public function GetCityIATA($code){
 
+        $configs = include('config.php');
+
             if (!empty($code)) {
             $headers = array('Accept' => 'application/json');
             // set up uri
             
-            $uri = array('apikey' => 'EpDbA3yQmsIAKcF5wA5F9DiIOGoExqhc');
+            $uri = array('apikey' => $configs['amadeus']);
             
             // Do GET request
             $response = Unirest\Request::get("https://api.sandbox.amadeus.com/v1.2/location/".$code,$headers, $uri);
@@ -119,15 +130,17 @@ class Airport{
 
 class FlightSearch {
     // Variables 
-    private $AmadeusApiKey = "EpDbA3yQmsIAKcF5wA5F9DiIOGoExqhc";
+
     private $FlightSearchResult;
     private $FlightData; 
 
     // Low fare best match 
     public function BestMatch ($query) {
+        $configs = include('config.php');
+
         $headers = array('Accept' => 'application/json');
         // set up uri    
-        $uri = array('apikey' => $this->AmadeusApiKey);
+        $uri = array('apikey' => $configs['amadeus']);
             $uri = array_merge($uri,$query); 
 
         if (!empty($query)) {    
@@ -289,7 +302,9 @@ class ValidationHelper {
     private $DateIsCorrect;
 
     public function DateExtract($textInput) {
-        $headers = array('X-Mashape-Key' => '1NpHAmnoBqmshAlkwkvxxaejUTlmp1GfscejsnWFWeb5e7LcX5','Accept' => 'application/json');
+
+        $configs = include('config.php');
+        $headers = array('X-Mashape-Key' => $configs['mashapeKey'],'Accept' => 'application/json');
         $uri = array('date' => $textInput);
         $response = Unirest\Request::get("https://montanaflynn-timekeeper---format-dates-and-times.p.mashape.com/format/date",$headers,$uri);
         if ($response->code=="200") {
