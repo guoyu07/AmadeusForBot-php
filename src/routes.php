@@ -1,13 +1,13 @@
 <?php
 // Routes
-
+/// ----------------- Booking Search -----------------------------//
 //return flight search
 $app->get('/flight/{origin}/{destination}/{departure_date}/{return_date}/{adults}/{currency}/{airline}/{limit}/{name}/{last_name}/', function ($request, $response, $args) {
     // Log Query
     $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
     // Pass the query string to the "controler variable"
 
-   return $this->renderer->render($response, 'search-flight.php', $args);
+   return $this->renderer->render($response, 'book-return.php', $args);
 });
 
 // One way flight search
@@ -16,8 +16,10 @@ $app->get('/flight/{origin}/{destination}/{departure_date}/{adults}/{currency}/{
     $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
     // Pass the query string to the "controler variable"
 
-   return $this->renderer->render($response, 'search-flight.php', $args);
+   return $this->renderer->render($response, 'book-single.php', $args);
 });
+
+/// ----------------- Checkout Page -----------------------------//
 
 //Checkout Page 
 $app->get('/check-out/{name}/{last_name}/', function ($request, $response, $args) {
@@ -27,6 +29,7 @@ $app->get('/check-out/{name}/{last_name}/', function ($request, $response, $args
 
    return $this->renderer->render($response, 'checkout.php', $args);
 });
+
 //Review Details 
 $app->get('/review-purchase', function ($request, $response, $args) {
     // Log Query
@@ -46,17 +49,7 @@ $app->get('/confirmation', function ($request, $response, $args) {
 
 
 
-
-
-
-
-$app->get('/test/{text}/{city}/{date}/', function ($request, $response, $args) {
-    // Sample log message
-    $this->logger->info("Slim-Skeleton '/' route");
-   
-   // Pass the query string to the "controler variable"
-   return $this->renderer->render($response, 'test.php', $args);
-});
+/// ----------------- Flight Status  -----------------------------//
 
 // Flight status end point 
 $app->get('/flight-status/{type}/{flight_number}/', function ($request, $response, $args) {
@@ -66,6 +59,17 @@ $app->get('/flight-status/{type}/{flight_number}/', function ($request, $respons
     return $this->renderer->render($response, 'flight-status.php', $args);
 });
 
+
+/// ----------------------- Tests  -----------------------------//
+
+
+$app->get('/test/{text}/{city}/{date}/', function ($request, $response, $args) {
+    // Sample log message
+    $this->logger->info("Slim-Skeleton '/' route");
+   
+   // Pass the query string to the "controler variable"
+   return $this->renderer->render($response, 'test.php', $args);
+});
 
 
 

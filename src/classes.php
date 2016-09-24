@@ -25,6 +25,7 @@ class Airport{
     private $AllAirportsResult;
     private $AmadeusApiKey;
     private $CityIATACode; 
+    private $response; 
 
 
 
@@ -38,12 +39,13 @@ class Airport{
             // set up uri
             $uri = array('apikey' => $configs['amadeus'], 'term' => $query);
             // Do get request
-            $response = Unirest\Request::get("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete",$headers, $uri);
+            $this->response = Unirest\Request::get("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete",$headers, $uri);
             // check  and parse response
            
-            if (!empty($response->body)){
-               $this->FirstAirportResult = (array)$response->body[0]; 
-               $cityIATA["cityIATA"] = $this->GetCityIATA($response->body[0]->value);
+            if (!empty($this->response->body)){
+
+               $this->FirstAirportResult = (array)$this->response->body[0]; 
+               $cityIATA["cityIATA"] = $this->GetCityIATA($this->response->body[0]->value);
                $this->FirstAirportResult=array_merge($this->FirstAirportResult,$cityIATA); 
              }
             else
@@ -350,7 +352,7 @@ class ValidationHelper {
         }
 
     }
-    public function ValidateArrayFields($FieldsToValidate, $ArrayToValidate)
+    public function CheckEmptyParams($FieldsToValidate, $ArrayToValidate)
     {
         $response=  array();
         $errorCount = 0;
