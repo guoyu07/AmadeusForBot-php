@@ -55,9 +55,9 @@ if (is_array($flight_number)) {
 	}
 }
 	// send Message
-	  echo "<pre>";
+	  
 	  header("Content-Type: application/json");
       echo json_encode($message,JSON_UNESCAPED_UNICODE);
-      echo "</pre>";
+   
 
 
