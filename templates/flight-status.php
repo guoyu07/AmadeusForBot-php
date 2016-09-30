@@ -49,8 +49,8 @@ if (is_array($flight_number)) {
 	  $button_1 = $chatfuel->ButtonElement("web_url", "http://eldorado2016.wpengine.com/en/about/maps/", $label["button_1"]);
 	  $button_2 = $chatfuel->ButtonElement("web_url", "http://eldorado2016.wpengine.com/en/", $label["button_2"]);
 
-	  $buttons = array($button_1, $button_2);
-	  $card = $chatfuel->CardElement($label["Subtitle"],$flightData["ImageUrl"],"",array($buttons));
+	  $buttons = array($button_1,$button_2); 
+	  $card = $chatfuel->CardElement($label["Subtitle"],$flightData["ImageUrl"],"",$buttons);
 	  $message = $chatfuel->GalleryMessage(array($card));
 	}
 }
