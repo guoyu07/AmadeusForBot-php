@@ -14,7 +14,7 @@ $label = array(
 	"Subtitle" => " Flight Details"
 	);
 $label_es = array(
-	"button_1" => "Ir a puerta de embarque",
+	"button_1" => "Ir a sala",
 	"button_2" => "Suscribirse",
 	"Subtitle" => "Dettalles del Vuelo"
 );
@@ -55,7 +55,9 @@ if (is_array($flight_number)) {
 	}
 }
 	// send Message
+	  echo "<pre>";
 	  header("Content-Type: application/json");
       echo json_encode($message,JSON_UNESCAPED_UNICODE);
+      echo "</pre>";
 
 
