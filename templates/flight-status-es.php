@@ -10,23 +10,28 @@ $flightStatusImage = new FlightImage;
 $flightData = array();
 
 //------- Language Labels and settings ---------------//
-$lang = "en";
+$lang = "es";
+
 $label = array(
-	"button_1" => "Go to Gate",
-	"button_2" => "Suscribe",
-	"Subtitle" => " Flight Details"
-	);
+	"button_1" => "Ir a sala",
+	"button_2" => "Suscribirse",
+	"Subtitle" => "Detalles del Vuelo"
+);
 
 $error = array(
-	"Number" => "Sorry, the flight number is incorrect: ".$flight_number,
-	"Flight" => "Sorry, we couldn't find the flight: ".$flight_number." in ".$type."s"
+	"Number" => "Lo sentimos el numero de vuelo es incorrecto: ".$flight_number,
+	"Flight" => "Lo sentimos no pudimos encontrar el vuelo: ".$flight_number." en ".$type."s"
 	);
-
 
 //------- Data Validation ---------------//
 
 // Get data
 $type = strtolower($type);
+// Translate spanish strings
+if ($type == "llegada" || $type == "llegadas") {$type = "arrival";  }
+if ($type == "salida" || $type == "salidas")  {$type = "departure"; }
+
+
 $flight_number = rtrim($flight_number);
 $flight_number = $helper->ExtractFlightNumbers($flight_number);
 

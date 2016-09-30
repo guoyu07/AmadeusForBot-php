@@ -58,6 +58,12 @@ $app->get('/flight-status/{type}/{flight_number}/', function ($request, $respons
 
     return $this->renderer->render($response, 'flight-status.php', $args);
 });
+$app->get('/flight-status/es/{type}/{flight_number}/', function ($request, $response, $args) {
+    // Sample log message
+    $this->logger->info("Slim-Skeleton '/' route");
+
+    return $this->renderer->render($response, 'flight-status-es.php', $args);
+});
 
 
 /// ----------------------- Tests  -----------------------------//
