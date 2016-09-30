@@ -319,10 +319,12 @@ class ValidationHelper {
                 $date = date_format($date, 'Y-m-d');
                 return $date;
             } else {
-                return $message["error"]= "Lo sentimos no pude entender la fecha";
+                $message["error"]= "Lo sentimos no pude entender la fecha";
+                return $message;
             }
         } else {
-            return $message["error"]= "Lo sentimos no pude entender la fecha";
+           $message["error"]= "Lo sentimos no pude entender la fecha";
+           return $message;
         }
     }
      public function DateInEnglish($query)
@@ -336,16 +338,17 @@ class ValidationHelper {
             $confidence = $response->body->entities->datetime[0]->confidence;
             if ($confidence > 0.8 ) {
                 $date = date($response->body->entities->datetime[0]->values[0]->value);
-                
                 $date = new DateTime($date);
                 $date = date_format($date, 'Y-m-d');
                 return $date;
                 
             } else {
-                return $message["error"]= "Lo sentimos no pude entender la fecha";
+                 $message["error"] = "Lo sentimos no pude entender la fecha";
+                 return $message;
             }
         } else {
-            return $message["error"]= "Lo sentimos no pude entender la fecha";
+            $message["error"] = "Lo sentimos no pude entender la fecha";
+            return $message;
         }
     }
 
@@ -362,6 +365,7 @@ class ValidationHelper {
         else {
 
             $this->ProcessedDate["error"] = "We could not process the date given";
+
         }
         
         return $this->ProcessedDate;       

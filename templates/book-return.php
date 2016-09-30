@@ -16,6 +16,7 @@ require_once __DIR__ . '/../src/classes.php';
 	
 
 	$message; // var to store results
+	$lang = "en";
 	$CardTitleOptions = array(
         "0" => "Option 1 : Best Value",
         "1" => "Option 2 : Cheapest",
@@ -68,7 +69,7 @@ if (isset($airportDataDestination["error"])){
 
 // Validate Departure Date
 
-$DepartureDate = $helper->DateExtract($search["departure_date"]);
+$DepartureDate = $helper->DateInEnglish($search["departure_date"]);
 
 if (isset($DepartureDate['error']))
 {
@@ -78,7 +79,7 @@ if (isset($DepartureDate['error']))
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
 } else {
-	$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate["date"]); 
+	$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate); 
 	if (!$DateIsCorrect) {
 	 	// Pending : fix the problem with  dates the next year.
 	 	$message = $chatfuel->TextMessage("Departure date must be later than actual date");
@@ -86,7 +87,7 @@ if (isset($DepartureDate['error']))
 		echo json_encode($message ,JSON_UNESCAPED_UNICODE);
 		return;
 	} else {
-		$search['departure_date'] = $DepartureDate["date"];
+		$search['departure_date'] = $DepartureDate;
 	}
 }
 
@@ -94,7 +95,7 @@ if (isset($DepartureDate['error']))
 
 // Validate Return Date
 
-$ReturnDate = $helper->DateExtract($search["return_date"]);
+$ReturnDate = $helper->DateInEnglish($search["return_date"]);
 			 	
 // If return date was wrong 
 
@@ -106,7 +107,7 @@ if (isset($ReturnDate['error'])){
 	return;
 
 } else {
-	$DateIsCorrect = $helper->ValidateReturnDate($DepartureDate["date"],$ReturnDate["date"]);
+	$DateIsCorrect = $helper->ValidateReturnDate($DepartureDate,$ReturnDate);
 	if (!$DateIsCorrect){
 	// Next: Send Message there was an error
 	$message = $chatfuel->TextMessage("The return date must be later than the departure date");
@@ -114,7 +115,7 @@ if (isset($ReturnDate['error'])){
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
 	} else {
-      $search['return_date'] = $ReturnDate["date"];
+      $search['return_date'] = $ReturnDate;
 	}
 }
 

@@ -9,9 +9,25 @@ $app->get('/flight/{origin}/{destination}/{departure_date}/{return_date}/{adults
 
    return $this->renderer->render($response, 'book-return.php', $args);
 });
+//return flight search
+$app->get('/flight/es/{origin}/{destination}/{departure_date}/{return_date}/{adults}/{currency}/{airline}/{limit}/{name}/{last_name}/', function ($request, $response, $args) {
+    // Log Query
+    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
+    // Pass the query string to the "controler variable"
+
+   return $this->renderer->render($response, 'book-return-es.php', $args);
+});
 
 // One way flight search
 $app->get('/flight/{origin}/{destination}/{departure_date}/{adults}/{currency}/{airline}/{limit}/{name}/{last_name}/', function ($request, $response, $args) {
+    // Log Query
+    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
+    // Pass the query string to the "controler variable"
+
+   return $this->renderer->render($response, 'book-single.php', $args);
+});
+// One way flight search
+$app->get('/flight/es/{origin}/{destination}/{departure_date}/{adults}/{currency}/{airline}/{limit}/{name}/{last_name}/', function ($request, $response, $args) {
     // Log Query
     $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
     // Pass the query string to the "controler variable"

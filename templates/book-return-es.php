@@ -13,13 +13,13 @@ require_once __DIR__ . '/../src/classes.php';
 	$airport = new Airport; // Airport Object
 	$flightSearch = new FlightSearch;  // Flight search object
 	$Cardimage = new FlightImage; // Image processing object
-	
+	$lang="es";
 
 	$message; // var to store results
 	$CardTitleOptions = array(
-        "0" => "Option 1 : Best Value",
-        "1" => "Option 2 : Cheapest",
-        "2" => "Option 3 : Shortest"
+        "0" => "Opción 1:  Mejor Resultado",
+        "1" => "Opción 2 : Más Barata",
+        "2" => "Opción 3 : Más corta"
  	); 
  	$search = array(
  		'origin' => $origin,
@@ -68,7 +68,7 @@ if (isset($airportDataDestination["error"])){
 
 // Validate Departure Date
 
-$DepartureDate = $helper->DateExtract($search["departure_date"]);
+$DepartureDate = $helper->DateInSpanish($search["departure_date"]);
 
 if (isset($DepartureDate['error']))
 {
@@ -78,7 +78,9 @@ if (isset($DepartureDate['error']))
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
 } else {
-	$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate["date"]); 
+
+	$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate);
+
 	if (!$DateIsCorrect) {
 	 	// Pending : fix the problem with  dates the next year.
 	 	$message = $chatfuel->TextMessage("Departure date must be later than actual date");
@@ -86,7 +88,7 @@ if (isset($DepartureDate['error']))
 		echo json_encode($message ,JSON_UNESCAPED_UNICODE);
 		return;
 	} else {
-		$search['departure_date'] = $DepartureDate["date"];
+		$search['departure_date'] = $DepartureDate;
 	}
 }
 
@@ -94,8 +96,8 @@ if (isset($DepartureDate['error']))
 
 // Validate Return Date
 
-$ReturnDate = $helper->DateExtract($search["return_date"]);
-			 	
+$ReturnDate = $helper->DateInSpanish($search["return_date"]);
+ 	
 // If return date was wrong 
 
 if (isset($ReturnDate['error'])){
@@ -106,7 +108,7 @@ if (isset($ReturnDate['error'])){
 	return;
 
 } else {
-	$DateIsCorrect = $helper->ValidateReturnDate($DepartureDate["date"],$ReturnDate["date"]);
+	$DateIsCorrect = $helper->ValidateReturnDate($DepartureDate,$ReturnDate);
 	if (!$DateIsCorrect){
 	// Next: Send Message there was an error
 	$message = $chatfuel->TextMessage("The return date must be later than the departure date");
@@ -114,7 +116,7 @@ if (isset($ReturnDate['error'])){
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
 	} else {
-      $search['return_date'] = $ReturnDate["date"];
+      $search['return_date'] = $ReturnDate;
 	}
 }
 
