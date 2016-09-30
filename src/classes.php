@@ -705,10 +705,10 @@ class FlightImage {
         // Time 1
         $FlightData->schedule_time = date('g:i a', strtotime($FlightData->schedule_time));   
         $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'center', -18, 20);
-
+  
         //Time 2 
-        $FlightData->estimated_time = date('g:i a', strtotime($FlightData->estimated_time));   
-        $img->text($FlightData->estimated_time, $FontPathRegular, 24, '#000000', 'right', -104, 20);
+        $FlightData->actual_time = date('g:i a', strtotime($FlightData->estimated_time));   
+        $img->text($FlightData->actual_time, $FontPathRegular, 24, '#000000', 'right', -104, 20);
 
         //City 1 Bogota Upper
         $img->text("Bogotá", $FontPathRegular, 22, '#a9a9a9', 'top', -282, 267);
