@@ -63,7 +63,7 @@ $app->get('/flight-status/{type}/{flight_number}/', function ($request, $respons
 /// ----------------------- Tests  -----------------------------//
 
 
-$app->get('/test/{text}/{city}/{date}/', function ($request, $response, $args) {
+$app->get('/test', function ($request, $response, $args) {
     // Sample log message
     $this->logger->info("Slim-Skeleton '/' route");
    

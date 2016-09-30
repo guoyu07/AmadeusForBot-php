@@ -37,15 +37,15 @@ class Airport{
         if (!empty($query)) {
             $headers = array('Accept' => 'application/json');
             // set up uri
-            $uri = array('apikey' => $configs['amadeus'], 'term' => $query);
+            $uri = array('api_key' => $configs['iata'], 'query' => $query);
             // Do get request
-            $this->response = Unirest\Request::get("https://api.sandbox.amadeus.com/v1.2/airports/autocomplete",$headers, $uri);
+            $this->response = Unirest\Request::get("https://iatacodes.org/api/v6/autocomplete",$headers, $uri);
             // check  and parse response
-           
+  
             if (!empty($this->response->body)){
 
-               $this->FirstAirportResult = (array)$this->response->body[0]; 
-               $cityIATA["cityIATA"] = $this->GetCityIATA($this->response->body[0]->value);
+               $this->FirstAirportResult = (array)$this->response->body->response->cities[0]; 
+               $cityIATA["cityIATA"] = $this->response->body->response->cities[0]->code;
                $this->FirstAirportResult=array_merge($this->FirstAirportResult,$cityIATA); 
              }
             else
@@ -54,7 +54,7 @@ class Airport{
             } 
         }
         else {
-           $this->FirstAirportResult = array("error"=> "Airport Origin/Destination field is empty");
+           $this->FirstAirportResult ["error"] = "Airport Origin/Destination field is empty";
         }
         return $this->FirstAirportResult;
     }
@@ -291,10 +291,11 @@ public function SearchFlight($FlightNumber, $flightType)
 
 /**
 *  Validation Helper / Processing
-*  Use: Mashape API Date and Time Assistant , UniRest
+*  Use: Mashape API Date and Time Assistant , UniRest, Wit.ai
 *  https://montanaflynn-timekeeper---format-dates-and-times.p.mashape.com/format/date
 *  Methods: 
-*   -DateExtract : Extract and process a text and returns a date International ISO formated.
+*   -DateInSpanish : Extract and process a text and returns a date International ISO formated.
+*   -DateInENglish : Extract and process a text and returns a date International ISO formated.
 *   -ValidateFutureDate  : Validate (bool) if a date is in the future or the same day. 
 *   -ValidateReturnDate : Validate (bool) depart and return date with the rule depart date must be before the return date 
 *   -ValidateArrayFields  : Validate (array) if the required fields for amadeus API are present.
@@ -302,6 +303,52 @@ public function SearchFlight($FlightNumber, $flightType)
 class ValidationHelper {
     private $ProcessedDate;
     private $DateIsCorrect;
+
+    public function DateInSpanish($query)
+    {
+        $configs = include('config.php');
+        $headers = array("Authorization" => "Bearer ".$configs['wit_es'], "Accept" => "application/json");
+        $uri = array("v"=>"20160929","q"=>$query);
+        $response = Unirest\Request::get("https://api.wit.ai/message",$headers,$uri);
+        // get date of first response 
+        if (isset($response->body->entities->datetime)) {
+            $confidence = $response->body->entities->datetime[0]->confidence;
+            if ($confidence > 0.8 ) {
+                $date = date($response->body->entities->datetime[0]->values[0]->value);
+                $date = new DateTime($date);
+                $date = date_format($date, 'Y-m-d');
+                return $date;
+            } else {
+                return $message["error"]= "Lo sentimos no pude entender la fecha";
+            }
+        } else {
+            return $message["error"]= "Lo sentimos no pude entender la fecha";
+        }
+    }
+     public function DateInEnglish($query)
+    {
+        $configs = include('config.php');
+        $headers = array("Authorization" => "Bearer ".$configs['wit_en'], "Accept" => "application/json");
+        $uri = array("v"=>"20160929","q"=>$query,"timezone"=>"America/Los_Angeles");
+        $response = Unirest\Request::get("https://api.wit.ai/message",$headers,$uri);
+        // get date of first response 
+        if (isset($response->body->entities->datetime)) {
+            $confidence = $response->body->entities->datetime[0]->confidence;
+            if ($confidence > 0.8 ) {
+                $date = date($response->body->entities->datetime[0]->values[0]->value);
+                
+                $date = new DateTime($date);
+                $date = date_format($date, 'Y-m-d');
+                return $date;
+                
+            } else {
+                return $message["error"]= "Lo sentimos no pude entender la fecha";
+            }
+        } else {
+            return $message["error"]= "Lo sentimos no pude entender la fecha";
+        }
+    }
+
 
     public function DateExtract($textInput) {
 

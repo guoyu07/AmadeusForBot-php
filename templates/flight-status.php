@@ -7,8 +7,10 @@ $flight = new FlightStatus;
 $chatfuel = new ChatfuelMessage;
 $helper = new ValidationHelper;
 $flightStatusImage = new FlightImage;
-$lang = "en";
+$flightData = array();
 
+//------- Language Labels and settings ---------------//
+$lang = "en";
 $label = array(
 	"button_1" => "Go to Gate",
 	"button_2" => "Suscribe",
@@ -19,15 +21,24 @@ $label_es = array(
 	"button_2" => "Suscribirse",
 	"Subtitle" => "Detalles del Vuelo"
 );
-$flightData = array();
+$error = array(
+	"Number" => "Sorry, the flight number is incorrect: ".$flight_number,
+	"Flight" => "Sorry, we couldn't find the flight: ".$flight_number." in ".$type."s"
+	);
+$error_es = array(
+	"Number" => "Lo sentimos el numero de vuelo es incorrecto: ".$flight_number,
+	"Flight" => "Lo sentimos no pudimos encontrar el vuelo: ".$flight_number." en ".$type."s"
+	);
+
+//------- Data Validation ---------------//
 
 // Get data
 $type = strtolower($type);
 // Translate spanish strings
 if ($type == "llegada") {$type = "arrival";  $lang = "es"; }
-if ($type == "salida") {$type = "departure"; $lang = "es"; }
+if ($type == "salida")  {$type = "departure"; $lang = "es"; }
+if ($lang == "es") { $label = $label_es; $error = $error_es;}
 
-if ($lang == "es") { $label = $label_es;}
 
 $flight_number = rtrim($flight_number);
 $flight_number = $helper->ExtractFlightNumbers($flight_number);
@@ -35,14 +46,14 @@ $flight_number = $helper->ExtractFlightNumbers($flight_number);
 
 if (is_array($flight_number)) {
 	//if it is an array it contains an error
-	$message = $chatfuel->TextMessage($flight_number['error']);
+	$message = $chatfuel->TextMessage($error["Number"]);
 } else {
 	//search flight
 	$flight = $flight->SearchFlight($flight_number,$type);
 
 	if (is_array($flight)) {
 		//if it is an array it contains an error
-		$message = $chatfuel->TextMessage($flight['error']);
+		$message = $chatfuel->TextMessage($error["Flight"]);
 	} else {
 	  // create image
 	  $FlightImage = $flightStatusImage->GenerateFlightStatusImage($flight,$lang);
