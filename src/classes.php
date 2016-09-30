@@ -632,7 +632,7 @@ class FlightImage {
         'Flight' => 'Flight', 
         'Departs' => 'Departs',
         'Arrives' => 'Arrives',  
-        'status'  => $FlightData->{'status-en'}
+        'status'  => strtoupper($FlightData->{'status-en'})
         ); 
     // spanish
     $statusLabels_es = array(
@@ -648,16 +648,16 @@ class FlightImage {
         $img = new SimpleImage($ImagePath);
 
         //Status
-        $img->text(strtoupper($statusLabels["Status"]), $FontPathBold, 30, '#107715', 'top', 218, 85);
+        $img->text($statusLabels["Status"], $FontPathBold, 30, '#107715', 'top', 218, 85);
         // Flight Departs Arrives
         $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 170);
         $img->text($statusLabels["Departs"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 170);
-        $img->text($statusLabels["Arrives"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 175);
+        $img->text($statusLabels["Arrives"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 170);
         // Flight Number 
         $img->text($FlightData->airline_code.$FlightData->flight_number, $FontPathRegular, 24, '#000000', 'left', 30, 25);
         // Time 1
         $FlightData->schedule_time = date('g:i a', strtotime($FlightData->schedule_time));   
-        $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'center', -18, 22);
+        $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'center', -18, 20);
 
         //Time 2 
         $FlightData->estimated_time = date('g:i a', strtotime($FlightData->estimated_time));   
