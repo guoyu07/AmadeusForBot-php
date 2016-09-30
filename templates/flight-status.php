@@ -7,7 +7,7 @@ $flight = new FlightStatus;
 $chatfuel = new ChatfuelMessage;
 $helper = new ValidationHelper;
 $flightStatusImage = new FlightImage;
-
+$lang = "en";
 
 
 $flightData = array();
@@ -15,8 +15,8 @@ $flightData = array();
 // Get data
 $type = strtolower($type);
 // Translate spanish strings
-if ($type == "llegada") {$type = "arrival";}
-if ($type == "salida") {$type = "departure";}
+if ($type == "llegada") {$type = "arrival";  $lang = "es"; }
+if ($type == "salida") {$type = "departure"; $lang = "es"; }
 
 
 
@@ -36,7 +36,7 @@ if (is_array($flight_number)) {
 		$message = $chatfuel->TextMessage($flight['error']);
 	} else {
 	  // create image
-	  $FlightImage = $flightStatusImage->GenerateFlightStatusImage($flight);
+	  $FlightImage = $flightStatusImage->GenerateFlightStatusImage($flight,$lang);
 	  $flightData["ImageUrl"] = $FlightImage["url"];
 	  //prepare message
 	  $buttons = $chatfuel->ButtonElement("web_url", "http://eldorado2016.wpengine.com/en/about/maps/", "Go to Gate");
