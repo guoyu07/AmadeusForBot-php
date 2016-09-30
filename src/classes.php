@@ -650,7 +650,7 @@ class FlightImage {
         //Status
         $img->text($statusLabels["Status"], $FontPathBold, 30, '#107715', 'top', 218, 85);
         // Flight Departs Arrives
-        $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 170);
+        $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 167);
         $img->text($statusLabels["Departs"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 167);
         $img->text($statusLabels["Arrives"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 170);
         // Flight Number 
