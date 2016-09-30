@@ -32,6 +32,15 @@ require_once __DIR__ . '/../src/classes.php';
  		'name' => $name,
  		'last_name' => $last_name
  	);
+ 	 $error = array(
+        "Departure" => "Sorry I couldnt find your city of origin: ".$search["origin"],
+        "Destination" => "Sorry I couldnt find your city of destination: ".$search["destination"],
+        "InvalidDepartureDate" => "I couldnt understand your date of your departure : ".$search["departure_date"],
+        "InvalidReturnDate" => "I couldnt understand your return date : ".$search["return_date"],
+        "FutureDepartureDate" => "Ups, departure date must be after today: ".$search["departure_date"],
+        "FutureReturnDate" => "Ups, it seems that return date :".$search["return_date"]." is before departure date: ".$search["departure_date"],
+        "FlightNotFound" => "Sorry, I couldnt find a flight with your search criteria "
+ 	); 
 
 // 1. Validate Departure and Destination IATA CODE
 // 2. Obtain Iata Code.
@@ -43,7 +52,7 @@ $airportDataOrigin = $airport->FirstAirport($search["origin"]);
 
 
 if (isset($airportDataOrigin["error"])){
-	$message = $chatfuel->TextMessage($airportDataOrigin["error"]);
+	$message = $chatfuel->TextMessage($error["Departure"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -56,7 +65,7 @@ if (isset($airportDataOrigin["error"])){
 $airportDataDestination = $airport->FirstAirport($search["destination"]);
 
 if (isset($airportDataDestination["error"])){
-	$message = $chatfuel->TextMessage($airportDataDestination["error"]);
+	$message = $chatfuel->TextMessage($error["Destination"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -67,25 +76,25 @@ if (isset($airportDataDestination["error"])){
 
 // Validate Departure Date
 
-$DepartureDate = $helper->DateExtract($search["departure_date"]);
+$DepartureDate = $helper->DateInEnglish($search["departure_date"]);
 
 if (isset($DepartureDate['error']))
 {
 	// Send Message there was an error
-	$message = $chatfuel->TextMessage($DepartureDate['error']);
+	$message = $chatfuel->TextMessage($error["InvalidDepartureDate"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
 } else {
-	$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate["date"]); 
+	$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate); 
 	if (!$DateIsCorrect) {
 	 	// Pending : fix the problem with  dates the next year.
-	 	$message = $chatfuel->TextMessage("Departure date must be later than actual date");
+	 	$message = $chatfuel->TextMessage($error["FutureDepartureDate"]);
 		header("Content-Type: application/json");
 		echo json_encode($message ,JSON_UNESCAPED_UNICODE);
 		return;
 	} else {
-		$search['departure_date'] = $DepartureDate["date"];
+		$search['departure_date'] = $DepartureDate;
 	}
 }
 
@@ -94,7 +103,7 @@ if (isset($DepartureDate['error']))
 $response = $flightSearch->BestMatch($search);
 if ($response== "No result found.") {
 	// Next: Send Message there was an error
-	$message = $chatfuel->TextMessage("Sorry, We couldnt find a flight for your search");
+	$message = $chatfuel->TextMessage($error["FlightNotFound"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
