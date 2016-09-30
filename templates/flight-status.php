@@ -8,6 +8,7 @@ $chatfuel = new ChatfuelMessage;
 $helper = new ValidationHelper;
 $flightStatusImage = new FlightImage;
 $lang = "en";
+
 $label = array(
 	"button_1" => "Go to Gate",
 	"button_2" => "Suscribe",
@@ -16,7 +17,7 @@ $label = array(
 $label_es = array(
 	"button_1" => "Ir a sala",
 	"button_2" => "Suscribirse",
-	"Subtitle" => "Dettalles del Vuelo"
+	"Subtitle" => "Detalles del Vuelo"
 );
 $flightData = array();
 
@@ -25,7 +26,8 @@ $type = strtolower($type);
 // Translate spanish strings
 if ($type == "llegada") {$type = "arrival";  $lang = "es"; }
 if ($type == "salida") {$type = "departure"; $lang = "es"; }
-if ($lang = "es") {$label = $label_es;}
+
+if ($lang == "es") { $label = $label_es;}
 
 $flight_number = rtrim($flight_number);
 $flight_number = $helper->ExtractFlightNumbers($flight_number);

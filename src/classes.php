@@ -632,7 +632,7 @@ class FlightImage {
         'Flight' => 'Flight', 
         'Departs' => 'Departs',
         'Arrives' => 'Arrives',  
-        'status'  => strtoupper($FlightData->{'status-en'})
+        'Status'  => strtoupper($FlightData->{'status-en'})
         ); 
     // spanish
     $statusLabels_es = array(
@@ -652,7 +652,7 @@ class FlightImage {
         // Flight Departs Arrives
         $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 170);
         $img->text($statusLabels["Departs"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 170);
-        $img->text($statusLabels["Arrives"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 170);
+        $img->text($statusLabels["Arrives"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 160);
         // Flight Number 
         $img->text($FlightData->airline_code.$FlightData->flight_number, $FontPathRegular, 24, '#000000', 'left', 30, 25);
         // Time 1
