@@ -677,16 +677,16 @@ class FlightImage {
     // default language
     $statusLabels = array(
         'Flight' => 'Flight', 
-        'Departs' => 'Departs',
-        'Arrives' => 'Arrives',  
+        'Departs' => 'Scheduled',
+        'Arrives' => 'Confirmed',  
         'Status'  => strtoupper($FlightData->{'status-en'}),
         'EstimatedTimeNotSet' => "Not available"
         ); 
     // spanish
     $statusLabels_es = array(
         'Flight' =>  'Vuelo', 
-        'Departs' => 'Salida',
-        'Arrives' => 'Llegada',   
+        'Departs' => 'Programado',
+        'Arrives' => 'Confirmado',   
         'Status'  => $FlightData->{'status-es'},
         'EstimatedTimeNotSet' => "No disponible"
         ); 
