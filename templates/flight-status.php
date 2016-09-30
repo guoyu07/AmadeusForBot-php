@@ -15,8 +15,10 @@ $flightData = array();
 // Get data
 $type = strtolower($type);
 // Translate spanish strings
-if ($type == "Llegada") {$type = "arrival";}
-if ($type == "Salida") {$type = "departure";}
+if ($type == "llegada") {$type = "arrival";}
+if ($type == "salida") {$type = "departure";}
+
+
 
 $flight_number = rtrim($flight_number);
 $flight_number = $helper->ExtractFlightNumbers($flight_number);
