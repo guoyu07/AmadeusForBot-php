@@ -620,26 +620,39 @@ class FlightImage {
     }
 
  }
-  public function GenerateFlightStatusImage($FlightData) 
+  public function GenerateFlightStatusImage($FlightData, $lang) 
  {
 
     $ImagePath = './../src/flight-status-template.png';
     $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
     $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
     $FontPathLight =  './../templates/fonts/Lato-Light.ttf';
-
-
+    // default language
+    $statusLabels = array(
+        'Flight' => 'Flight', 
+        'Departs' => 'Departs',
+        'Arrives' => 'Arrives',  
+        'status'  => $FlightData->{'status-en'}
+        ); 
+    // spanish
+    $statusLabels_es = array(
+        'Flight' =>  'Vuelo', 
+        'Departs' => 'Salida',
+        'Arrives' => 'Llegada',   
+        'Status'  => $FlightData->{'status-es'}
+        ); 
+    if ($lang == "es") { $statusLabels = $statusLabels_es; }
     try {
         
         //Create image
         $img = new SimpleImage($ImagePath);
 
         //Status
-        $img->text(strtoupper($FlightData->{'status-en'}), $FontPathBold, 30, '#107715', 'top', 218, 85);
+        $img->text(strtoupper($statusLabels["Status"]), $FontPathBold, 30, '#107715', 'top', 218, 85);
         // Flight Departs Arrives
-        $img->text("Flight", $FontPathRegular, 20, '#a9a9a9', 'top', -293, 170);
-        $img->text("Departs", $FontPathRegular, 20, '#a9a9a9', 'top', -34, 170);
-        $img->text("Arrives", $FontPathRegular, 20, '#a9a9a9', 'top', 185, 175);
+        $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 170);
+        $img->text($statusLabels["Departs"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 170);
+        $img->text($statusLabels["Arrives"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 175);
         // Flight Number 
         $img->text($FlightData->airline_code.$FlightData->flight_number, $FontPathRegular, 24, '#000000', 'left', 30, 25);
         // Time 1
