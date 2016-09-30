@@ -476,7 +476,7 @@ class ChatfuelMessage {
         $this->PayloadArray = array(
                "template_type" => "button",
                 "text"=> $text,
-                "buttons" => $this->ChatfuelButtonsArray
+                "buttons" => $this->ButtonsArray
                 );
 
 
