@@ -35,9 +35,15 @@ require_once __DIR__ . '/../src/classes.php';
  		'last_name' => $last_name
  	);
 
-// 1. Validate Departure and Destination IATA CODE
-// 2. Obtain Iata Code.
-
+ 		$error = array(
+        "Departure" => "Sorry I couldnt find your city of origin: ".$search["origin"],
+        "Destination" => "Sorry I couldnt find your city of destination: ".$search["destination"],
+        "InvalidDepartureDate" => "I couldnt understand your date of your departure : ".$search["departure_date"],
+        "InvalidReturnDate" => "I couldnt understand your return date : ".$search["return_date"],
+        "FutureDepartureDate" => "Ups, departure date must be after today: ".$search["departure_date"],
+        "FutureReturnDate" => "Ups, it seems that return date :".$search["return_date"]." is before departure date: ".$search["departure_date"],
+        "FlightNotFound" => "Sorry, I couldnt find a flight with your search criteria "
+ 	); 
 
 // Validate Departure
 
@@ -45,7 +51,7 @@ $airportDataOrigin = $airport->FirstAirport($search["origin"]);
 
 
 if (isset($airportDataOrigin["error"])){
-	$message = $chatfuel->TextMessage($airportDataOrigin["error"]);
+	$message = $chatfuel->TextMessage($error["Departure"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -58,7 +64,7 @@ if (isset($airportDataOrigin["error"])){
 $airportDataDestination = $airport->FirstAirport($search["destination"]);
 
 if (isset($airportDataDestination["error"])){
-	$message = $chatfuel->TextMessage($airportDataDestination["error"]);
+	$message = $chatfuel->TextMessage($error["Destination"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -74,15 +80,17 @@ $DepartureDate = $helper->DateInEnglish($search["departure_date"]);
 if (isset($DepartureDate['error']))
 {
 	// Send Message there was an error
-	$message = $chatfuel->TextMessage($DepartureDate['error']);
+	$message = $chatfuel->TextMessage($error["InvalidDepartureDate"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
 } else {
-	$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate); 
+
+	$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate);
+
 	if (!$DateIsCorrect) {
 	 	// Pending : fix the problem with  dates the next year.
-	 	$message = $chatfuel->TextMessage("Departure date must be later than actual date");
+	 	$message = $chatfuel->TextMessage($error["FutureDepartureDate"]);
 		header("Content-Type: application/json");
 		echo json_encode($message ,JSON_UNESCAPED_UNICODE);
 		return;
@@ -96,12 +104,12 @@ if (isset($DepartureDate['error']))
 // Validate Return Date
 
 $ReturnDate = $helper->DateInEnglish($search["return_date"]);
-			 	
+ 	
 // If return date was wrong 
 
 if (isset($ReturnDate['error'])){
 	// Next: Send Message there was an error
-	$message = $chatfuel->TextMessage($ReturnDate['error']);
+	$message = $chatfuel->TextMessage($error["InvalidReturnDate"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -110,7 +118,7 @@ if (isset($ReturnDate['error'])){
 	$DateIsCorrect = $helper->ValidateReturnDate($DepartureDate,$ReturnDate);
 	if (!$DateIsCorrect){
 	// Next: Send Message there was an error
-	$message = $chatfuel->TextMessage("The return date must be later than the departure date");
+	$message = $chatfuel->TextMessage($error["FutureReturnDate"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -121,9 +129,10 @@ if (isset($ReturnDate['error'])){
 
 
 $response = $flightSearch->BestMatch($search);
-if ($response== "No result found.") {
+//fix this validation to isset or exists
+if ($response == "No result found.") {
 	// Next: Send Message there was an error
-	$message = $chatfuel->TextMessage("Sorry, We couldnt find a flight for your search");
+	$message = $chatfuel->TextMessage($error["FlightNotFound"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;

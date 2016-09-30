@@ -21,6 +21,7 @@ require_once __DIR__ . '/../src/classes.php';
         "1" => "Opción 2 : Más Barata",
         "2" => "Opción 3 : Más corta"
  	); 
+
  	$search = array(
  		'origin' => $origin,
  		'destination' => $destination,
@@ -33,6 +34,15 @@ require_once __DIR__ . '/../src/classes.php';
  		'name' => $name,
  		'last_name' => $last_name
  	);
+ 	$error = array(
+        "Departure" => "Lo siento, no pude encontrar la ciudad : ".$search["origin"],
+        "Destination" => "Lo siento no pude encontrar la ciudad : ".$search["destination"],
+        "InvalidDepartureDate" => "Lo siento no pude entender  la fecha de salida : ".$search["departure_date"],
+        "InvalidReturnDate" => "Lo siento no pude entender  la fecha de salida : ".$search["return_date"],
+        "FutureDepartureDate" => "Lo siento la fecha de salida debe ser en posterior a la fecha actual: ".$search["departure_date"],
+        "FutureReturnDate" => "Lo siento la fecha de llegada:".$search["departure_date"]." debe ser posterior a la fecha de salida: ".$search["return_date"],
+        "FlightNotFound" => "Lo siento, no pude encontrar un vuelo con tus criterios de busqueda"
+ 	); 
 
 // 1. Validate Departure and Destination IATA CODE
 // 2. Obtain Iata Code.
@@ -44,7 +54,7 @@ $airportDataOrigin = $airport->FirstAirport($search["origin"]);
 
 
 if (isset($airportDataOrigin["error"])){
-	$message = $chatfuel->TextMessage($airportDataOrigin["error"]);
+	$message = $chatfuel->TextMessage($error["Departure"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -57,7 +67,7 @@ if (isset($airportDataOrigin["error"])){
 $airportDataDestination = $airport->FirstAirport($search["destination"]);
 
 if (isset($airportDataDestination["error"])){
-	$message = $chatfuel->TextMessage($airportDataDestination["error"]);
+	$message = $chatfuel->TextMessage($error["Destination"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -73,7 +83,7 @@ $DepartureDate = $helper->DateInSpanish($search["departure_date"]);
 if (isset($DepartureDate['error']))
 {
 	// Send Message there was an error
-	$message = $chatfuel->TextMessage($DepartureDate['error']);
+	$message = $chatfuel->TextMessage($error["InvalidDepartureDate"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -83,7 +93,7 @@ if (isset($DepartureDate['error']))
 
 	if (!$DateIsCorrect) {
 	 	// Pending : fix the problem with  dates the next year.
-	 	$message = $chatfuel->TextMessage("Departure date must be later than actual date");
+	 	$message = $chatfuel->TextMessage($error["FutureDepartureDate"]);
 		header("Content-Type: application/json");
 		echo json_encode($message ,JSON_UNESCAPED_UNICODE);
 		return;
@@ -102,7 +112,7 @@ $ReturnDate = $helper->DateInSpanish($search["return_date"]);
 
 if (isset($ReturnDate['error'])){
 	// Next: Send Message there was an error
-	$message = $chatfuel->TextMessage($ReturnDate['error']);
+	$message = $chatfuel->TextMessage($error["InvalidReturnDate"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -111,7 +121,7 @@ if (isset($ReturnDate['error'])){
 	$DateIsCorrect = $helper->ValidateReturnDate($DepartureDate,$ReturnDate);
 	if (!$DateIsCorrect){
 	// Next: Send Message there was an error
-	$message = $chatfuel->TextMessage("The return date must be later than the departure date");
+	$message = $chatfuel->TextMessage($error["FutureReturnDate"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
@@ -122,9 +132,10 @@ if (isset($ReturnDate['error'])){
 
 
 $response = $flightSearch->BestMatch($search);
-if ($response== "No result found.") {
+//fix this validation to isset or exists
+if ($response == "No result found.") {
 	// Next: Send Message there was an error
-	$message = $chatfuel->TextMessage("Sorry, We couldnt find a flight for your search");
+	$message = $chatfuel->TextMessage($error["FlightNotFound"]);
 	header("Content-Type: application/json");
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;

@@ -311,10 +311,10 @@ class ValidationHelper {
         $uri = array("v"=>"20160929","q"=>$query);
         $response = Unirest\Request::get("https://api.wit.ai/message",$headers,$uri);
         // get date of first response 
-        if (isset($response->body->entities->datetime)) {
+        if (isset($response->body->entities->datetime[0])) {
             $confidence = $response->body->entities->datetime[0]->confidence;
             if ($confidence > 0.8 ) {
-                $date = date($response->body->entities->datetime[0]->values[0]->value);
+                $date = date($response->body->entities->datetime[0]->value);
                 $date = new DateTime($date);
                 $date = date_format($date, 'Y-m-d');
                 return $date;
@@ -333,11 +333,12 @@ class ValidationHelper {
         $headers = array("Authorization" => "Bearer ".$configs['wit_en'], "Accept" => "application/json");
         $uri = array("v"=>"20160929","q"=>$query,"timezone"=>"America/Los_Angeles");
         $response = Unirest\Request::get("https://api.wit.ai/message",$headers,$uri);
-        // get date of first response 
-        if (isset($response->body->entities->datetime)) {
+        // get date of first response  
+
+        if (isset($response->body->entities->datetime[0])) {
             $confidence = $response->body->entities->datetime[0]->confidence;
             if ($confidence > 0.8 ) {
-                $date = date($response->body->entities->datetime[0]->values[0]->value);
+                $date = date($response->body->entities->datetime[0]->value);
                 $date = new DateTime($date);
                 $date = date_format($date, 'Y-m-d');
                 return $date;
