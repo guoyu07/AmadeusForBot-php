@@ -677,16 +677,16 @@ class FlightImage {
     // default language
     $statusLabels = array(
         'Flight' => 'Flight', 
-        'Departs' => 'Scheduled',
-        'Arrives' => 'Confirmed',  
+        'Scheduled' => 'Scheduled',
+        'Confirmed' => 'Confirmed',  
         'Status'  => strtoupper($FlightData->{'status-en'}),
         'EstimatedTimeNotSet' => "Not available"
         ); 
     // spanish
     $statusLabels_es = array(
         'Flight' =>  'Vuelo', 
-        'Departs' => 'Programado',
-        'Arrives' => 'Confirmado',   
+        'Scheduled' => 'Programado',
+        'Confirmed' => 'Confirmado',   
         'Status'  => $FlightData->{'status-es'},
         'EstimatedTimeNotSet' => "No disponible"
         ); 
@@ -700,13 +700,13 @@ class FlightImage {
         $img->text($statusLabels["Status"], $FontPathBold, 30, '#107715', 'top', 218, 85);
         // Flight Departs Arrives
         $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 167);
-        $img->text($statusLabels["Departs"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 167);
-        $img->text($statusLabels["Arrives"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 170);
+        $img->text($statusLabels["Scheduled"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 167);
+        $img->text($statusLabels["Confirmed"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 170);
         // Flight Number 
         $img->text($FlightData->airline_code.$FlightData->flight_number, $FontPathRegular, 24, '#000000', 'left', 30, 25);
         // Time 1
         $FlightData->schedule_time = date('g:i a', strtotime($FlightData->schedule_time));   
-        $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'center', -18, 20);
+        $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'center', -40, 20);
 
         //Time 2 
         if (!empty($FlightData->estimated_time)){
