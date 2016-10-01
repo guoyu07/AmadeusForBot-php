@@ -11,7 +11,7 @@ foreach ($search as $key =>$venue) {
 	$cards[$key] = $message->VenueCard($venues[$key]);
 }
 echo "<pre>";
-print_r($query);
+print_r($search);
 echo "<pre>";
 die();
 $response =  $message->GalleryMessage($cards);
