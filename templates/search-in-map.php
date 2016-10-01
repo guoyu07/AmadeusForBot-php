@@ -13,6 +13,7 @@ foreach ($search as $key =>$venue) {
 echo "<pre>";
 print_r($query);
 echo "<pre>";
+die();
 $response =  $message->GalleryMessage($cards);
 
 header("Content-Type: application/json");
