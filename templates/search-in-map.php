@@ -10,6 +10,9 @@ foreach ($search as $key =>$venue) {
 	$venues[$key]= $map->GetVenueRelevantData($venue);
 	$cards[$key] = $message->VenueCard($venues[$key]);
 }
+echo "<pre>";
+print_r($search);
+echo "<pre>";
 $response =  $message->GalleryMessage($cards);
 
 header("Content-Type: application/json");
