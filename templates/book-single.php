@@ -35,10 +35,8 @@ require_once __DIR__ . '/../src/classes.php';
  	 $error = array(
         "Departure" => "Sorry I couldnt find your city of origin: ".$search["origin"],
         "Destination" => "Sorry I couldnt find your city of destination: ".$search["destination"],
-        "InvalidDepartureDate" => "I couldnt understand your date of your departure : ".$search["departure_date"],
-        "InvalidReturnDate" => "I couldnt understand your return date : ".$search["return_date"],
+        "InvalidDepartureDate" => "I couldnt understand your date of your departure : ".$search["departure_date"],  
         "FutureDepartureDate" => "Ups, departure date must be after today: ".$search["departure_date"],
-        "FutureReturnDate" => "Ups, it seems that return date :".$search["return_date"]." is before departure date: ".$search["departure_date"],
         "FlightNotFound" => "Sorry, I couldnt find a flight with your search criteria "
  	); 
 

@@ -33,13 +33,12 @@ require_once __DIR__ . '/../src/classes.php';
  		'last_name' => $last_name
  	);
 
+
  	$error = array(
         "Departure" => "Lo siento, no pude encontrar la ciudad : ".$search["origin"],
         "Destination" => "Lo siento no pude encontrar la ciudad : ".$search["destination"],
         "InvalidDepartureDate" => "Lo siento no pude entender  la fecha de salida : ".$search["departure_date"],
-        "InvalidReturnDate" => "Lo siento no pude entender  la fecha de salida : ".$search["return_date"],
         "FutureDepartureDate" => "Lo siento la fecha de salida debe ser en posterior a la fecha actual: ".$search["departure_date"],
-        "FutureReturnDate" => "Lo siento la fecha de llegada:".$search["departure_date"]." debe ser posterior a la fecha de salida: ".$search["return_date"],
         "FlightNotFound" => "Lo siento, no pude encontrar un vuelo con tus criterios de busqueda"
  	); 
 
