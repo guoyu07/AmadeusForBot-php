@@ -63,7 +63,23 @@ $app->get('/confirmation', function ($request, $response, $args) {
    return $this->renderer->render($response, 'confirmation.php', $args);
 });
 
+/// --------------------- Maps  -----------------------------//
 
+//Maps Page
+$app->get('/map', function ($request, $response, $args) {
+    // Log Query
+    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
+    // Pass the query string to the "controler variable"
+    return $this->renderer->render($response, 'seattle-map.phtml', $args);
+});
+
+// search points 
+$app->get('/map/search/{query}/', function ($request, $response, $args) {
+    // Log Query
+    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
+    // Pass the query string to the "controler variable"
+    return $this->renderer->render($response, 'search-in-map.php', $args);
+});
 
 /// ----------------- Flight Status  -----------------------------//
 

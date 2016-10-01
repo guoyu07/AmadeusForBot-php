@@ -1,13 +1,19 @@
 <?php 
 require_once __DIR__ . '/../src/classes.php';
 
-$date = new ValidationHelper;
-
+$map = new Map;
+$message = new ChatfuelMessage;
+$cards= array();
 // $response = $date->DateInSpanish("octubre 50"); 
-$response = $date->DateInEnglish("december the 20th"); 
-echo "<pre>";
-print_r($response);
-echo "<pre>";
+$search = $map->SearchInAirport("starbucks"); 
+foreach ($search as $key =>$venue) {
+	$venues[$key]= $map->GetVenueRelevantData($venue);
+	$cards[$key] = $message->VenueCard($venues[$key]);
+}
 
-// header("Content-Type: application/json");
-// echo json_encode($response,JSON_UNESCAPED_UNICODE);
+// echo "<pre>";
+// print_r($cards);
+// echo "<pre>";
+$response =  $message->GalleryMessage($cards);
+header("Content-Type: application/json");
+echo json_encode($response,JSON_UNESCAPED_UNICODE);

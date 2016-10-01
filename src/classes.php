@@ -2,10 +2,87 @@
 
 require __DIR__ . '/../src/SimpleImage.php';
 
+/**
+*  LocusLabs Map Integration -- Seattle
+*  Use: locusLabs API ,  UniRest
+*  https://rest.locuslabs.com/v1/venue/sea/
+*  Methods: 
+*   -SearchQuery : Get results by a query string .
+*   -SearchPoi: Get data of a POI .
+*   -ParseSearchResults 
+*/
+
+class Map{
+    private $results;
+    private $message;
+    private $venues;
+
+    function SearchQuery($query) {
+        $configs = include('config.php');
+        $uri = $query;
+        $headers = array('Accept' => 'application/json', 'x-api-key' => $configs['locus_labs'] );
+        // set up uri    
+
+        if (!empty($query)) {    
+            // Do GET request
+            $this->results = Unirest\Request::get("https://rest.locuslabs.com/v1/venue/sea/search/by-query-string/".$uri,$headers);
+            if ($this->results->code == 200) {
+                return $this->results->body->data;
+            } else {
+                return $this->message['error'] = "Error: Server Error";
+            }
+            
+        } else {
+            return $this->message['error'] = "Error: Empty query";
+        }
+    }
+    function SearchPoi($poi) {
+        $configs = include('config.php');
+        $uri = $poi;
+        $headers = array('Accept' => 'application/json', 'x-api-key' => $configs['locus_labs'] );
+        // set up uri    
+
+        if (!empty($poi)) {    
+            // Do GET request
+            $this->results = Unirest\Request::get("https://rest.locuslabs.com/v1/venue/sea/poi/by-id/".$uri,$headers);
+            if ($this->results->code == 200) {
+                return $this->results->body->data;
+            } else {
+                return $this->message['error'] = "Error: Server Error";
+            }
+            
+        } else {
+            return $this->message['error'] = "Error: Empty query";
+        }
+    }
+    function SearchInAirport($query) {
+        if (!empty($query)) {
+           $this->results = $this->SearchQuery($query);
+           foreach ($this->results as $key => $value) {
+               $this->venues[$key] = $this->SearchPoi($value);
+           }
+           return $this->venues;
+        } else {
+             return $this->message['error'] = "Error: Empty query";
+        }     
+    }
+    function GetVenueRelevantData($venue) {
+       if (!empty($venue)) {
+            $this->venue["gate"]=  $venue->gate;
+            $this->venue["hours"]= $venue->hours;
+            $this->venue["image"]= "https://img.locuslabs.com/poi/".$venue->image;
+            $this->venue["terminal"]= $venue->terminal;
+            $this->venue["link"] = "bot.airportdigital.com/AirlineBotService/public/map/poi/".$venue->poiId;
+            $this->venue["name"] = $venue->name;
+            return $this->venue;
+       } else {
+           return $this->message['error'] = "Error: Venue parameter is empty";    
+       }   
+    }
+};
 
 
 
-// test
 
 
 /**
@@ -143,7 +220,7 @@ class FlightSearch {
         $headers = array('Accept' => 'application/json');
         // set up uri    
         $uri = array('apikey' => $configs['amadeus']);
-            $uri = array_merge($uri,$query); 
+        $uri = array_merge($uri,$query); 
 
         if (!empty($query)) {    
             // Do GET request
@@ -494,6 +571,7 @@ class ChatfuelMessage {
     private $Card;
     private $ButtonElement;
     private $SubtitleMessage; 
+    private $title; 
     private $imageAttachment;
 
 
@@ -569,12 +647,32 @@ class ChatfuelMessage {
         $button = $this->ButtonElement("web_url", "bot.airportdigital.com/AirlineBotService/public/check-out/Manuel/Gutierrez/", "Select");
         $buttons = array ($button);
 
-        //create cards
+        //Subtitle
         $this->SubtitleMessage = "Flight: ".$flightDetails['flightNumber']." -- ".$flightDetails['TravelClass'];
         // Add Fare to the title 
         $Cardtitle = $Cardtitle." (USD $".round($flightDetails['fare']).")";
         $this->Card = $this->CardElement($Cardtitle,$flightDetails['ImageUrl'],$this->SubtitleMessage,$buttons); 
         
+        return $this->Card;
+    }
+
+    public function VenueCard ($venueData){
+    // echo "<pre>";
+    // print_r($venueData);
+    // echo "<pre>"; 
+    // die();  
+        //Button
+        $button = $this->ButtonElement("web_url", $venueData["link"] , "Go to map");
+        $buttons = array ($button);
+
+        //Subtitle
+        $this->SubtitleMessage = $venueData["terminal"]." - ".$venueData["gate"]." - ". $venueData["hours"];
+        // Title
+        $this->title = $venueData["name"];
+        
+        // Create Card
+        $this->Card = $this->CardElement($this->title ,$venueData["image"],$this->SubtitleMessage,$buttons); 
+
         return $this->Card;
     }
    
@@ -617,9 +715,6 @@ class ChatfuelMessage {
 *   -GenerateImage : Create the Flight Itinerary Image and return the url.
 */
 class FlightImage {
-
-
-
 
 
  public function GenerateImage($FlightData,$Option) 

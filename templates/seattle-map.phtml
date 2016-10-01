@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <style type="text/css" rel="stylesheet">
+    </style>
+  <title>LocusLabs - JS SDK - Basic Example</title>
+  <script type="text/javascript" src="../public/js/locuslabs.js"></script>
+  <link media="all" rel="stylesheet" href="../public/css/all-20140602.css" />
+  <link media="all" rel="stylesheet" href="../public/css/locuslabs.css" />
+  <link media="all" href="../public/css/bootstrap.min.css" rel="stylesheet">
+  <link media="all" rel="stylesheet" href="../public/css/map-css.css" />
+<script>
+var airportDatabase;
+var airport;
+var building;
+var floor;
+var map;
+var search_location;
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function map_loaded(_map)
+{
+    map = _map;
+
+    // Show the floor specified by the query parameter 'floorId'
+    var floorId = getParameterByName('floorId');
+    if ( floorId ) {
+      // The two subsequent lines are necessary to show a specific floor of a venue.
+
+      // Hides all the floors.
+      map.getView().hideAllFloors();
+
+      // Shows the floor given.
+      map.getView().showFloor( floorId );
+    }
+
+   
+
+
+    // Get a search object for the airport.  Running it after a delay to avoid an initization race condition.
+    var search = airport.search();
+    var poiDatabase = airport.poiDatabase();
+    var venue ;
+    poiDatabase.getPoi("15",function(POI){
+     venue = POI;
+     console.log(venue.position.latitude);
+    });
+    search.search('starbucks',function (results) {
+      //get the lat and long of the first result
+      get_first_result_pos(results);
+      results.getResults().forEach(function (result,index) {
+            var floorView = map.getView().getFloorView(result.position.floorId);
+            var circle = new locuslabs.maps.Circle({ 
+                position : result.position,
+                radius : 2.0,
+                map : map,
+                fillColor : 'red',
+                strokeWeight : 1,
+                strokeColor : 'black',
+                zIndex : 5
+            });
+        });
+      // Pan and zoom the map to a more interesting part of the airport.
+      map.setCenter(new locuslabs.maps.LatLng(search_location.lat,search_location.lng));
+      map.setRadius(20);
+    });
+
+
+  
+    // Print the location of clicks to the console
+    var listener = map.addListener('click',function (event) {
+        console.log(event.latLng.toString());
+    });
+}
+
+function get_first_result_pos(_searchResult) 
+{
+  searchResult = _searchResult
+      search_location =  searchResult.getResults(); 
+      search_location =  search_location[0].position.latLng._data; 
+}
+
+function show_floor(_floor)
+{
+    floor = _floor;
+
+    // Render the map of the floor into the #map-canvas div.
+    floor.loadMap(document.getElementById('map-canvas'),map_loaded);
+}
+
+function show_building(_building)
+{
+    building = _building;
+
+    // Get the list available floors for this building, then load and show the first one.
+    var floors = building.listFloors();
+    show_floor( building.loadFloor(floors[0].floorId ) );
+}
+
+function airport_loaded(_airport)
+{
+    airport = _airport;
+
+    // Get the list available buildings for this airport, then load the first one.
+    var buildings = airport.listBuildings();
+    show_building( airport.loadBuilding( buildings[0].buildingId ) );
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    // Initialize the Account Id
+    locuslabs.setup( { accountId:"A11F4Y6SZRXH4X" },function () {
+      // Create an AirportDatabase object then load an airport.
+      airportDatabase = new locuslabs.maps.AirportDatabase();
+
+      var venueId = getParameterByName('venueId');
+      if ( venueId ) {
+        airportDatabase.loadAirport(venueId,airport_loaded);
+      }
+      else {
+        airportDatabase.loadAirport('sea',airport_loaded);
+      }
+    });
+  });
+</script>
+</head>
+<body>
+    <div id="map-canvas"></div>
+  </div>
+  </div>
+</body>
+</html>

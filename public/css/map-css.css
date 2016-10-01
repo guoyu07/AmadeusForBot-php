@@ -1,0 +1,27 @@
+html { 
+    height: 100%;
+}
+
+body { 
+    height: 100%; 
+}
+
+#map-canvas {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    
+
+}
+
+/*#description {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    line-height: normal;
+    width: 500px;
+    float: left;
+}
+
+#description div {
+    margin-bottom: 10px;
+}*/
