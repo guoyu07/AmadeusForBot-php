@@ -6,14 +6,15 @@ $message = new ChatfuelMessage;
 $cards= array();
 
 $search = $map->SearchInAirport($query); 
-foreach ($search as $key =>$venue) {
-	$venues[$key]= $map->GetVenueRelevantData($venue);
-	$cards[$key] = $message->VenueCard($venues[$key]);
-}
 echo "<pre>";
 print_r($search);
 echo "<pre>";
 die();
+foreach ($search as $key =>$venue) {
+	$venues[$key]= $map->GetVenueRelevantData($venue);
+	$cards[$key] = $message->VenueCard($venues[$key]);
+}
+
 $response =  $message->GalleryMessage($cards);
 
 header("Content-Type: application/json");
