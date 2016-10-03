@@ -9,7 +9,6 @@
   <script type="text/javascript" src="./js/locuslabs.js"></script>
   <link media="all" rel="stylesheet" href="./css/all-20140602.css" />
   <link media="all" rel="stylesheet" href="./css/locuslabs.css" />
-  <link media="all" href="./css/bootstrap.min.css" rel="stylesheet">
   <link media="all" rel="stylesheet" href="./css/map-css.css" />
   <?php echo "<script> var query = ".$poi.";  </script>"?> 
 <script>
@@ -53,23 +52,7 @@ function map_loaded(_map)
      poiDatabase.getPoi(query,function(POI){
      venue = POI;
     });
-    // search.search('starbucks',function (results) {
-    //   //get the lat and long of the first result
-    //   get_first_result_pos(results);
-    //   results.getResults().forEach(function (result,index) {
-    //         var floorView = map.getView().getFloorView(result.position.floorId);
-    //         var circle = new locuslabs.maps.Circle({ 
-    //             position : result.position,
-    //             radius : 2.0,
-    //             map : map,
-    //             fillColor : 'red',
-    //             strokeWeight : 1,
-    //             strokeColor : 'black',
-    //             zIndex : 5
-    //         });
-    //     });
-
-    // });
+ 
     var circle = new locuslabs.maps.Circle({ 
                 position : venue.position,
                 radius : 2.0,

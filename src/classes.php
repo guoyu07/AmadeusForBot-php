@@ -16,6 +16,32 @@ class Map{
     private $results;
     private $message;
     private $venues;
+    private $query;
+    private $entities;
+    
+
+    function UnderstandQuery($text) {
+        $configs = include('config.php');
+        $headers = array("Authorization" => "Bearer ".$configs['wit_en'], "Accept" => "application/json");
+        $uri = array("v"=>"20161003","q"=>$text,"timezone"=>"America/Los_Angeles");
+        $this->query = Unirest\Request::get("https://api.wit.ai/message",$headers,$uri);
+        if ($this->query->code == 200) {
+
+            $this->entities = $this->query->body->entities;
+ 
+            if (is_object($this->entities) && (count(get_object_vars($this->entities)) > 0)) {
+                if ($this->entities->poi[0]->confidence > 0.8) {
+                    return $this->entities->poi[0]->value;
+                } else {
+                    return $this->message['error'] = "Not sure about your response";
+                }      
+            }else {
+                return $this->message['error'] = "No results found";
+            }
+        } else {
+            return $this->message['error'] = "Error: Server Error";
+        }
+    }
 
     function SearchQuery($query) {
         $configs = include('config.php');
@@ -27,6 +53,7 @@ class Map{
             // Do GET request
             $this->results = Unirest\Request::get("https://rest.locuslabs.com/v1/venue/sea/search/by-query-string/".$uri,$headers);
             if ($this->results->code == 200) {
+                
                 return $this->results->body->data;
             } else {
                 return $this->message['error'] = "Error: Server Error";
@@ -413,7 +440,7 @@ class ValidationHelper {
     {
         $configs = include('config.php');
         $headers = array("Authorization" => "Bearer ".$configs['wit_en'], "Accept" => "application/json");
-        $uri = array("v"=>"20160929","q"=>$query,"timezone"=>"America/Los_Angeles");
+        $uri = array("v"=>"20161003","q"=>$query,"timezone"=>"America/Los_Angeles");
         $response = Unirest\Request::get("https://api.wit.ai/message",$headers,$uri);
         // get date of first response  
 
