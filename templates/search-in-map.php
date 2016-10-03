@@ -8,9 +8,15 @@ $cards= array();
 $search = $map->UnderstandQuery($query); 
 if (!isset($search["errror"])) {
 	$results = $map->SearchInAirport($search); 
+	$index = 0;
 	foreach ($results as $key =>$venue) {
-		$venues[$key]= $map->GetVenueRelevantData($venue);
-		$cards[$key] = $message->VenueCard($venues[$key]);
+		if ($index <= 8 ) {
+		 $venues[$key]= $map->GetVenueRelevantData($venue);
+		 $cards[$key] = $message->VenueCard($venues[$key]);
+		 $index ++;
+		} else {
+			break; 
+		}
 	}
 
 	$response =  $message->GalleryMessage($cards);
