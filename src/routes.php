@@ -68,8 +68,9 @@ $app->get('/confirmation', function ($request, $response, $args) {
 //Maps Page
 $app->get('/map', function ($request, $response, $args) {
     // Log Query
-    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
+    // $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
     // Pass the query string to the "controler variable"
+    $args = $request->getQueryParams();
     return $this->renderer->render($response, 'seattle-map.phtml', $args);
 });
 

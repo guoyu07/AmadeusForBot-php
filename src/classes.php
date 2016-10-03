@@ -67,12 +67,17 @@ class Map{
         }     
     }
     function GetVenueRelevantData($venue) {
+       
        if (!empty($venue)) {
-            $this->venue["gate"]=  $venue->gate;
-            $this->venue["hours"]= $venue->hours;
-            $this->venue["image"]= "https://img.locuslabs.com/poi/".$venue->image;
-            $this->venue["terminal"]= $venue->terminal;
-            $this->venue["link"] = "bot.airportdigital.com/AirlineBotService/public/map/poi/".$venue->poiId;
+            if (!empty($venue->gate)) { $this->venue["gate"]=  $venue->gate;} else {$this->venue["gate"]= " ";}
+            if (!empty($venue->hours)) {$this->venue["hours"]= $venue->hours;} else {$this->venue["hours"]= " ";}
+            if (!empty($venue->image)) {
+             $this->venue["image"]= "https://img.locuslabs.com/poi/".$venue->image; 
+            } else {
+             $this->venue["image"]= "http://droidlessons.com/wp-content/themes/TechNews/images/img_not_available.jpg";
+            }
+            if (!empty($venue->image)) { $this->venue["terminal"]= $venue->terminal;} else {$this->venue["terminal"]= " ";}
+            $this->venue["link"] = "bot.airportdigital.com/AirlineBotService/public/map?poi=".$venue->poiId;
             $this->venue["name"] = $venue->name;
             return $this->venue;
        } else {
@@ -657,10 +662,7 @@ class ChatfuelMessage {
     }
 
     public function VenueCard ($venueData){
-    // echo "<pre>";
-    // print_r($venueData);
-    // echo "<pre>"; 
-    // die();  
+
         //Button
         $button = $this->ButtonElement("web_url", $venueData["link"] , "Go to map");
         $buttons = array ($button);

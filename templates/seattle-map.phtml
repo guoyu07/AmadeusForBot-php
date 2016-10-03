@@ -6,11 +6,12 @@
    <style type="text/css" rel="stylesheet">
     </style>
   <title>LocusLabs - JS SDK - Basic Example</title>
-  <script type="text/javascript" src="../public/js/locuslabs.js"></script>
-  <link media="all" rel="stylesheet" href="../public/css/all-20140602.css" />
-  <link media="all" rel="stylesheet" href="../public/css/locuslabs.css" />
-  <link media="all" href="../public/css/bootstrap.min.css" rel="stylesheet">
-  <link media="all" rel="stylesheet" href="../public/css/map-css.css" />
+  <script type="text/javascript" src="./js/locuslabs.js"></script>
+  <link media="all" rel="stylesheet" href="./css/all-20140602.css" />
+  <link media="all" rel="stylesheet" href="./css/locuslabs.css" />
+  <link media="all" href="./css/bootstrap.min.css" rel="stylesheet">
+  <link media="all" rel="stylesheet" href="./css/map-css.css" />
+  <?php echo "<script> var query = ".$poi.";  </script>"?> 
 <script>
 var airportDatabase;
 var airport;
@@ -49,17 +50,28 @@ function map_loaded(_map)
     var search = airport.search();
     var poiDatabase = airport.poiDatabase();
     var venue ;
-    poiDatabase.getPoi("15",function(POI){
+     poiDatabase.getPoi(query,function(POI){
      venue = POI;
-     console.log(venue.position.latitude);
     });
-    search.search('starbucks',function (results) {
-      //get the lat and long of the first result
-      get_first_result_pos(results);
-      results.getResults().forEach(function (result,index) {
-            var floorView = map.getView().getFloorView(result.position.floorId);
-            var circle = new locuslabs.maps.Circle({ 
-                position : result.position,
+    // search.search('starbucks',function (results) {
+    //   //get the lat and long of the first result
+    //   get_first_result_pos(results);
+    //   results.getResults().forEach(function (result,index) {
+    //         var floorView = map.getView().getFloorView(result.position.floorId);
+    //         var circle = new locuslabs.maps.Circle({ 
+    //             position : result.position,
+    //             radius : 2.0,
+    //             map : map,
+    //             fillColor : 'red',
+    //             strokeWeight : 1,
+    //             strokeColor : 'black',
+    //             zIndex : 5
+    //         });
+    //     });
+
+    // });
+    var circle = new locuslabs.maps.Circle({ 
+                position : venue.position,
                 radius : 2.0,
                 map : map,
                 fillColor : 'red',
@@ -67,13 +79,9 @@ function map_loaded(_map)
                 strokeColor : 'black',
                 zIndex : 5
             });
-        });
-      // Pan and zoom the map to a more interesting part of the airport.
-      map.setCenter(new locuslabs.maps.LatLng(search_location.lat,search_location.lng));
-      map.setRadius(20);
-    });
-
-
+    // Pan and zoom the map to a more interesting part of the airport.
+    map.setCenter(new locuslabs.maps.LatLng(venue.position.latitude,venue.position.longitude));
+    map.setRadius(20);
   
     // Print the location of clicks to the console
     var listener = map.addListener('click',function (event) {
