@@ -19,7 +19,8 @@ var floor;
 var map;
 var search_location;
 
-function getParameterByName(name) {
+function getParameterByName(name) 
+{
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
@@ -29,7 +30,7 @@ function getParameterByName(name) {
 function map_loaded(_map)
 {
     map = _map;
-
+    
     // Show the floor specified by the query parameter 'floorId'
     var floorId = getParameterByName('floorId');
     if ( floorId ) {
@@ -41,18 +42,15 @@ function map_loaded(_map)
       // Shows the floor given.
       map.getView().showFloor( floorId );
     }
-
-   
-
-
+    
     // Get a search object for the airport.  Running it after a delay to avoid an initization race condition.
-    var search = airport.search();
+    
     var poiDatabase = airport.poiDatabase();
     var venue ;
      poiDatabase.getPoi(query,function(POI){
      venue = POI;
     });
- 
+    // Draw a circle in the venue.
     var circle = new locuslabs.maps.Circle({ 
                 position : venue.position,
                 radius : 2.0,
@@ -68,15 +66,8 @@ function map_loaded(_map)
   
     // Print the location of clicks to the console
     var listener = map.addListener('click',function (event) {
-        console.log(event.latLng.toString());
+    console.log("Content Done");
     });
-}
-
-function get_first_result_pos(_searchResult) 
-{
-  searchResult = _searchResult
-      search_location =  searchResult.getResults(); 
-      search_location =  search_location[0].position.latLng._data; 
 }
 
 function show_floor(_floor)
@@ -99,13 +90,24 @@ function show_building(_building)
 function airport_loaded(_airport)
 {
     airport = _airport;
-
+    loading(false);
     // Get the list available buildings for this airport, then load the first one.
     var buildings = airport.listBuildings();
     show_building( airport.loadBuilding( buildings[0].buildingId ) );
 }
+function loading(state) {
+  if (state) {
+      document.getElementById("loader").className = document.getElementById("loader").className.replace( /(?:^|\s)loader-hidden(?!\S)/g , '' );
+  } else {
+     console.log("document finished loading");
+     document.getElementById("loader").className += " loader-hidden";
+  }
+}
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function(event) 
+{
+    
+    loading(true);
     // Initialize the Account Id
     locuslabs.setup( { accountId:"A11F4Y6SZRXH4X" },function () {
       // Create an AirportDatabase object then load an airport.
@@ -119,10 +121,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         airportDatabase.loadAirport('sea',airport_loaded);
       }
     });
-  });
+});
 </script>
 </head>
 <body>
+   <div id="loader" class="loader-hidden"></div>
     <div id="map-canvas"></div>
   </div>
   </div>
