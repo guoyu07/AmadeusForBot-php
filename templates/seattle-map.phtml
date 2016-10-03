@@ -30,7 +30,7 @@ function getParameterByName(name)
 function map_loaded(_map)
 {
     map = _map;
-    
+
     // Show the floor specified by the query parameter 'floorId'
     var floorId = getParameterByName('floorId');
     if ( floorId ) {
@@ -97,6 +97,7 @@ function airport_loaded(_airport)
 }
 function loading(state) {
   if (state) {
+      console.log("document start loading");
       document.getElementById("loader").className = document.getElementById("loader").className.replace( /(?:^|\s)loader-hidden(?!\S)/g , '' );
   } else {
      console.log("document finished loading");
