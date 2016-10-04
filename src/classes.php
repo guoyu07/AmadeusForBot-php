@@ -18,6 +18,9 @@ class Map{
     private $venues;
     private $query;
     private $entities;
+    private $poi;
+    private $gate;
+    private $building;
     
 
     function UnderstandQuery($text) {
@@ -33,25 +36,52 @@ class Map{
             if (is_object($this->entities) && (count(get_object_vars($this->entities)) > 0)) {
                
                $vars = get_object_vars($this->entities);
-               print_r($vars);
-               var_dump(isset($vars["building"][0]));
-               $poi = $vars["poi"][0];
-
-               die();
-
-                if ($this->entities->poi[0]->confidence > 0.8) {
-                    return $this->entities->poi[0]->value;
+               
+                // Poi data
+                if (isset($vars["poi"][0])) {
+                 $this->poi = $vars["poi"][0];
                 } else {
-                    return $this->message['error'] = "Not sure about your response";
-                }      
+                   return $this->message['error'] = "No results found";
+                }
+                // Gate Data 
+                if (isset($vars["gate"][0])) {
+                 $this->gate = $vars["gate"][0];
+                } 
+
+                // Building  Data 
+                if (isset($vars["building"][0])) {
+                 $this->building = $vars["building"][0];
+                } 
+
+                if ($this->poi->confidence > 0.8) {
+                   $this->results["poi"] =  $this->poi->value;
+                   if(isset($this->building) && $this->building->confidence > 0.8) {
+                     $this->results["building"] = $this->building->value;
+                   }
+                   if(isset($this->gate) && $this->gate->confidence > 0.8) {
+                     $this->results["gate"] = $this->gate->value;
+                   }
+                   return $this->results;
+                } else {
+                    return array('error' => "Not sure about your response");
+                }    
+                
             }else {
-                return $this->message['error'] = "No results found";
+                return array('error' => "No results found");
             }
         } else {
-            return $this->message['error'] = "Error: Server Error";
+            return array('error' => "Error: Server Error");
         }
     }
-
+  
+    function FilterPoi($venue, $filter, $key) {
+            if (array_key_exists($key, $venue)) {
+             if (stristr($venue[$key], $filter)) {return true ;} else {return false;}   
+            } else {
+                return false;
+            }     
+    }
+    
     function SearchQuery($query) {
         $configs = include('config.php');
         $uri = $query;
