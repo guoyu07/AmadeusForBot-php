@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
    <style type="text/css" rel="stylesheet">
-    </style>
+    
+   </style>
   <title>LocusLabs - JS SDK - Basic Example</title>
+  <link media="all" rel="stylesheet" href="./css/map-css.css" />
   <script type="text/javascript" src="./js/locuslabs.js"></script>
   <link media="all" rel="stylesheet" href="./css/all-20140602.css" />
-  <link media="all" rel="stylesheet" href="./css/locuslabs.css" />
-  <link media="all" rel="stylesheet" href="./css/map-css.css" />
+  <link media="all" rel="stylesheet" href="./css/locuslabs.css"/>
   <?php echo "<script> var query = ".$poi.";  </script>"?> 
 <script>
 var airportDatabase;
@@ -63,10 +66,12 @@ function map_loaded(_map)
     // Pan and zoom the map to a more interesting part of the airport.
     map.setCenter(new locuslabs.maps.LatLng(venue.position.latitude,venue.position.longitude));
     map.setRadius(20);
+    loading(false);
   
     // Print the location of clicks to the console
     var listener = map.addListener('click',function (event) {
     console.log("Content Done");
+
     });
 }
 
@@ -90,7 +95,6 @@ function show_building(_building)
 function airport_loaded(_airport)
 {
     airport = _airport;
-    loading(false);
     // Get the list available buildings for this airport, then load the first one.
     var buildings = airport.listBuildings();
     show_building( airport.loadBuilding( buildings[0].buildingId ) );
@@ -98,12 +102,15 @@ function airport_loaded(_airport)
 function loading(state) {
   if (state) {
       console.log("document start loading");
-      document.getElementById("loader").className = document.getElementById("loader").className.replace( /(?:^|\s)loader-hidden(?!\S)/g , '' );
+
+      document.getElementById("loading-container").className = document.getElementById("loading-container").className.replace( /(?:^|\s)loader-hidden(?!\S)/g , '' );
   } else {
      console.log("document finished loading");
-     document.getElementById("loader").className += " loader-hidden";
+     document.getElementById("loading-container").className += " loader-hidden";
+     document.getElementById("map-canvas").className = document.getElementById("map-canvas").className.replace( /(?:^|\s)hide-map(?!\S)/g , '' );
   }
 }
+
 
 document.addEventListener("DOMContentLoaded", function(event) 
 {
@@ -126,8 +133,17 @@ document.addEventListener("DOMContentLoaded", function(event)
 </script>
 </head>
 <body>
-   <div id="loader" class="loader-hidden"></div>
-    <div id="map-canvas"></div>
+   <div id="loading-container" class="loader-hidden" style="
+        height: 100%;
+        width: 100%; 
+        background-color: #191919;
+        overflow: hidden;
+        text-align: center;
+        vertical-align: middle;">
+     <div id="loader"></div>
+     <div class="loading-label"> <p>Just a sec, Map will be displayed soon :) </p> </div>
+   </div>
+    <div id="map-canvas" class"hide-map"></div>
   </div>
   </div>
 </body>
