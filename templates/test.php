@@ -5,7 +5,7 @@ $map = new Map;
 $message = new ChatfuelMessage;
 $cards= array();
 // $response = $date->DateInSpanish("octubre 50"); 
-$search = $map->UnderstandQuery("Where is a starbucks near american checkin?"); 
+$search = $map->UnderstandQuery("Where I can find pizza near gate d11"); 
 
 
 // foreach ($search as $key =>$venue) {

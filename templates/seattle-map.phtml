@@ -67,13 +67,13 @@
         // Pan and zoom the map to a more interesting part of the airport.
         map.setCenter(new locuslabs.maps.LatLng(venue.position.latitude,venue.position.longitude));
         map.setRadius(20);
+        map.getView().showPoiPopup(venue.poiId);
         loading(false);
-      
+        
         // Print the location of clicks to the console
-        var listener = map.addListener('click',function (event) {
-        console.log("Content Done");
-
-        });
+        // var listener = map.addListener('click',function (event) {
+        // console.log("Content Done");
+        // });
     }
 
     function show_floor(_floor)
