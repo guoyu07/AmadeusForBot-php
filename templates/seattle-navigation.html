@@ -80,7 +80,9 @@
                       draggable : true,
                       zIndex: 0
                   });
-                    map.setRadius(30);
+
+                  // Center Map
+                    map.setRadius(50);
                     map.setCenter(new locuslabs.maps.LatLng(d7.position.latitude,d7.position.longitude));
                   // Setup hooks to detect if the markers are dragged to some other position
                   setup_dragging_hooks();
