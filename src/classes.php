@@ -806,9 +806,9 @@ class FlightImage {
         $img = new SimpleImage($ImagePath);
         //STOPS 
         if ($FlightData["stops"] > 1) {
-        $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);
+        $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#0060a9', 'top', -6, 228);
         }else{
-         $img->text("Direct", $FontPathRegular, 24, '#EC1F27', 'top', -6, 228);   
+         $img->text("Direct", $FontPathRegular, 24, '#0060a9', 'top', -6, 228);   
         }
         
         // DEPARTURE TIME
