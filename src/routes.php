@@ -82,6 +82,12 @@ $app->get('/map/search/{query}/', function ($request, $response, $args) {
     return $this->renderer->render($response, 'search-in-map.php', $args);
 });
 
+// navigation
+$app->get('/map/navigate', function ($request, $response, $args) {
+    // Log Query
+    return $this->renderer->render($response, 'seattle-navigation.html', $args);
+});
+
 /// ----------------- Flight Status  -----------------------------//
 
 // Flight status end point 

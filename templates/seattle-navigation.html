@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <meta name="viewport" content="height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <style type="text/css" rel="stylesheet">
+    
+   </style>
+  <title>Map Details</title>
+  <link media="all" rel="stylesheet" href="../css/map-css.css" />
+  <script type="text/javascript" src="../js/locuslabs.js"></script>
+  <script type="text/javascript" src="../js/example-setup.js"></script>
+  <link media="all" rel="stylesheet" href="../css/all-20140602.css" />
+  <link media="all" rel="stylesheet" href="../css/locuslabs.css"/>
+  <script>
+  /*
+   *
+   * This example finds gates D7, C12 and the Alaksa Lodge, places markers on them then navigates a path between them.
+   * Additionally, it monitors the position of the markers and updates the navigation if they have been dragged to
+   * some other location.
+   *
+   */
+  var navPoint;
+
+  var d7, d7Marker, c12, c12Marker, alaskaLodge, alaskaLodgeMarker;
+
+  var navPath;
+
+
+
+  /*
+   * This function is called once the basic map has been set up and loaded in example-setup.js.
+   */
+  function example_ready() {
+      
+      // Get a search object so that we can find our destinations
+      var search = airport.search();
+
+      // Find Gate D7
+      search.search('gate:d7',function (results) {
+          d7 = results.getResults()[0];
+          var floorView = map.getView().getFloorView(d7.position.floorId);
+          map.set('floorId',d7.position.floorId);
+
+          // Place a marker at Gate D7, note that the marker is marked as draggable
+          d7Marker = new locuslabs.maps.Marker({
+              icon : '../images/pin-plane-takeoff.svg',
+              position : d7.position,
+              map : map,
+              draggable : true
+          });
+
+          // Find the Alaksa Lodge
+          search.search('alaska lodge',function (results) {
+              alaskaLodge = results.getResults()[0]
+              
+              // Place a marker at the Alaska Lodge
+              alaskaLodgeMarker = new locuslabs.maps.Marker({
+                  icon : {
+                      anchor : new locuslabs.maps.Point(20,19),
+                      url : '../images/pin_poi.png'
+                  },
+                  position : alaskaLodge.position,
+                  map : map,
+                  draggable : true
+              });
+
+              // Find Gate C12
+              search.search('gate:c11',function (results) {
+                  c12 = results.getResults()[0];
+
+                  // Place a marker at C12
+                  c12Marker = new locuslabs.maps.Marker({
+                      icon : '../images/pin-plane-takeoff.svg',
+                      position : c12.position,
+                      map : map,
+                      draggable : true,
+                      zIndex: 0
+                  });
+                    map.setRadius(30);
+                    map.setCenter(new locuslabs.maps.LatLng(d7.position.latitude,d7.position.longitude));
+                  // Setup hooks to detect if the markers are dragged to some other position
+                  setup_dragging_hooks();
+
+                  // Update the nav path now that we have found all of our destinations
+                  update_navpath();
+                  
+              });
+          });
+      });
+  }
+
+  /*
+   * Updates the navpath on the map, creating it if it doesn't already exist.
+   */
+  function update_navpath() {
+      // If the navpath doesn't already exist, create it.
+      if (!navPath) {
+          var floorView = map.getView().getFloorView(d7.position.floorId);
+          navPath = new locuslabs.maps.NavLine();
+          navPath.setIntervalTime( 200 );
+          navPath.setNumberOfSymbols( 10 );
+          navPath.setFloor( floorView );
+      }
+
+      // Navigate from D7 to Alaska Lodge, then to C12.
+      airport.navigate(d7.position,[ alaskaLodge.position, c12.position ],function (navigationPath) {
+          var path = [];
+
+          // Add all of the waypoint LatLngs to the path array
+          navigationPath.waypoints.forEach(function (waypoint,i) {
+              path.push( waypoint.latLng );
+          });
+
+          // Update display by updateing the NavPath's path
+          navPath.setPath(path);
+
+          // Update the eta and distance
+          document.getElementById('eta').innerText = (navigationPath.eta.toFixed(2));
+          document.getElementById('distance').innerText = (navigationPath.distance.toFixed(2));
+      });
+  }
+
+  function setup_dragging_hooks() {
+      // Listen for changes in the marker positions, then use the updated locations as the new LatLngs of the 
+      // destinations.
+      d7Marker.addListener('position_changed',function () {
+          d7.position = d7Marker.getPosition();
+          update_navpath();
+      });
+
+      c12Marker.addListener('position_changed',function () {
+          c12.position = c12Marker.getPosition();
+          update_navpath();
+      });
+      alaskaLodgeMarker.addListener('position_changed',function () {
+          alaskaLodge.position = alaskaLodgeMarker.getPosition();
+          update_navpath();
+      });
+  }
+
+  function loading(state) {
+      if (state) {
+          console.log("document start loading");
+          document.getElementById("loading-container").className = document.getElementById("loading-container").className.replace( /(?:^|\s)loader-hidden(?!\S)/g , '' );
+      } else {
+         console.log("document finished loading");
+         document.getElementById("loading-container").className += " loader-hidden";
+         document.getElementById("map-canvas").className = document.getElementById("map-canvas").className.replace( /(?:^|\s)hide-map(?!\S)/g , '' );
+      }
+    }
+
+  </script>
+
+</head>
+<body>
+   <div id="loading-container" class="loader-hidden" style="
+        height: 100%;
+        width: 100%; 
+        background-color: #191919;
+        overflow: hidden;
+        text-align: center;
+        vertical-align: middle;">
+     <div id="loader"></div>
+     <div class="loading-label"> <p>loading.. </p> </div>
+   </div>
+    <div id="map-canvas" class"hide-map"></div>
+  </div>
+  </div>
+</body>
+
+</html>
