@@ -66,9 +66,10 @@
                 });
         // Pan and zoom the map to a more interesting part of the airport.
         map.getView().showPoiPopup(venue.poiId); 
-        CenterMap(map,venue); 
+        
         loading(false);
         setTimeout(modifyPopUpHeight, 300);
+        CenterMap(map,venue); 
 
 
         
@@ -115,8 +116,9 @@
     function CenterMap(_map,_venue) {
       map = _map; 
       venue = _venue;
+      map.setRadius(40);
       map.setCenter(new locuslabs.maps.LatLng(venue.position.latitude,venue.position.longitude));
-      map.setRadius(20);
+      
     }
 
     document.addEventListener("DOMContentLoaded", function(event) 
@@ -164,7 +166,7 @@
        if (poipopUp != null) {
         if (poipopUp["ll_poi-box"].style["top"] != "78vh") {
           console.log(poipopUp["ll_poi-box"].style["top"] = "78vh");
-          console.log(mapcontainer.style.height = "400%");
+          console.log(mapcontainer.style.height = "90vh");
           setTimeout(modifyPopUpHeight, 100);
         }
       }else{setTimeout(modifyPopUpHeight, 100)};
