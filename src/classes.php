@@ -734,9 +734,12 @@ class ChatfuelMessage {
         $buttons = array ($button);
 
         //Subtitle
-        $this->SubtitleMessage = $venueData["terminal"]." - ".$venueData["gate"]." - ". $venueData["hours"];
+        $this->SubtitleMessage = $venueData["terminal"]." - ". $venueData["hours"];
         // Title
-        $this->title = $venueData["name"];
+        $this->title = $venueData["name"]; 
+        if (!empty($venueData["gate"])){
+            $this->title = $this->title." @ ".$venueData["gate"];
+        }
         
         // Create Card
         $this->Card = $this->CardElement($this->title ,$venueData["image"],$this->SubtitleMessage,$buttons); 
