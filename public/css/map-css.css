@@ -10,6 +10,7 @@ body {
     height: 100%;
     width: 100%;
     overflow: hidden;
+    display:block;
 }
 .map-hidden {
      display:none;
@@ -44,4 +45,13 @@ body {
 }
 [name="locuslabs-js-sdk-container"] .ll_poi-navigate-button {
     margin-top: 10.5px !important;
+}
+[name="locuslabs-js-sdk-container"] .ll_search-bar-field-region .ll_search-field  {
+    font-size: 16px !important;
+}
+[name=locuslabs-js-sdk-container] .ll_search-bar-field-region .ll_icon-clear-field {
+    top: 10px !important; 
+}
+[name=locuslabs-js-sdk-container] .ll_search-bar-field-region .ll_title-bar-back {
+     top: 10px !important; 
 }
