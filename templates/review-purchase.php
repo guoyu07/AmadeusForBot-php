@@ -19,8 +19,8 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
     <title>Review and Purchase</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,300,700,600" rel="stylesheet" type='text/css'>
   </head>
 
@@ -35,7 +35,7 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button-->
-          <a class="navbar-brand" href="#"><img src="<?php echo $imagesPath ?>logo-avianca.png"/></a>
+          <a class="navbar-brand" href="#"><img src="./check-out-images/logo-copa.png"/></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
         </div><!--/.navbar-collapse -->

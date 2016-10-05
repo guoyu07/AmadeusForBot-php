@@ -22,7 +22,7 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
 
     <!-- Bootstrap core CSS -->
     <link href="<?php echo $AwsHost ?>css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo $AwsHost ?>css/style.css" rel="stylesheet">
+    <link href="../../../css/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,300,700,600" rel="stylesheet" type='text/css'>
   </head>
 
@@ -37,7 +37,7 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button-->
-          <a class="navbar-brand" href="#"><img src="<?php echo $imagesPath ?>logo-avianca.png"/></a>
+          <a class="navbar-brand" href="#"><img src="../../../check-out-images/logo-copa.png"/></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
         </div><!--/.navbar-collapse -->
@@ -46,7 +46,7 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
     <div class="container">
       <div class="row header">
             <h1>Traveller Info</h1>
-            <a class="red passport"><img src="<?php echo $imagesPath ?>icon-passport.png"> Scan Passport</a>
+            <a class="red passport"><img src="../../../check-out-images/icon-passport.png"> Scan Passport</a>
         </div>
       <div class="row">
         <div class="col-md-12 inner-content traveller">

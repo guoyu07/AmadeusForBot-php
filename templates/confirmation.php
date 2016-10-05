@@ -20,8 +20,8 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
     <title>Booking Confirmation</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,300,700,600" rel="stylesheet" type='text/css'>
   </head>
 
@@ -36,7 +36,7 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button-->
-          <a class="navbar-brand" href="#"><img src="<?php echo $imagesPath ?>logo-avianca.png"/></a>
+          <a class="navbar-brand" href="#"><img src="./check-out-images/logo-copa.png"/></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
         </div><!--/.navbar-collapse -->
@@ -54,10 +54,31 @@ $AwsHost = 'http://bot.airportdigital.com/AirlineBotService/public/';
           <span class="red">juanrt@gmail.com.</span></p>
        </div>
       </div>
-      <div class="row">
-            <a type="button" class="btn btn-default bt-lg btn-blue" href="https://www.messenger.com/t/280583632340336"><img src="<?php echo $imagesPath ?>messenger.png">Back to Messenger</a>
+      <!-- <div class="row">
+            <a type="button" class="btn btn-default bt-lg btn-blue" href="https://www.messenger.com/t/280583632340336"><img src="./check-out-images/messenger.png">Back to Messenger</a>
+            
       </div>
+        <script>
 
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId: "APP_ID",
+            xfbml: true,
+            version: "v2.6"
+          });
+
+        };
+
+        (function(d, s, id){
+           var js, fjs = d.getElementsByTagName(s)[0];
+           if (d.getElementById(id)) { return; }
+           js = d.createElement(s); js.id = id;
+           js.src = "//connect.facebook.net/en_US/sdk.js";
+           fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+  </script> -->
+    
 
       <footer>
         <p>&copy; 2016 AirportDigital</p>
