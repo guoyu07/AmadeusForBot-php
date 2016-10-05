@@ -741,7 +741,7 @@ class ChatfuelMessage {
         $this->SubtitleMessage = $venueData["terminal"]." - ". $venueData["hours"];
         // Title
         $this->title = $venueData["name"]; 
-        if (($venueData["gate"])){
+        if ($venueData["gate"] != "" or $venueData["gate"] != " "){
             $this->title = $this->title." @ ".$venueData["gate"];
         }
         
