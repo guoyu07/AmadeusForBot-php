@@ -68,7 +68,7 @@
         map.getView().showPoiPopup(venue.poiId); 
         
         loading(false);
-        setTimeout(modifyPopUpHeight, 300);
+        setTimeout(modifyPopUpHeight, 50);
         CenterMap(map,venue); 
 
 
@@ -165,11 +165,11 @@
        
        if (poipopUp != null) {
         if (poipopUp["ll_poi-box"].style["top"] != "78vh") {
-          console.log(poipopUp["ll_poi-box"].style["top"] = "78vh");
-          console.log(mapcontainer.style.height = "150vh");
-          setTimeout(modifyPopUpHeight, 100);
+          poipopUp["ll_poi-box"].style["top"] = "78vh";
+          mapcontainer.style.height = "150vh";
+          setTimeout(modifyPopUpHeight, 50);
         }
-      }else{setTimeout(modifyPopUpHeight, 100)};
+      }else{setTimeout(modifyPopUpHeight, 50)};
     }
      
 </script>
