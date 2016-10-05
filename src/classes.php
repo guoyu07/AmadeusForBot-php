@@ -729,15 +729,19 @@ class ChatfuelMessage {
 
     public function VenueCard ($venueData){
 
+        // clean array
+        array_filter($venueData);
+       
         //Button
         $button = $this->ButtonElement("web_url", $venueData["link"] , "Go to map");
         $buttons = array ($button);
+
 
         //Subtitle
         $this->SubtitleMessage = $venueData["terminal"]." - ". $venueData["hours"];
         // Title
         $this->title = $venueData["name"]; 
-        if (!empty($venueData["gate"])){
+        if (($venueData["gate"])){
             $this->title = $this->title." @ ".$venueData["gate"];
         }
         
