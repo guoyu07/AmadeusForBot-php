@@ -898,9 +898,9 @@ class FlightImage {
         $img->text($FlightData->location, $FontPathRegular, 22, '#a9a9a9', 'top', 195, 269);
 
         //City 1 Bogota Big
-        $img->text("BOG", $FontPathLight, 62, '#ec1f27', 'left', 22, 140);
+        $img->text("BOG", $FontPathLight, 62, '#0060a9', 'left', 22, 140);
         // City 2  BIG
-        $img->text($FlightData->airport, $FontPathLight, 62, '#ec1f27', 'right', -85, 140);
+        $img->text($FlightData->airport, $FontPathLight, 62, '#0060a9', 'right', -85, 140);
         
         //Once Created set path to be saved 
 
