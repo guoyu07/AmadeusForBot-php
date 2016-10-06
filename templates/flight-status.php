@@ -13,8 +13,8 @@ $flightData = array();
 $lang = "en";
 
 $label = array(
-	"button_1" => "Go to Gate",
-	"button_2" => "Suscribe",
+	"button_1" => "Navigate to Gate",
+	"button_2" => "Subscribe to Alerts",
 	"Subtitle" => "Flight Details"
 );
 
