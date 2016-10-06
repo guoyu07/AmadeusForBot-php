@@ -13,14 +13,14 @@ $flightData = array();
 $lang = "en";
 
 $label = array(
-	"button_1" => "Ir a sala",
-	"button_2" => "Suscribirse",
-	"Subtitle" => "Detalles del Vuelo"
+	"button_1" => "Go to Gate",
+	"button_2" => "Suscribe",
+	"Subtitle" => "Flight Details"
 );
 
 $error = array(
-	"Number" => "Lo sentimos el numero de vuelo es incorrecto: ".$flight_number,
-	"Flight" => "Lo sentimos no pudimos encontrar el vuelo: ".$flight_number." en ".$type."s"
+	"Number" => "I am sorry, The flight yu provide is incorrect: ".$flight_number,
+	"Flight" => "I am sorry, I couldnt find your flight: ".$flight_number." in ".$type."s"
 	);
 
 //------- Data Validation ---------------//
