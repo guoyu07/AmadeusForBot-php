@@ -13,9 +13,9 @@ $flightData = array();
 $lang = "en";
 
 $label = array(
-	"button_1" => "Navigate to Gate C11",
+	"button_1" => "Navigate to Gate",
 	"button_2" => "Subscribe to Alerts",
-	"Subtitle" => "Flight Details"
+	"Subtitle" => "Departing from Gate C11"
 );
 
 $error = array(
