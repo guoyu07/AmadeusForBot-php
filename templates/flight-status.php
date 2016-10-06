@@ -13,7 +13,7 @@ $flightData = array();
 $lang = "en";
 
 $label = array(
-	"button_1" => "Navigate to Gate",
+	"button_1" => "Navigate to Gate C11",
 	"button_2" => "Subscribe to Alerts",
 	"Subtitle" => "Flight Details"
 );
@@ -51,7 +51,7 @@ if (is_array($flight_number)) {
 	  $FlightImage = $flightStatusImage->GenerateFlightStatusImage($flight,$lang);
 	  $flightData["ImageUrl"] = $FlightImage["url"];
 	  //prepare message
-	  $button_1 = $chatfuel->ButtonElement("web_url", "http://bot.airportdigital.com/AirlineBotService/public/map/navigate", $label["button_1"]);
+	  $button_1 = $chatfuel->ButtonElement("web_url", "http://bot.airportdigital.com/AirlineBotService/public/map?poi=92", $label["button_1"]);
 	  $button_2 = $chatfuel->ButtonElement("web_url", "http://eldorado2016.wpengine.com/en/", $label["button_2"]);
 
 	  $buttons = array($button_1,$button_2); 
