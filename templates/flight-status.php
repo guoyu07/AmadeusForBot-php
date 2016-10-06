@@ -10,7 +10,7 @@ $flightStatusImage = new FlightImage;
 $flightData = array();
 
 //------- Language Labels and settings ---------------//
-$lang = "es";
+$lang = "en";
 
 $label = array(
 	"button_1" => "Ir a sala",
