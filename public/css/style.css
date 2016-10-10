@@ -11,8 +11,8 @@ body {
 	font-size: 16px;
 }
 .navbar-inverse {
-    background-color: #0060a9;
-    border-color: #0060a9;
+    background-color: #003366;
+    border-color: #003366;
 }
 .navbar-brand {
     padding: 7px 0px 5px;
@@ -92,10 +92,10 @@ h3 {
     margin: 10px auto;
 }
 .red{
-	color: #0060a9;
+	color: #003366;
 }
 a.red, a.red:active{
-	color: #0060a9;
+	color: #003366;
 }
 a.red:hover{
 	color: #004477;
