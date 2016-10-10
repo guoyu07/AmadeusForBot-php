@@ -816,9 +816,9 @@ class FlightImage {
         // ARRIVAL TIME
         $img->text($FlightData["ArrivalTime"], $FontPathBold, 40, '#000000', 'right', -40, 10);
         // DEPART CITY
-        $img->text($FlightData["OriginAirport"], $FontPathRegular, 31, '#B7B7B7', 'top', -274, 263);
+        $img->text($FlightData["OriginAirport"], $FontPathRegular, 31, '#003366', 'top', -274, 263);
         //ARRIVAL CITY
-        $img->text($FlightData["DestinationAirport"], $FontPathRegular, 31, '#B7B7B7', 'top', 278, 263);
+        $img->text($FlightData["DestinationAirport"], $FontPathRegular, 31, '#003366', 'top', 278, 263);
         //DEPARTURE DATE
         $img->text($FlightData["DepartureDate"], $FontPathRegular, 23.5, '#7a7a7a', 'left', 45, 134);
         //ARRIVAL DATE
