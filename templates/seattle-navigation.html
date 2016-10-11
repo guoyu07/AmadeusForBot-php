@@ -82,13 +82,15 @@
                   });
 
                   // Center Map
-                    map.setRadius(50);
-                    map.setCenter(new locuslabs.maps.LatLng(d7.position.latitude,d7.position.longitude));
+                    // map.setRadius(50);
+                    // map.setCenter(new locuslabs.maps.LatLng(d7.position.latitude,d7.position.longitude));
                   // Setup hooks to detect if the markers are dragged to some other position
                   setup_dragging_hooks();
 
                   // Update the nav path now that we have found all of our destinations
                   update_navpath();
+                  mapView = map.getView() ;
+                  mapView.searchController.navigate(d7.position, c12.position);
                   
               });
           });
