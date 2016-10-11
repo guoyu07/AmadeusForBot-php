@@ -66,7 +66,7 @@ $app->get('/confirmation', function ($request, $response, $args) {
 /// --------------------- Maps  -----------------------------//
 
 //Maps Page
-$app->get('/map', function ($request, $response, $args) {
+$app->get('/map/test', function ($request, $response, $args) {
     // Log Query
     // $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
     // Pass the query string to the "controler variable"
@@ -83,7 +83,7 @@ $app->get('/map/search/{query}/', function ($request, $response, $args) {
 });
 
 // navigation
-$app->get('/map/navigate', function ($request, $response, $args) {
+$app->get('/map', function ($request, $response, $args) {
     // Log Query
     return $this->renderer->render($response, 'seattle-navigation.html', $args);
 });
