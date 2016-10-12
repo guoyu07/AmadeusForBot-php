@@ -762,13 +762,26 @@ class ChatfuelMessage {
         return $this->Card;
     }
     
-    public function ButtonElement($type, $url, $title)
+    public function ButtonElement($type, $link, $title)
     {
-        $this->ButtonElement = array(
+        if ($type == "web_url") {
+            $this->ButtonElement = array(
             "type" => $type,
-            "url" => $url,
+            "url" => $link,
             "title" => $title
         );   
+        }
+
+        elseif ($type == "show_block") {
+            $this->ButtonElement = array(
+            "type" => $type,
+            "block_name" => $link,
+            "title" => $title
+        );   
+        } else {
+            return array("error" => "Invalid Button type");
+        }
+
         return $this->ButtonElement;
     }
 
