@@ -85,7 +85,14 @@ $app->get('/map/search/{query}/', function ($request, $response, $args) {
 // navigation
 $app->get('/map', function ($request, $response, $args) {
     // Log Query
-    return $this->renderer->render($response, 'seattle-navigation.html', $args);
+    $args = $request->getQueryParams();
+    
+    if (isset($args['poi'])) {
+       return $this->renderer->render($response, 'seattle-map.phtml', $args);
+    }else{
+        return $this->renderer->render($response, 'seattle-navigation.html', $args);
+    }
+    
 });
 
 /// ----------------- Flight Status  -----------------------------//
