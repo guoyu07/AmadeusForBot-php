@@ -935,4 +935,59 @@ class FlightImage {
  }
 
 }
+/**
+* 
+*/
+class NLP
+{
+    
+    function NLPProcess($text) {
+            $configs = include('config.php');
+            $headers = array("Authorization" => "Bearer ".$configs['wit_dorado_es'], "Accept" => "application/json");
+            $uri = array("v"=>"20161024","q"=>$text,"timezone"=>"America/Los_Angeles");
+            $this->query = Unirest\Request::get("https://api.wit.ai/message",$headers,$uri);
 
+            if ($this->query->code == 200) { 
+                return $this->query->body;
+            } 
+            else {
+                return array ("error" => "Server Error");
+            }
+        }
+    function RedirectToFlow($nlp_result) { 
+        //redirect to flight status flow. 
+        if ($nlp_result->entities->flight_status_intent) {
+            $data = $this->CheckFlightStatusData($nlp_result);
+            return array ("flow" => "flight_status", "data" => $data);
+        }
+        else {return array ("flow" => "no_understand");}
+    }
+    function CheckFlightStatusData ($nlp_result) {
+            // Check if its an arraval
+        if (isset($nlp_result->entities->flight_arrival)) {
+                $isarrival = true;
+        } else {
+                $isarrival = false;
+        }
+         // Check if its a departure
+        if (isset($nlp_result->entities->flight_departure)) {
+                $isdeparture = true;
+            } else {
+                $isdeparture = false;
+        }
+        // Check flight number exists a departure
+        if (isset($nlp_result->entities->flight_number) ){
+                $flightNumber = $nlp_result->entities->flight_number[0]->value;
+            } else {
+                $flightNumber = false;
+        }
+
+        $data = array (
+                "Intent" => "flight_status", 
+                "FlightNumber"  => $flightNumber,
+                "Isdeparture" => $isdeparture,
+                "Isarrival" => $isarrival
+        );
+        return $data;
+    }
+}
