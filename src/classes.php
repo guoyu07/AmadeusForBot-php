@@ -942,6 +942,7 @@ class NLP
 {
     
     function NLPProcess($text) {
+
             $configs = include('config.php');
             $headers = array("Authorization" => "Bearer ".$configs['wit_dorado_es'], "Accept" => "application/json");
             $uri = array("v"=>"20161024","q"=>$text,"timezone"=>"America/Los_Angeles");
@@ -981,9 +982,9 @@ class NLP
             } else {
                 $flightNumber = false;
         }
-
+        
         $data = array (
-                "Intent" => "flight_status", 
+                "Messageid" => $nlp_result->msg_id, 
                 "FlightNumber"  => $flightNumber,
                 "Isdeparture" => $isdeparture,
                 "Isarrival" => $isarrival
