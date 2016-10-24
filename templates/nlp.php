@@ -6,4 +6,4 @@ $nlp = new NLP ;
 $result=($nlp->NLPProcess($message));
 
 header("Content-Type: application/json");
-return(json_encode($nlp->RedirectToFlow($result)));
+print_r(json_encode($nlp->RedirectToFlow($result)));

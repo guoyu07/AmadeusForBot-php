@@ -125,5 +125,6 @@ $app->get('/test', function ($request, $response, $args) {
 
 $app->post('/nlp', function ($request, $response, $args) {
  // pass
+ $args = $request->getParsedBody();
  return $this->renderer->render($response, 'nlp.php', $args);
 });
