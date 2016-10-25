@@ -19,8 +19,8 @@ $label = array(
 );
 
 $error = array(
-	"Number" => "I am sorry, The flight yu provide is incorrect: ".$flight_number,
-	"Flight" => "I am sorry, I couldnt find your flight: ".$flight_number." in ".$type."s"
+	"Number" => "Lo siento el número de vuelo al parecer es incorrecto: ".$flight_number,
+	"Flight" => "Lo siento, no pude encontrar el: ".$flight_number." en el sistema de información de vuelos"
 	);
 
 //------- Data Validation ---------------//

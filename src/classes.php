@@ -841,7 +841,7 @@ class FlightImage {
         
         //Once Created set path to be saved 
 
-        $ImageResultPath = "./images/result-image-".$Option."-".time().".png" ;
+        $ImageResultPath = "images/result-image-".$Option."-".time().".png" ;
         
 
         $img->save($ImageResultPath);
