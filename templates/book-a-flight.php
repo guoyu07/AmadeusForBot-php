@@ -177,10 +177,6 @@ require_once __DIR__ . '/../src/classes.php';
  					$flightData = $flightSearch->ExtractOutboundData($value->outbound, $fare);
  			   	    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
  			   	    $flightData["ImageUrl"] = $FlightImage["url"];
- 			   	 	// Card to chatfuel  commented replaced to  Flow XO
- 			   	    $card[$index] = $flightData;
- 			   	 	//$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);
- 			   	 	$index++;
  					} 
  				// case single fare single flight
  				}else {
@@ -190,16 +186,13 @@ require_once __DIR__ . '/../src/classes.php';
  				    // generate image
  				    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
  				    $flightData["ImageUrl"] = $FlightImage["url"];
- 				 	// Create the message
- 				 	$card[$index] = $flightData;
- 				 	// Card to chatfuel  commented replaced to  Flow XO
- 				 	//$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
- 				 	$index++;
+ 				 	
  				}	
+
+ 				$cardsArray [$index] = $flightData;
+ 				$index++;
  			} // end for each 
- 			
- 			//create gallery with the cards created
- 			$cardsArray = array_merge_recursive($card);			   	
+ 		
  			return $cardsArray;
  		}
  	}
