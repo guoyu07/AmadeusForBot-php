@@ -182,16 +182,15 @@ if ($response == "No result found.") {
 		 	$index++;
 		}	
 	} // end for each 
-	echo json_encode($card,JSON_UNESCAPED_UNICODE);
+	
 	//create gallery with the cards created
 	$cardsArray = array_merge_recursive($card);			   	
-	$message = $chatfuel->GalleryMessage($cardsArray);
+	print_r($cardsArray);
+
+	//$message = $chatfuel->GalleryMessage($cardsArray);
 
 	//send Message
-
-	header("Content-Type: application/json");
-	echo json_encode($message,JSON_UNESCAPED_UNICODE);
-	return;
+	// return $message;
 
 }
 

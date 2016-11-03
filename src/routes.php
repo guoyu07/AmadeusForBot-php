@@ -1,14 +1,36 @@
 <?php
+
+require_once __DIR__ . '/../templates/book-a-flight.php';
 // Routes
 /// ----------------- Booking Search -----------------------------//
 //return flight search
-$app->get('/book-return/{origin}/{destination}/{departure_date}/{return_date}/{adults}/{currency}/{airline}/{limit}/{name}/{last_name}/', function ($request, $response, $args) {
-    // Log Query
-    $this->logger->info("Slim-Skeleton '/flight/{origin}'route");
-    // Pass the query string to the "controler variable"
+$app->post("/book-a-flight/", function ($request, $response)  {
+    
+      //get the request parameters  
+      $params = $request->getParams();
 
-   return $this->renderer->render($response, 'book-return.php', $args);
+
+      //Create the object
+      $book = new Book;
+
+    
+    try {
+    
+
+
+       $result = $book->bookAflight($params);
+   
+    } catch (\Exception $e) {
+    
+        $response->withJson($e, 200);
+
+    }
+   
+    $response->withJson($result, 200);
+    
 });
+
+
 //return flight search
 $app->get('/book-return/es/{origin}/{destination}/{departure_date}/{return_date}/{adults}/{currency}/{airline}/{limit}/{name}/{last_name}/', function ($request, $response, $args) {
     // Log Query
