@@ -117,8 +117,8 @@ require_once __DIR__ . '/../src/classes.php';
 
 
  		// Validate Return Date
-
- 		$ReturnDate = $helper->DateInEnglish($search["return_date"]);
+ 		if ($search["isReturn"] ) {
+ 			$ReturnDate = $helper->DateInEnglish($search["return_date"]);
  		 	
  		// If return date was wrong 
 
@@ -141,6 +141,11 @@ require_once __DIR__ . '/../src/classes.php';
  		      $search['return_date'] = $ReturnDate;
  			}
  		}
+ 	} else 
+ 	{
+ 		unset($search['return_date']);
+ 	}
+ 		
 
  		// Search for a flight
  		$response = $flightSearch->BestMatch($search);
