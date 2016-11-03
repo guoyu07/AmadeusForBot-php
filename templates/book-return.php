@@ -127,8 +127,10 @@ if (isset($ReturnDate['error'])){
 	}
 }
 
-
+// Search for a flight
 $response = $flightSearch->BestMatch($search);
+
+
 //fix this validation to isset or exists
 if ($response == "No result found.") {
 	// Next: Send Message there was an error
@@ -137,7 +139,7 @@ if ($response == "No result found.") {
 	echo json_encode($message,JSON_UNESCAPED_UNICODE);
 	return;
 }else{
-	$index = 0;
+	$index = 1;
 	foreach ($response->results as $key => $value) {
 		// Note : Some times a single fare can apply to 2 itineraries. like this:
 		// ||Results 
@@ -157,10 +159,12 @@ if ($response == "No result found.") {
 		if (sizeof($value->itineraries) > 1 ) {
 			foreach ($value->itineraries as $key => $value) {
 
-			    $flightData = $flightSearch->ExtractOutboundData($value->outbound, $fare);
+			$flightData = $flightSearch->ExtractOutboundData($value->outbound, $fare);
 	   	    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
 	   	    $flightData["ImageUrl"] = $FlightImage["url"];
-	   	 	$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
+	   	 	// Card to chatfuel  commented replaced to  Flow XO
+	   	    $card[$index] = $flightData;
+	   	 	//$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);
 	   	 	$index++;
 			} 
 		// case single fare single flight
@@ -172,11 +176,13 @@ if ($response == "No result found.") {
 		    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
 		    $flightData["ImageUrl"] = $FlightImage["url"];
 		 	// Create the message
-		 	$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
+		 	$card[$index] = $flightData;
+		 	// Card to chatfuel  commented replaced to  Flow XO
+		 	//$card[$index] = $chatfuel->FlightDetailsMessage($flightData,$CardTitleOptions[$index]);	
 		 	$index++;
 		}	
 	} // end for each 
-
+	echo json_encode($card,JSON_UNESCAPED_UNICODE);
 	//create gallery with the cards created
 	$cardsArray = array_merge_recursive($card);			   	
 	$message = $chatfuel->GalleryMessage($cardsArray);
