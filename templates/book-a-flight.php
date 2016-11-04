@@ -80,9 +80,7 @@ require_once __DIR__ . '/../src/classes.php';
 			        "Departure" => "Sorry I couldnt find your city of origin: ".$search["origin"],
 			        "Destination" => "Sorry I couldnt find your city of destination: ".$search["destination"],
 			        "InvalidDepartureDate" => "I couldnt understand your date of your departure : ".$search["departure_date"],
-			       
 			        "FutureDepartureDate" => "Ups, departure date must be after today: ".$search["departure_date"],
-			        
 			        "FlightNotFound" => "Sorry, I couldnt find a flight with your search criteria "
 			 	); 	 	
 
@@ -130,7 +128,7 @@ require_once __DIR__ . '/../src/classes.php';
 
 
  		// Validate Return Date
- 		if ($search["isReturn"] == "true") {
+ 		if ($search["isReturn"] == "true" || !empty($this->params["return_date"])) {
 
  			//setup errors and variables
  			$search['return_date'] = $this->params['return_date'];
