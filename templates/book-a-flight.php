@@ -26,7 +26,32 @@ require_once __DIR__ . '/../src/classes.php';
  		        "2" => "Option 3 : Shortest"
  		 	); 
  			private $params;
+ 			private $fare;
+ 			private $title;
+ 	
 
+ 	public function cardTitle($index, $fare)
+ 	{
+ 		$this->fare = $fare;
+
+ 		switch ($index) {
+ 			case 1:
+ 				$this->title = "Option ".$index." : Best Value (USD ".$this->fare .")";
+ 				return $this->title;
+ 	
+ 			case 2:
+ 				$this->title = "Option".$index." : Cheapest (USD ".$this->fare .")";
+ 				return $this->title;
+ 			
+ 			case 1:
+ 				$this->title = "Option".$index." : Shortest (USD ".$this->fare.")";
+ 				return $this->title;
+ 			
+ 			default:
+ 				$this->title = "Option".$index." : Best Value (USD ".$this->fare .")";
+ 				return $this->title;
+ 		}
+ 	}
 
  	public function bookAflight($params)
  	{
@@ -42,22 +67,22 @@ require_once __DIR__ . '/../src/classes.php';
  		 		'origin' => $this->params['origin'],
  		 		'destination' => $this->params['destination'],
  		 		'departure_date' => $this->params['departure_date'],
- 		 		'return_date' => $this->params['return_date'],
  		 		'adults' => $this->params['adults'], 
  		 		'currency' => $this->params['currency'],
  		 		'include_airlines' => $this->params['airline'],
  		 		'number_of_results' => $this->params['limit'],
  		 		'name' => $this->params['name'],
- 		 		'last_name' => $this->params['last_name']
+ 		 		'last_name' => $this->params['last_name'],
+ 		 		'isReturn' => $this->params['isReturn']
  		 	);
 
 		$error = array(
 			        "Departure" => "Sorry I couldnt find your city of origin: ".$search["origin"],
 			        "Destination" => "Sorry I couldnt find your city of destination: ".$search["destination"],
 			        "InvalidDepartureDate" => "I couldnt understand your date of your departure : ".$search["departure_date"],
-			        "InvalidReturnDate" => "I couldnt understand your return date : ".$search["return_date"],
+			       
 			        "FutureDepartureDate" => "Ups, departure date must be after today: ".$search["departure_date"],
-			        "FutureReturnDate" => "Ups, it seems that return date :".$search["return_date"]." is before departure date: ".$search["departure_date"],
+			        
 			        "FlightNotFound" => "Sorry, I couldnt find a flight with your search criteria "
 			 	); 	 	
 
@@ -117,8 +142,13 @@ require_once __DIR__ . '/../src/classes.php';
 
 
  		// Validate Return Date
- 		if ($search["isReturn"] ) {
+ 		if ($search["isReturn"]) {
+
+ 			//setup errors and variables
+ 			$search['return_date'] = $this->params['return_date'];
  			$ReturnDate = $helper->DateInEnglish($search["return_date"]);
+ 			$error["InvalidReturnDate"] = "I couldnt understand your return date : ".$search["return_date"];
+ 			$error["FutureReturnDate"] = "Ups, it seems that return date :".$search["return_date"]." is before departure date: ".$search["departure_date"];
  		 	
  		// If return date was wrong 
 
@@ -141,10 +171,7 @@ require_once __DIR__ . '/../src/classes.php';
  		      $search['return_date'] = $ReturnDate;
  			}
  		}
- 	} else 
- 	{
- 		unset($search['return_date']);
- 	}
+ 	} 
  		
 
  		// Search for a flight
@@ -161,6 +188,7 @@ require_once __DIR__ . '/../src/classes.php';
  		}else{
  			$index = 1;
  			foreach ($response->results as $key => $value) {
+
  				// Note : Some times a single fare can apply to 2 itineraries. like this:
  				// ||Results 
  				// 	->fare
@@ -180,8 +208,10 @@ require_once __DIR__ . '/../src/classes.php';
  					foreach ($value->itineraries as $key => $value) {
 
  					$flightData = $flightSearch->ExtractOutboundData($value->outbound, $fare);
- 			   	    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
+ 			   	    $FlightImage = $Cardimage->GenerateImage($flightData,$index-1);
  			   	    $flightData["ImageUrl"] = $FlightImage["url"];
+ 			   	    $cardTitle = $this->cardTitle($index,$flightData["fare"]);
+
  					} 
  				// case single fare single flight
  				}else {
@@ -189,12 +219,14 @@ require_once __DIR__ . '/../src/classes.php';
 
  					$flightData = $flightSearch->ExtractOutboundData($value->itineraries[0]->outbound, $fare);
  				    // generate image
- 				    $FlightImage = $Cardimage->GenerateImage($flightData,$index);
+ 				    $FlightImage = $Cardimage->GenerateImage($flightData,$index-1);
  				    $flightData["ImageUrl"] = $FlightImage["url"];
+ 				    $cardTitle = $this->cardTitle($index,$flightData["fare"]);
  				 	
  				}	
-
- 				$cardsArray [$index] = $flightData;
+ 				
+ 				$card = $chatfuel->FlightDetailsMessage($flightData,$cardTitle);
+ 				$cardsArray [$index] = $card;
  				$index++;
  			} // end for each 
  		

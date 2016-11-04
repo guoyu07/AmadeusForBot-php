@@ -715,13 +715,14 @@ class ChatfuelMessage {
     public function FlightDetailsMessage ($flightDetails, $Cardtitle) {
         
         //create buttons
-        $button = $this->ButtonElement("web_url", "bot.airportdigital.com/AirlineBotService/public/check-out/Manuel/Gutierrez/", "Select");
-        $buttons = array ($button);
+        // $button = $this->ButtonElement("web_url", "http://bot.airportdigital.com/AirlineBotService/public/check-out/Manuel/Gutierrez/", "Select");
+        
+        $buttons = array ("text" => "Select" , "url" => "http://bot.airportdigital.com/AirlineBotService/public/check-out/Manuel/Gutierrez/" );
 
         //Subtitle
         $this->SubtitleMessage = "Flight: ".$flightDetails['flightNumber']." -- ".$flightDetails['TravelClass'];
         // Add Fare to the title 
-        $Cardtitle = $Cardtitle." (USD $".round($flightDetails['fare']).")";
+        //$Cardtitle = $Cardtitle." (USD $".round($flightDetails['fare']).")";
         $this->Card = $this->CardElement($Cardtitle,$flightDetails['ImageUrl'],$this->SubtitleMessage,$buttons); 
         
         return $this->Card;
