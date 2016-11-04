@@ -91,10 +91,7 @@ require_once __DIR__ . '/../src/classes.php';
 
 
  		if (isset($airportDataOrigin["error"])){
- 			$message = $chatfuel->TextMessage($error["Departure"]);
- 			header("Content-Type: application/json");
- 			echo json_encode($message,JSON_UNESCAPED_UNICODE);
- 			return;
+			return array("error" => $error["Departure"]);
  		} else {
  			$search["origin"] = $airportDataOrigin["cityIATA"];
  		}
@@ -104,10 +101,7 @@ require_once __DIR__ . '/../src/classes.php';
  		$airportDataDestination = $airport->FirstAirport($search["destination"]);
 
  		if (isset($airportDataDestination["error"])){
- 			$message = $chatfuel->TextMessage($error["Destination"]);
- 			header("Content-Type: application/json");
- 			echo json_encode($message,JSON_UNESCAPED_UNICODE);
- 			return;
+ 			return array("error" => $error["Destination"]);
  		} else {
  			$search["destination"] = $airportDataDestination["cityIATA"];
  		}
@@ -120,20 +114,14 @@ require_once __DIR__ . '/../src/classes.php';
  		if (isset($DepartureDate['error']))
  		{
  			// Send Message there was an error
- 			$message = $chatfuel->TextMessage($error["InvalidDepartureDate"]);
- 			header("Content-Type: application/json");
- 			echo json_encode($message,JSON_UNESCAPED_UNICODE);
- 			return;
+			return array("error" => $error["InvalidDepartureDate"]);
  		} else {
 
  			$DateIsCorrect = $helper->ValidateFutureDate($DepartureDate);
 
  			if (!$DateIsCorrect) {
  			 	// Pending : fix the problem with  dates the next year.
- 			 	$message = $chatfuel->TextMessage($error["FutureDepartureDate"]);
- 				header("Content-Type: application/json");
- 				echo json_encode($message ,JSON_UNESCAPED_UNICODE);
- 				return;
+				return array("error" => $error["FutureDepartureDate"]);
  			} else {
  				$search['departure_date'] = $DepartureDate;
  			}
@@ -154,19 +142,13 @@ require_once __DIR__ . '/../src/classes.php';
 
  		if (isset($ReturnDate['error'])){
  			// Next: Send Message there was an error
- 			$message = $chatfuel->TextMessage($error["InvalidReturnDate"]);
- 			header("Content-Type: application/json");
- 			echo json_encode($message,JSON_UNESCAPED_UNICODE);
- 			return;
+ 			return array("error" => $error["InvalidReturnDate"]);
 
  		} else {
  			$DateIsCorrect = $helper->ValidateReturnDate($DepartureDate,$ReturnDate);
  			if (!$DateIsCorrect){
  			// Next: Send Message there was an error
- 			$message = $chatfuel->TextMessage($error["FutureReturnDate"]);
- 			header("Content-Type: application/json");
- 			echo json_encode($message,JSON_UNESCAPED_UNICODE);
- 			return;
+ 			return array("error" => $error["FutureReturnDate"]);
  			} else {
  		      $search['return_date'] = $ReturnDate;
  			}
@@ -181,10 +163,7 @@ require_once __DIR__ . '/../src/classes.php';
  		//fix this validation to isset or exists
  		if ($response == "No result found.") {
  			// Next: Send Message there was an error
- 			$message = $chatfuel->TextMessage($error["FlightNotFound"]);
- 			header("Content-Type: application/json");
- 			echo json_encode($message,JSON_UNESCAPED_UNICODE);
- 			return;
+ 			return array("error" => $error["FlightNotFound"]);
  		}else{
  			$index = 1;
  			foreach ($response->results as $key => $value) {
