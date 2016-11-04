@@ -142,7 +142,7 @@ require_once __DIR__ . '/../src/classes.php';
 
 
  		// Validate Return Date
- 		if ($search["isReturn"]) {
+ 		if ($search["isReturn"] == true) {
 
  			//setup errors and variables
  			$search['return_date'] = $this->params['return_date'];
