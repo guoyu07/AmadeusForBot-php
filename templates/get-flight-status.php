@@ -29,6 +29,9 @@ class FlightStatusController
 			"button_2" => "Subscribe to Alerts",
 			"Subtitle" => "Departing from Gate C11"
 		);
+		$url = array(
+			"button_1" => "http://bot.airportdigital.com/AirlineBotService/public/map?poi=92"
+		);
 
 		$error = array(
 			"Number" => "I am sorry, The flight yu provide is incorrect: ".$flight_number,
@@ -65,7 +68,8 @@ class FlightStatusController
 			  $message = array (
 			  	"image" => $FlightImage["url"],
 			  	"labels" => $label,
-			  	"flight_data" => $flight
+			  	"flight_data" => $flight,
+			  	"url" => $url
 
 			  	); 
 			}
