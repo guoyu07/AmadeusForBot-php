@@ -26,7 +26,7 @@ class FlightStatusController
 
 		$label = array(
 			"button_1" => "Navigate to Gate",
-			"button_2" => "Subscribe to Alerts",
+			"button_2" => "Subscribe to alerts",
 			"Subtitle" => "Departing from Gate C11"
 		);
 		$url = array(
