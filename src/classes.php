@@ -397,13 +397,14 @@ class FlightSearch {
 
 class FlightStatus {
 
-public function SearchFlight($FlightNumber, $flightType)
+public function SearchFlight($FlightNumber, $flightType = false)
 {
     
     $headers = array('Accept' => 'application/json');
     // set up uri    
     $results = Unirest\Request::get("http://eldorado.aero/wp-content/themes/hostmev2-child/js/flight_status.json",$headers);
-        if ($results->code == 200 && isset($flightType)) {
+    if ($flightType) {
+        if ($results->code == 200) {
             $flightsAvailable = $results->body;
             switch ($flightType) {
                 case 'departure':
@@ -420,7 +421,7 @@ public function SearchFlight($FlightNumber, $flightType)
                     $flightsAvailable = $results->body;
                   
                     $list = $flightsAvailable->arrivals;
-   
+        
                     foreach($list as $value) {
                         
                         if ($value->flight_number == $FlightNumber) { 
@@ -432,6 +433,22 @@ public function SearchFlight($FlightNumber, $flightType)
                     break;
             }
         }
+    } else 
+    {
+        $flightsAvailable = $results->body;
+   
+        foreach ($flightsAvailable as $type => $value) {
+
+            foreach ($value as $flights) {
+                if ($flights->flight_number == $FlightNumber) {
+                    return $flights;
+                } 
+            }
+        }
+        return $error = array("error"=>"Sorry, flight not found");
+        
+    }
+        
 }
 
 }

@@ -1,8 +1,9 @@
 <?php
-
 require_once __DIR__ . '/../templates/book-a-flight.php';
+require_once __DIR__ . '/../templates/get-flight-status.php';
 // Routes
 /// ----------------- Booking Search -----------------------------//
+
 //return flight search
 $app->post("/book-a-flight/", function ($request, $response)  {
     
@@ -118,6 +119,30 @@ $app->get('/map', function ($request, $response, $args) {
 });
 
 /// ----------------- Flight Status  -----------------------------//
+
+
+//return flight search
+$app->post("/flight-status/", function ($request, $response)  {
+    
+      //get the request parameters  
+      $params = $request->getParams();
+
+      //Create the object
+      $flight = new FlightStatusController;
+    
+    try {
+
+       $result = $flight->searchFlight($params["flight"]);
+   
+    } catch (\Exception $e) {
+    
+        $response->withJson($e, 200);
+
+    }
+   
+    $response->withJson($result, 200);
+    
+});
 
 // Flight status end point 
 $app->get('/flight-status/{type}/{flight_number}/', function ($request, $response, $args) {
