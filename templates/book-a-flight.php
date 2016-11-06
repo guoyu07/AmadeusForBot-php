@@ -69,7 +69,7 @@ require_once __DIR__ . '/../src/classes.php';
  		 		'departure_date' => $this->params['departure_date'],
  		 		'adults' => $this->params['adults'], 
  		 		'currency' => $this->params['currency'],
- 		 		'include_airlines' => $this->params['airline'],
+ 		 		'include_airlines' => "",
  		 		'number_of_results' => $this->params['limit'],
  		 		'name' => $this->params['name'],
  		 		'last_name' => $this->params['last_name'],
