@@ -47,14 +47,14 @@ class FlightStatusController
 
 		if (is_array($flight_number)) {
 			//if it is an array it contains an error
-			return $message["error"] = $error["Number"];
+			return $message = array("error" => $error["Number"]);
 		} else {
 			//search flight
 			$flight = $flight->SearchFlight($flight_number);
 
 			if (is_array($flight)) {
 				//if it is an array it contains an error
-				return $message["error"] = $error["Flight"];
+				return $message = array("error" => $error["Flight"]);
 			} else {
 			  // create image
 			  $FlightImage = $flightStatusImage->GenerateFlightStatusImage($flight,$lang);
