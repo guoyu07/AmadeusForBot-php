@@ -191,8 +191,15 @@ class Airport{
             // check  and parse response
   
             if (!empty($this->response->body)){
-
-               $this->FirstAirportResult = (array)$this->response->body->response->cities[0]; 
+                
+                if (isset($this->response->body->response->cities[0])) {
+                    
+                    $city = $this->response->body->response->cities[0];
+                }else{
+                    $city = $this->response->body->response->airports[0];
+                }
+                
+               $this->FirstAirportResult = (array)$city; 
                $cityIATA["cityIATA"] = $this->response->body->response->cities[0]->code;
                $this->FirstAirportResult=array_merge($this->FirstAirportResult,$cityIATA); 
              }

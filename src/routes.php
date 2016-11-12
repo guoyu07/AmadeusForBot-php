@@ -1,8 +1,38 @@
 <?php
 require_once __DIR__ . '/../templates/book-a-flight.php';
+require_once __DIR__ . '/../templates/BookAb.php';
 require_once __DIR__ . '/../templates/get-flight-status.php';
+require_once __DIR__ . '/../templates/AbSearch.php';
 // Routes
 /// ----------------- Booking Search -----------------------------//
+
+//return flight search
+$app->post("/ab/search", function ($request, $response)  {
+    
+      //get the request parameters  
+      $params = $request->getParams();
+
+
+      //Create the object
+      $book = new AbSearch;
+
+    
+    try {
+    
+
+
+       $result = $book->bookAflight($params);
+   
+    } catch (\Exception $e) {
+    
+        $response->withJson($e, 200);
+
+    }
+   
+    $response->withJson($result, 200);
+    
+});
+
 
 //return flight search
 $app->post("/book-a-flight/", function ($request, $response)  {
@@ -31,6 +61,23 @@ $app->post("/book-a-flight/", function ($request, $response)  {
     
 });
 
+
+$app->post("/ab/test", function ($request, $response)  {
+    
+      //get the request parameters  
+      $params = $request->getParams();
+      
+      //Create the object
+      $book = new BookAb;
+    
+    try {
+       $result = $book->searchFlight($params);
+    } catch (\Exception $e) {
+        $response->withJson($e, 200);
+    }
+    $response->withJson($result, 200);
+    
+});
 
 //return flight search
 $app->get('/book-return/es/{origin}/{destination}/{departure_date}/{return_date}/{adults}/{currency}/{airline}/{limit}/{name}/{last_name}/', function ($request, $response, $args) {
