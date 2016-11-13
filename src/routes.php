@@ -37,7 +37,7 @@ $app->post("/ab/flight-status/", function ($request, $response)  {
     
       //get the request parameters  
       $params = $request->getParams();
-      var_dump($params["flight"]);
+      var_dump( (array) json_encode($params["flight"]));
       die();
 
 
