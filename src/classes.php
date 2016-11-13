@@ -742,7 +742,7 @@ class ChatfuelMessage {
         //create buttons
         // $button = $this->ButtonElement("web_url", "http://bot.airportdigital.com/AirlineBotService/public/check-out/Manuel/Gutierrez/", "Select");
         
-        $buttons = array ("text" => "Select" , "url" => "http://bot.airportdigital.com/AirlineBotService/public/check-out/Manuel/Gutierrez/" );
+        $buttons = array ("text" => "Select" , "url" => "http://airportdigital.wpengine.com/booking/review-purchase.html" );
 
         //Subtitle
         $this->SubtitleMessage = "Flight: ".$flightDetails['flightNumber']." -- ".$flightDetails['TravelClass'];

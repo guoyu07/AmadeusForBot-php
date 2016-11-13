@@ -29,19 +29,19 @@ require_once __DIR__ . '/../src/classes.php';
 
  		switch ($index) {
  			case 1:
- 				$this->title = "Option ".$index." : Best Value (EUR ".$this->fare .")";
+ 				$this->title = "Option ".$index." : Best Value (USD ".$this->fare .")";
  				return $this->title;
  	
  			case 2:
- 				$this->title = "Option".$index." : Cheapest (EUR ".$this->fare .")";
+ 				$this->title = "Option".$index." : Cheapest (USD ".$this->fare .")";
  				return $this->title;
  			
  			case 1:
- 				$this->title = "Option".$index." : Shortest (EUR ".$this->fare.")";
+ 				$this->title = "Option".$index." : Shortest (USD ".$this->fare.")";
  				return $this->title;
  			
  			default:
- 				$this->title = "Option".$index." : Best Value (EUR ".$this->fare .")";
+ 				$this->title = "Option".$index." : Best Value (USD ".$this->fare .")";
  				return $this->title;
  		}
  	}
