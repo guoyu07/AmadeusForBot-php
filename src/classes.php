@@ -24,6 +24,7 @@ class Map{
     
 
     function UnderstandQuery($text) {
+        
         $configs = include('config.php');
         $headers = array("Authorization" => "Bearer ".$configs['wit_en'], "Accept" => "application/json");
         $uri = array("v"=>"20161003","q"=>$text,"timezone"=>"America/Los_Angeles");
@@ -827,142 +828,223 @@ class ChatfuelMessage {
 *  
 *   -GenerateImage : Create the Flight Itinerary Image and return the url.
 */
-class FlightImage {
+class FlightImage
+{
+    public function GenerateImage($FlightData,$Option) 
+    {
+
+        $ImagePath = './../src/flight-itinerary-template.png';
+        $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
+        $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
 
 
- public function GenerateImage($FlightData,$Option) 
- {
+        try {
 
-    $ImagePath = './../src/flight-itinerary-template.png';
-    $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
-    $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
+            //Create image
+            $img = new SimpleImage($ImagePath);
+            //STOPS 
+            if ($FlightData["stops"] > 1) {
+                $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#cb1f2d', 'top', -6, 228);
+            }else{
+                $img->text("Direct", $FontPathRegular, 24, '#cb1f2d', 'top', -6, 228);   
+            }
+
+            // DEPARTURE TIME
+            $img->text($FlightData["DepartureTime"], $FontPathBold, 40, '#000000', 'left', 38, 10);
+            // ARRIVAL TIME
+            $img->text($FlightData["ArrivalTime"], $FontPathBold, 40, '#000000', 'right', -40, 10);
+            // DEPART CITY
+            $img->text($FlightData["OriginAirport"], $FontPathRegular, 31, '#cb1f2d', 'top', -274, 263);
+            //ARRIVAL CITY
+            $img->text($FlightData["DestinationAirport"], $FontPathRegular, 31, '#cb1f2d', 'top', 278, 263);
+            //DEPARTURE DATE
+            $img->text($FlightData["DepartureDate"], $FontPathRegular, 23.5, '#7a7a7a', 'left', 45, 134);
+            //ARRIVAL DATE
+            $img->text($FlightData["ArrivalDate"], $FontPathRegular, 23.5, '#7a7a7a', 'right', -45, 136);
+            // OPTION
+            $img->text($Option+1, $FontPathRegular, 24, '#FFFFFF', 'top', 310, 65);
+
+            //Once Created set path to be saved 
+
+            $ImageResultPath = "images/result-image-".$Option."-".time().".png" ;
 
 
-    try {
-        
-        //Create image
-        $img = new SimpleImage($ImagePath);
-        //STOPS 
-        if ($FlightData["stops"] > 1) {
-        $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#cb1f2d', 'top', -6, 228);
-        }else{
-         $img->text("Direct", $FontPathRegular, 24, '#cb1f2d', 'top', -6, 228);   
+            $img->save($ImageResultPath);
+
+            $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/".$ImageResultPath;   
+
+            return  $result;
+
+        } catch(Exception $e) {
+            return $result["error"] = $e->getMessage() ;
         }
-        
-        // DEPARTURE TIME
-        $img->text($FlightData["DepartureTime"], $FontPathBold, 40, '#000000', 'left', 38, 10);
-        // ARRIVAL TIME
-        $img->text($FlightData["ArrivalTime"], $FontPathBold, 40, '#000000', 'right', -40, 10);
-        // DEPART CITY
-        $img->text($FlightData["OriginAirport"], $FontPathRegular, 31, '#cb1f2d', 'top', -274, 263);
-        //ARRIVAL CITY
-        $img->text($FlightData["DestinationAirport"], $FontPathRegular, 31, '#cb1f2d', 'top', 278, 263);
-        //DEPARTURE DATE
-        $img->text($FlightData["DepartureDate"], $FontPathRegular, 23.5, '#7a7a7a', 'left', 45, 134);
-        //ARRIVAL DATE
-        $img->text($FlightData["ArrivalDate"], $FontPathRegular, 23.5, '#7a7a7a', 'right', -45, 136);
-        // OPTION
-        $img->text($Option+1, $FontPathRegular, 24, '#FFFFFF', 'top', 310, 65);
-        
-        //Once Created set path to be saved 
 
-        $ImageResultPath = "images/result-image-".$Option."-".time().".png" ;
-        
+    }
+    public function GenerateFlightStatusImage($FlightData, $lang) 
+    {
 
-        $img->save($ImageResultPath);
+        $ImagePath = './../src/flight-status-template.png';
+        $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
+        $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
+        $FontPathLight =  './../templates/fonts/Lato-Light.ttf';
+        // default language
+        $statusLabels = array(
+            'Flight' => 'Flight', 
+            'Scheduled' => 'Scheduled',
+            'Confirmed' => 'Confirmed',  
+            'Status'  => strtoupper($FlightData->{'status-en'}),
+            'EstimatedTimeNotSet' => "Not available"
+            ); 
+        // spanish
+        $statusLabels_es = array(
+            'Flight' =>  'Vuelo', 
+            'Scheduled' => 'Programado',
+            'Confirmed' => 'Confirmado',   
+            'Status'  => $FlightData->{'status-es'},
+            'EstimatedTimeNotSet' => "No disponible"
+            ); 
+        if ($lang == "es") { $statusLabels = $statusLabels_es; }
+        try {
 
-        $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/".$ImageResultPath;   
+            //Create image
+            $img = new SimpleImage($ImagePath);
 
-        return  $result;
+            //Status
+            $img->text($statusLabels["Status"], $FontPathBold, 30, '#107715', 'top', 218, 85);
+            // Flight Departs Arrives
+            $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 167);
+            $img->text($statusLabels["Scheduled"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 167);
+            $img->text($statusLabels["Confirmed"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 170);
+            // Flight Number 
+            $img->text($FlightData->airline_code.$FlightData->flight_number, $FontPathRegular, 24, '#000000', 'left', 30, 25);
+            // Time 1
+            $FlightData->schedule_time = date('g:i a', strtotime($FlightData->schedule_time));   
+            $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'center', -40, 20);
 
-    } catch(Exception $e) {
-        return $result["error"] = $e->getMessage() ;
+            //Time 2 
+            if (!empty($FlightData->estimated_time)){
+                $FlightData->estimated_time = date('g:i a', strtotime($FlightData->estimated_time));   
+                $img->text($FlightData->estimated_time, $FontPathRegular, 24, '#000000', 'right', -104, 20);
+            }else{  
+                $img->text($statusLabels["EstimatedTimeNotSet"], $FontPathRegular, 24, '#000000', 'right', -50, 20);
+            }
+
+
+            //City 1 Bogota Upper
+            $img->text("Bogotá", $FontPathRegular, 22, '#a9a9a9', 'top', -282, 267);
+            // City 2  Upper
+            $img->text($FlightData->location, $FontPathRegular, 22, '#a9a9a9', 'top', 195, 269);
+
+            //City 1 Bogota Big
+            $img->text("BOG", $FontPathLight, 62, '#003366', 'left', 22, 140);
+            // City 2  BIG
+            $img->text($FlightData->airport, $FontPathLight, 62, '#003366', 'right', -85, 140);
+
+            //Once Created set path to be saved 
+
+            $ImageResultPath = "./images/result-image-status".time().".png" ;
+            // test path.
+            //$ImageResultPath = "./images/result-image-status.png" ;
+
+
+            $img->save($ImageResultPath);
+
+            $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/".$ImageResultPath;   
+
+            return  $result;
+
+        } catch(Exception $e) {
+            return $result["error"] = $e->getMessage() ;
+        }
     }
 
- }
-  public function GenerateFlightStatusImage($FlightData, $lang) 
- {
+    public function AbFlightStatusImage($FlightData, $lang) 
+    {
 
-    $ImagePath = './../src/flight-status-template.png';
-    $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
-    $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
-    $FontPathLight =  './../templates/fonts/Lato-Light.ttf';
-    // default language
-    $statusLabels = array(
-        'Flight' => 'Flight', 
-        'Scheduled' => 'Scheduled',
-        'Confirmed' => 'Confirmed',  
-        'Status'  => strtoupper($FlightData->{'status-en'}),
-        'EstimatedTimeNotSet' => "Not available"
-        ); 
-    // spanish
-    $statusLabels_es = array(
-        'Flight' =>  'Vuelo', 
-        'Scheduled' => 'Programado',
-        'Confirmed' => 'Confirmado',   
-        'Status'  => $FlightData->{'status-es'},
-        'EstimatedTimeNotSet' => "No disponible"
-        ); 
-    if ($lang == "es") { $statusLabels = $statusLabels_es; }
-    try {
-        
-        //Create image
-        $img = new SimpleImage($ImagePath);
+        $ImagePath = './../src/flight-status-template.png';
+        $FontPathRegular = './../templates/fonts/Lato-Regular.ttf';
+        $FontPathBold =  './../templates/fonts/Lato-Bold.ttf';
+        $FontPathLight =  './../templates/fonts/Lato-Light.ttf';
 
-        //Status
-        $img->text($statusLabels["Status"], $FontPathBold, 30, '#107715', 'top', 218, 85);
-        // Flight Departs Arrives
-        $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 167);
-        $img->text($statusLabels["Scheduled"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 167);
-        $img->text($statusLabels["Confirmed"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 170);
-        // Flight Number 
-        $img->text($FlightData->airline_code.$FlightData->flight_number, $FontPathRegular, 24, '#000000', 'left', 30, 25);
-        // Time 1
-        $FlightData->schedule_time = date('g:i a', strtotime($FlightData->schedule_time));   
-        $img->text($FlightData->schedule_time, $FontPathRegular, 24, '#000000', 'center', -40, 20);
+        // default language
+        $statusLabels = array(
+            'Flight' => 'Flight', 
+            'Scheduled' => 'Scheduled',
+            'Confirmed' => 'Confirmed',  
+            'Status'  => strtoupper($FlightData["status_en"]),
+            'EstimatedTimeNotSet' => "Not available"
+            ); 
 
-        //Time 2 
-        if (!empty($FlightData->estimated_time)){
-            $FlightData->estimated_time = date('g:i a', strtotime($FlightData->estimated_time));   
-            $img->text($FlightData->estimated_time, $FontPathRegular, 24, '#000000', 'right', -104, 20);
-         }else{  
-            $img->text($statusLabels["EstimatedTimeNotSet"], $FontPathRegular, 24, '#000000', 'right', -50, 20);
-         }
+        // spanish
+        $statusLabels_es = array(
+            'Flight' =>  'Vuelo', 
+            'Scheduled' => 'Programado',
+            'Confirmed' => 'Confirmado',   
+            'Status'  => $FlightData["status_es"],
+            'EstimatedTimeNotSet' => "No disponible"
+            ); 
+        if ($lang == "es") { $statusLabels = $statusLabels_es; }
+        try {
+
+            //Create image
+            $img = new SimpleImage($ImagePath);
+
+            //Status
+            $img->text($statusLabels["Status"], $FontPathBold, 30, '#107715', 'top', 218, 85);
+            // Flight Departs Arrives
+            $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 167);
+            $img->text($statusLabels["Scheduled"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 167);
+            $img->text($statusLabels["Confirmed"], $FontPathRegular, 20, '#a9a9a9', 'top', 185, 170);
+            // Flight Number 
+            $img->text($FlightData["airline_code"].$FlightData["flight_number"], $FontPathRegular, 24, '#000000', 'left', 30, 25);
+            // Time 1
+            $FlightData["schedule_time"]= date('g:i a', strtotime($FlightData["schedule_time"]));   
+            $img->text($FlightData["schedule_time"], $FontPathRegular, 24, '#000000', 'center', -40, 20);
+
+            //Time 2 
+            if (!empty($FlightData["estimated_time"])){
+                $FlightData["estimated_time"] = date('g:i a', strtotime($FlightData["estimated_time"]));   
+                $img->text($FlightData["estimated_time"], $FontPathRegular, 24, '#000000', 'right', -104, 20);
+            }else{  
+                $img->text($statusLabels["EstimatedTimeNotSet"], $FontPathRegular, 24, '#000000', 'right', -50, 20);
+            }
 
 
-        //City 1 Bogota Upper
-        $img->text("Bogotá", $FontPathRegular, 22, '#a9a9a9', 'top', -282, 267);
-        // City 2  Upper
-        $img->text($FlightData->location, $FontPathRegular, 22, '#a9a9a9', 'top', 195, 269);
+            //City 1 Bogota Upper
+            $img->text($FlightData["origin"], $FontPathRegular, 22, '#a9a9a9', 'top', -250, 267);
+            // City 2  Upper
+            $img->text($FlightData["destination"], $FontPathRegular, 22, '#a9a9a9', 'top', 195, 269);
 
-        //City 1 Bogota Big
-        $img->text("BOG", $FontPathLight, 62, '#003366', 'left', 22, 140);
-        // City 2  BIG
-        $img->text($FlightData->airport, $FontPathLight, 62, '#003366', 'right', -85, 140);
-        
-        //Once Created set path to be saved 
+            //City 1 Bogota Big
+            $img->text($FlightData["origin_iata"], $FontPathLight, 62, '#003366', 'left', 22, 140);
+            // City 2  BIG
+            $img->text($FlightData["destination_iata"], $FontPathLight, 62, '#003366', 'right', -85, 140);
 
-        $ImageResultPath = "./images/result-image-status".time().".png" ;
-        // test path.
-        //$ImageResultPath = "./images/result-image-status.png" ;
-        
+            //Once Created set path to be saved 
 
-        $img->save($ImageResultPath);
+            $ImageResultPath = "./images/result-image-status".time().".png" ;
+            // test path.
+            //$ImageResultPath = "./images/result-image-status.png" ;
 
-        $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/".$ImageResultPath;   
 
-        return  $result;
+            $img->save($ImageResultPath);
 
-    } catch(Exception $e) {
-        return $result["error"] = $e->getMessage() ;
+            $result["url"] = "http://".$_SERVER['SERVER_NAME']."/AirlineBotService/public/".$ImageResultPath;   
+
+            return  $result;
+
+        } catch(Exception $e) {
+            return $result["error"] = $e->getMessage() ;
+        }
     }
-
- }
-
 }
-/**
-* 
-*/
+
+
+
+
+
+
+
 class NLP
 {
     

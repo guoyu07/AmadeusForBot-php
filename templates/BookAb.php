@@ -180,7 +180,8 @@ class BookAb
 
 
 		$response =  $this->searchAvailabilities($search);
-
+		var_dump($response);
+			die();
 
 		
 	//fix this validation to isset or exists
@@ -189,8 +190,7 @@ class BookAb
 			return array("error" => $error["FlightNotFound"]);
 		} else {
 			$data = json_decode(json_encode($response),true);
-			var_dump($data);
-			die();
+			
 			$flightData = array (
 				"stops" => "1", 
 				"DepartureTime" => "2:00P", 
