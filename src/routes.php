@@ -37,13 +37,12 @@ $app->post("/ab/flight-status/", function ($request, $response)  {
     
       //get the request parameters  
       $params = $request->getParams();
-      var_dump( (array) json_decode(json_encode($params["flight"]),true));
-      die();
+    
 
 
       //Create the object
       $flight = new AbFlightStatus;
-      $data = json_decode(json_encode($params["flight"]),true);
+      $data = $params["flight"];
     
     try {
         
