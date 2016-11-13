@@ -33,7 +33,7 @@ $app->post("/ab/search", function ($request, $response)  {
     $response->withJson($result, 200);
     
 });
-$app->post("/ab/flight-status", function ($request, $response)  {
+$app->post("/ab/flight-status/", function ($request, $response)  {
     
       //get the request parameters  
       $params = $request->getParams();
