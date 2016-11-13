@@ -47,7 +47,7 @@ $app->post("/ab/flight-status/", function ($request, $response)  {
     
 
 
-       $result = $book->generateImage($params["FlightStatus"]);
+       $result = $book->generateImage($params["flight"]);
    
     } catch (\Exception $e) {
     
