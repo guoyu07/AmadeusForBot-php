@@ -37,6 +37,8 @@ $app->post("/ab/flight-status/", function ($request, $response)  {
     
       //get the request parameters  
       $params = $request->getParams();
+      var_dump($params);
+      die();
 
 
       //Create the object
