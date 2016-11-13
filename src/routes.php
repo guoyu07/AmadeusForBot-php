@@ -40,14 +40,13 @@ $app->post("/ab/flight-status/", function ($request, $response)  {
 
 
       //Create the object
-      $book = new AbFlightStatus;
+      $flight = new AbFlightStatus;
 
     
     try {
     
 
-
-       $result = $book->generateImage($params["flight"]);
+       $result = $flight->generateImage($params["flight"]);
    
     } catch (\Exception $e) {
     

@@ -990,7 +990,7 @@ class FlightImage
             $img = new SimpleImage($ImagePath);
 
             //Status
-            $img->text($statusLabels["Status"], $FontPathBold, 30, '#107715', 'top', 218, 85);
+            $img->text($statusLabels["Status"], $FontPathBold, 30, '#107715', 'top', 205, 85);
             // Flight Departs Arrives
             $img->text($statusLabels["Flight"], $FontPathRegular, 20, '#a9a9a9', 'top', -293, 167);
             $img->text($statusLabels["Scheduled"], $FontPathRegular, 20, '#a9a9a9', 'top', -34, 167);
@@ -1011,7 +1011,7 @@ class FlightImage
 
 
             //City 1 Bogota Upper
-            $img->text($FlightData["origin"], $FontPathRegular, 22, '#a9a9a9', 'top', -250, 267);
+            $img->text($FlightData["origin"], $FontPathRegular, 22, '#a9a9a9', 'top', -258, 267);
             // City 2  Upper
             $img->text($FlightData["destination"], $FontPathRegular, 22, '#a9a9a9', 'top', 195, 269);
 
