@@ -844,9 +844,9 @@ class FlightImage
             $img = new SimpleImage($ImagePath);
             //STOPS 
             if ($FlightData["stops"] > 1) {
-                $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#cb1f2d', 'top', -6, 228);
+                $img->text($FlightData["stops"]." stops", $FontPathRegular, 24, '#006699', 'top', -6, 228);
             }else{
-                $img->text("Direct", $FontPathRegular, 24, '#cb1f2d', 'top', -6, 228);   
+                $img->text("Direct", $FontPathRegular, 24, '#006699', 'top', -6, 228);   
             }
 
             // DEPARTURE TIME
@@ -854,9 +854,9 @@ class FlightImage
             // ARRIVAL TIME
             $img->text($FlightData["ArrivalTime"], $FontPathBold, 40, '#000000', 'right', -40, 10);
             // DEPART CITY
-            $img->text($FlightData["OriginAirport"], $FontPathRegular, 31, '#cb1f2d', 'top', -274, 263);
+            $img->text($FlightData["OriginAirport"], $FontPathRegular, 31, '#006699', 'top', -274, 263);
             //ARRIVAL CITY
-            $img->text($FlightData["DestinationAirport"], $FontPathRegular, 31, '#cb1f2d', 'top', 278, 263);
+            $img->text($FlightData["DestinationAirport"], $FontPathRegular, 31, '#006699', 'top', 278, 263);
             //DEPARTURE DATE
             $img->text($FlightData["DepartureDate"], $FontPathRegular, 23.5, '#7a7a7a', 'left', 45, 134);
             //ARRIVAL DATE
